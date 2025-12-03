@@ -11,9 +11,10 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+
     <servlet>
         <servlet-name>LancarEntregaServlet</servlet-name>
-        <servlet-class>com.transportadora.controller.LancarEntregaServlet</servlet-class>
+        <servlet-class>controller.LancarEntregaServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
@@ -23,31 +24,12 @@
 
     <servlet>
         <servlet-name>ListarEntregasServlet</servlet-name>
-        <servlet-class>com.transportadora.controller.ListarEntregasServlet</servlet-class>
+        <servlet-class>controller.ListarEntregasServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>ListarEntregasServlet</servlet-name>
         <url-pattern>/lista-entregas</url-pattern>
     </servlet-mapping>
-
-    <!-- Configuração para JSTL -->
-    <jsp-config>
-        <taglib>
-            <taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>
-            <taglib-location>/WEB-INF/tld/c.tld</taglib-location>
-        </taglib>
-    </jsp-config>
-
-    <!-- Configuração de encoding -->
-    <filter>
-        <filter-name>CharacterEncodingFilter</filter-name>
-        <filter-class>com.transportadora.filter.CharacterEncodingFilter</filter-class>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>CharacterEncodingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 
 </web-app>
