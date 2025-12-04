@@ -1,33 +1,53 @@
 package controller;
 
-import dao.EntregaDAO;
-import model.Entrega;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.WebServlet;
+import java.awt.List;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
-@WebServlet("/lista-entregas")
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import dao.EntregaDAO;
+
+@WebServlet("/entregas/listar")
 public class ListarEntregasServlet extends HttpServlet {
-
+    
     private EntregaDAO entregaDAO = new EntregaDAO();
-
+    
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-
+        
         try {
-            List<Entrega> entregas = entregaDAO.listarTodas();
+            // Verifica se há filtro por status
+        	
+            String statusFiltro = request.getParameter("status");
+            List entregas;
+            
+            if (statusFiltro != null && !statusFiltro.isEmpty()) {
+                entregas = (List) entregaDAO.listarPorStatus(statusFiltro);
+            } else {
+                entregas = (List) entregaDAO.listarTodas();
+            }
+            
+            // Adiciona a lista na requisição
+            
             request.setAttribute("entregas", entregas);
-
-            request.getRequestDispatcher("/WEB-INF/views/lista-entregas.jsp")
-                    .forward(request, response);
-
-        } catch (SQLException e) {
+            request.setAttribute("statusFiltro", statusFiltro);
+            
+            // Encaminha para a página JSP
+            
+            request.getRequestDispatcher("/WEB-INF/views/entregas/listar.jsp")
+                   .forward(request, response);
+            
+        } catch (Exception e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao listar entregas");
+            request.setAttribute("erro", "Erro ao listar entregas: " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/views/erro.jsp")
+                   .forward(request, response);
         }
     }
 }

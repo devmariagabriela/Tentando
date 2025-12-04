@@ -3,27 +3,37 @@ plugins {
     id 'war'
 }
 
-group = 'com.transportadora'
-version = '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+group = 'br.com.tartarugacometa'
+version = '1.0.0'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    // Servlet API (usando compileOnly para Gradle mais novo)
-    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
-
-    // JSP API
-    compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
-
-    // PostgreSQL Driver
+    // API de Servlets (escopo 'providedCompile', pois o Tomcat já tem)
+    providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
+    
+    // API de JSP (também 'providedCompile')
+    providedCompile 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
+    
+    // JSTL para JSP
+    implementation 'javax.servlet:jstl:1.2'
+    
+    // Driver do PostgreSQL
     implementation 'org.postgresql:postgresql:42.6.0'
 }
 
 war {
     archiveFileName = 'tartaruga-cometa.war'
 }
+
+
+
+
+
+
+
+
