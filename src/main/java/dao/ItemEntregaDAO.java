@@ -31,7 +31,7 @@ public class ItemEntregaDAO {
             
             stmt.executeUpdate();
             
-            // Recupera o ID gerado
+            // A meta é recuperar o ID gerado
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     Integer id = rs.getInt(1);
@@ -136,7 +136,7 @@ public class ItemEntregaDAO {
             item.setCreatedAt(createdAt.toLocalDateTime());
         }
         
-        // Carrega o produto relacionado
+        // Aqui eu vou carregar o produto relacionado
         try {
             item.setProduto(produtoDAO.buscarPorId(item.getProdutoId()));
         } catch (SQLException e) {

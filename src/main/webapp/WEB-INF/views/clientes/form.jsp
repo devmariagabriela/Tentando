@@ -151,7 +151,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2024 Tartaruga Cometa - Sistema de Controle de Entregas</p>
+        <p>&copy; 2025 Tartaruga Cometa - Sistema de Controle de Entregas</p>
     </footer>
 </body>
 </html>

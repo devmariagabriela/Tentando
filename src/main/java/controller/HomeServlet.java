@@ -23,14 +23,14 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
         
         try {
-            // Busca estatísticas para o dashboard
+            // Pra que isso funcione precisa de dados, ent coloquei isso aqui pra fazer a busca de dados para o meu dashboard
         	
             List<Entrega> todasEntregas = entregaDAO.listarTodas();
             List<Entrega> entregasPendentes = entregaDAO.listarPorStatus("PENDENTE");
             List<Entrega> entregasEmTransito = entregaDAO.listarPorStatus("EM_TRANSITO");
             List<Entrega> entregasRealizadas = entregaDAO.listarPorStatus("REALIZADA");
             
-            // Adiciona atributos na requisição
+            // E ai preciso que seja adicionado os atributos nas minhas requisiçoes, usei o set	:
             
             request.setAttribute("totalEntregas", todasEntregas.size());
             request.setAttribute("totalPendentes", entregasPendentes.size());
@@ -38,7 +38,7 @@ public class HomeServlet extends HttpServlet {
             request.setAttribute("totalRealizadas", entregasRealizadas.size());
             request.setAttribute("ultimasEntregas", todasEntregas.subList(0, Math.min(5, todasEntregas.size())));
             
-            // Encaminha para a página inicial
+            // Agora vou usar um get para encaminhar tudo para a página inicial
             
             request.getRequestDispatcher("/WEB-INF/views/home.jsp")
                    .forward(request, response);

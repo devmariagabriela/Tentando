@@ -26,12 +26,13 @@ public class ProdutoServlet extends HttpServlet {
         
         try {
             if ("novo".equals(acao)) {
-                // Exibe formulário de novo produto
+            	
+                // Aqui vai mostrar o formulário de novo produto
             	
                 request.getRequestDispatcher("/WEB-INF/views/produtos/form.jsp")
                        .forward(request, response);
             } else {
-                // Lista todos os produtos
+                // E aqui vai listar todos os meus produtos
             	
                 List<Produto> produtos = produtoDAO.listarTodos();
                 request.setAttribute("produtos", produtos);
@@ -53,7 +54,7 @@ public class ProdutoServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         
         try {
-            // Captura dados do produto
+            // Aqui vai ser pra ter os dados de cada produto, pelo o que eu entendi é meio que um cadastro
         	
             String nome = request.getParameter("nome");
             String descricao = request.getParameter("descricao");
@@ -72,7 +73,7 @@ public class ProdutoServlet extends HttpServlet {
             
             produtoDAO.salvar(produto);
             
-            // Redireciona para a listagem
+            // Esse aqui é o que vai redirecionar para a listagem dos produtos salvos
             
             response.sendRedirect(request.getContextPath() + "/produtos?sucesso=true");
             

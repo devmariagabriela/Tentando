@@ -32,7 +32,8 @@ public class EnderecoDAO {
             
             stmt.executeUpdate();
             
-            // Recupera o ID gerado
+            // Aqui é pra recumperar o ID gerado
+            
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     Integer id = rs.getInt(1);

@@ -34,7 +34,7 @@ public class ClienteDAO {
             
             stmt.executeUpdate();
             
-            // Recupera o ID gerado
+            // Aqui to tentando recomperar o ID gerado :/
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     Integer id = rs.getInt(1);
@@ -146,7 +146,7 @@ public class ClienteDAO {
             cliente.setCreatedAt(createdAt.toLocalDateTime());
         }
         
-        // Carrega o endereço relacionado
+        // Aquii vai Carregar o endereço relacionado
         try {
             Endereco endereco = enderecoDAO.buscarPorId(cliente.getEnderecoId());
             cliente.setEndereco(endereco);

@@ -30,7 +30,8 @@ public class ProdutoDAO {
             
             stmt.executeUpdate();
             
-            // Recupera o ID gerado
+            // Aqui eu to tentando fazer com que ele recumpere o ID que vai ser geradpo, dps eu ajusto
+            
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     Integer id = rs.getInt(1);

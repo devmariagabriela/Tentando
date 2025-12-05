@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +22,7 @@ import model.Entrega;
 import model.ItemEntrega;
 import model.Produto;
 
+
 @WebServlet("/entregas/nova")
 public class NovaEntregaServlet extends HttpServlet {
     
@@ -35,14 +37,16 @@ public class NovaEntregaServlet extends HttpServlet {
             throws ServletException, IOException {
         
         try {
-            // Carrega listas para os selects do formulário
+            // Esse comando aqui ele vai carregar a  listas para os selects do meu formulário:
+        	
             List<Cliente> clientes = clienteDAO.listarTodos();
             List<Produto> produtos = produtoDAO.listarTodos();
             
             request.setAttribute("clientes", clientes);
             request.setAttribute("produtos", produtos);
             
-            // Encaminha para o formulário
+            // Ja esse, ele é o que encaminha para o meu formulario, no caso, o que envia:
+            
             request.getRequestDispatcher("/WEB-INF/views/entregas/form.jsp")
                    .forward(request, response);
             
@@ -61,11 +65,11 @@ public class NovaEntregaServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         
         try {
-            // Gera código único para a entrega
+            // Cada entrega tem que ter um codigo, e esse codigo é unico, esse comando faz isso:
         	
             String codigo = "ENT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
             
-            // Captura dados da entrega
+            // Depois tem que ter as informaçoes dessa entrega, coloquei um get aqui para obter os dados dela:
             
             Integer remetenteId = Integer.parseInt(request.getParameter("remetenteId"));
             Integer destinatarioId = Integer.parseInt(request.getParameter("destinatarioId"));
@@ -76,7 +80,7 @@ public class NovaEntregaServlet extends HttpServlet {
             Double valorFrete = new Double(request.getParameter("valorFrete"));
             String observacoes = request.getParameter("observacoes");
             
-            // Cria objeto Entrega
+            // Preciso criar objeto Entrega, pra isso eu uso o set:
             
             Entrega entrega = new Entrega();
             entrega.setCodigo(codigo);
@@ -90,11 +94,11 @@ public class NovaEntregaServlet extends HttpServlet {
             entrega.setObservacoes(observacoes);
             entrega.setStatus("PENDENTE");
             
-            // Salva a entrega
+            // Aqui eu salvo a minha entrega:
             
             Integer entregaId = entregaDAO.salvar(entrega);
             
-            // Captura itens da entrega (produtos)
+            //Esse comando ele vai capturar os itens da entrega (no caso os meus produtos)
             
             String[] produtoIds = request.getParameterValues("produtoId");
             String[] quantidades = request.getParameterValues("quantidade");
@@ -104,12 +108,12 @@ public class NovaEntregaServlet extends HttpServlet {
                     Integer produtoId = Integer.parseInt(produtoIds[i]);
                     Integer quantidade = Integer.parseInt(quantidades[i]);
                     
-                    // Busca o produto para calcular valor total
+                    // Pra que tenha o valor total eu tenho que ter os produtos, esse comando ele busca o produto
                     
                     Produto produto = produtoDAO.buscarPorId(produtoId);
-                    Double valorTotal = produto.getValorUnitario().multiply(new Double(quantidade));
+                    Double valorTotal = produto.getValorUnitario() * (new Double(quantidade));
                     
-                    // Cria item da entrega
+                    //  É ai que eu crio o item da entrega
                     
                     ItemEntrega item = new ItemEntrega();
                     item.setEntregaId(entregaId);
@@ -121,7 +125,7 @@ public class NovaEntregaServlet extends HttpServlet {
                 }
             }
             
-            // Redireciona para a listagem com mensagem de sucesso
+            // Coloquei esse aqui pra confirmar o cadastro, se ele for bem sucedido:
             
             response.sendRedirect(request.getContextPath() + "/entregas/listar?sucesso=true");
             

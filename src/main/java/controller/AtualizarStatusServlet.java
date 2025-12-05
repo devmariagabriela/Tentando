@@ -28,21 +28,25 @@ public class AtualizarStatusServlet extends HttpServlet {
             Integer entregaId = Integer.parseInt(request.getParameter("entregaId"));
             String novoStatus = request.getParameter("status");
             
-            // Busca a entrega
+            // Pra que a algo seja atualizado eu tenho que buscar, aquii ele vai buscar a entrega: 
+            
             Entrega entrega = entregaDAO.buscarPorId(entregaId);
             
             if (entrega != null) {
                 entrega.setStatus(novoStatus);
                 
                 // Se o status for REALIZADA, define a data de entrega realizada
+                
                 if ("REALIZADA".equals(novoStatus)) {
                     entrega.setDataEntregaRealizada(LocalDate.now());
                 }
                 
-                // Atualiza no banco
+                // E é ai que entra a atualização:
+                
                 entregaDAO.atualizar(entrega);
                 
-                // Redireciona de volta para a listagem
+                // Depois da atualização ele vai redirecionar de volta para a listagem, com os novos dados que foram alterados:
+                
                 response.sendRedirect(request.getContextPath() + "/entregas/listar?atualizado=true");
             } else {
                 request.setAttribute("erro", "Entrega não encontrada!");
@@ -60,6 +64,8 @@ public class AtualizarStatusServlet extends HttpServlet {
             request.setAttribute("erro", "Erro ao processar dados: " + e.getMessage());
             request.getRequestDispatcher("/WEB-INF/views/erro.jsp")
                    .forward(request, response);
-        }
+        } catch (SQLException e) {
+						e.printStackTrace();
+		}
     }
 }

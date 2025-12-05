@@ -29,11 +29,15 @@ public class ClienteServlet extends HttpServlet {
         
         try {
             if ("novo".equals(acao)) {
-                // Exibe formulário de novo cliente
+            	
+                // Aqui eu to mexendo com os meus clientes, ent, preciso de um forms para por eles, meus novos clientes:
+            	
                 request.getRequestDispatcher("/WEB-INF/views/clientes/form.jsp")
                        .forward(request, response);
             } else {
-                // Lista todos os clientes
+            	
+                // Agora eu resolvi por uma list, pq  quando tiver os clientes, eu quero uma lista com todos eles:
+            	
                 List<Cliente> clientes = clienteDAO.listarTodos();
                 request.setAttribute("clientes", clientes);
                 request.getRequestDispatcher("/WEB-INF/views/clientes/listar.jsp")
@@ -54,7 +58,8 @@ public class ClienteServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         
         try {
-            // Captura dados do endereço
+            // Cada cliente tem o seu endereço, ai vou capturar os dados do endereço deles:
+        	
             String cep = request.getParameter("cep");
             String logradouro = request.getParameter("logradouro");
             String numero = request.getParameter("numero");
@@ -63,7 +68,8 @@ public class ClienteServlet extends HttpServlet {
             String cidade = request.getParameter("cidade");
             String estado = request.getParameter("estado");
             
-            // Cria e salva o endereço
+            // Depois que eu tiver esses dados, o sistema vai ter que criar e salvar esses endereços, ai coloquei um set pra definir eles:
+            
             Endereco endereco = new Endereco();
             endereco.setCep(cep);
             endereco.setLogradouro(logradouro);
@@ -73,16 +79,18 @@ public class ClienteServlet extends HttpServlet {
             endereco.setCidade(cidade);
             endereco.setEstado(estado);
             
-            Integer enderecoId = enderecoDAO.salvar(endereco);
+            Integer enderecoId = enderecoDAO.salvar(endereco); 
             
-            // Captura dados do cliente
+            // Aqui eu usei o get, pra que o sistema consiga capturar os dados da pessoa cliente:
+            
             String tipoDocumento = request.getParameter("tipoDocumento");
             String documento = request.getParameter("documento");
             String nome = request.getParameter("nome");
             String telefone = request.getParameter("telefone");
             String email = request.getParameter("email");
             
-            // Cria e salva o cliente
+            // E é ai que uso o set dnv, pra definir e salvar esses dados:
+            
             Cliente cliente = new Cliente();
             cliente.setTipoDocumento(tipoDocumento);
             cliente.setDocumento(documento);
@@ -93,7 +101,8 @@ public class ClienteServlet extends HttpServlet {
             
             clienteDAO.salvar(cliente);
             
-            // Redireciona para a listagem
+            // Quando ja tiver esses dois dados no sistema, tem um comando que vai fazer com que seja direcionado para a listagem:
+            
             response.sendRedirect(request.getContextPath() + "/clientes?sucesso=true");
             
         } catch (SQLException e) {

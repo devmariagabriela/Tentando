@@ -16,8 +16,8 @@ public class Entrega {
     private Integer enderecoOrigemId;
     private Integer enderecoDestinoId;
     private LocalDate dataColeta;
-    private Date dataEntregaPrevista;
-    private Date dataEntregaRealizada;
+    private LocalDate dataEntregaPrevista;
+    private LocalDate dataEntregaRealizada;
     private String status; // PENDENTE, EM_TRANSITO, REALIZADA, CANCELADA
     private Double valorFrete;
     private String observacoes;
@@ -41,7 +41,7 @@ public class Entrega {
     
     public Entrega(String codigo, Integer remetenteId, Integer destinatarioId,
                    Integer enderecoOrigemId, Integer enderecoDestinoId,
-                   LocalDate dataColeta, Date dataEntregaPrevista,
+                   LocalDate dataColeta, LocalDate dataEntregaPrevista,
                    Double valorFrete) {
         this();
         this.codigo = codigo;
@@ -112,19 +112,19 @@ public class Entrega {
         this.dataColeta = dataColeta;
     }
     
-    public Date getDataEntregaPrevista() {
+    public LocalDate getDataEntregaPrevista() {
         return dataEntregaPrevista;
     }
     
-    public void setDataEntregaPrevista(Date dataEntregaPrevista) {
-        this.dataEntregaPrevista = dataEntregaPrevista;
+    public void setDataEntregaPrevista(LocalDate localDate) {
+        this.dataEntregaPrevista = (LocalDate) localDate;
     }
     
-    public Date getDataEntregaRealizada() {
+    public LocalDate getDataEntregaRealizada() {
         return dataEntregaRealizada;
     }
     
-    public void setDataEntregaRealizada(Date localDate) {
+    public void setDataEntregaRealizada(LocalDate localDate) {
         this.dataEntregaRealizada = localDate;
     }
     

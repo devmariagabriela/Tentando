@@ -22,7 +22,7 @@ public class ListarEntregasServlet extends HttpServlet {
             throws ServletException, IOException {
         
         try {
-            // Verifica se há filtro por status
+            // Pelo o que vi, esse comando ele verifica se há filtro por status:
         	
             String statusFiltro = request.getParameter("status");
             List entregas;
@@ -33,12 +33,12 @@ public class ListarEntregasServlet extends HttpServlet {
                 entregas = (List) entregaDAO.listarTodas();
             }
             
-            // Adiciona a lista na requisição
+            // Depois ele adiciona a lista na requisição
             
             request.setAttribute("entregas", entregas);
             request.setAttribute("statusFiltro", statusFiltro);
             
-            // Encaminha para a página JSP
+            // Esse comando aqui ele que vai encaminhar para a minha página JSP:
             
             request.getRequestDispatcher("/WEB-INF/views/entregas/listar.jsp")
                    .forward(request, response);

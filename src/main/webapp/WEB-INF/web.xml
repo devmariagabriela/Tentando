@@ -41,7 +41,7 @@
         <location>/WEB-INF/views/erro.jsp</location>
     </error-page>
 
-    <!-- Timeout de sessão (30 minutos) -->
+    <!-- Timeout de sessão (coloquei 30 minutos mesmo pq eu não sei) -->
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
