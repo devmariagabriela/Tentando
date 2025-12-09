@@ -131,7 +131,7 @@ public class ItemEntregaDAO {
         item.setQuantidade(rs.getInt("quantidade"));
         item.setValorTotal(rs.getDouble("valor_total"));
         
-        Timestamp createdAt = rs.getTimestamp("created_at");
+        Timestamp createdAt = rs.getTimestamp("data_criacao");
         if (createdAt != null) {
             item.setCreatedAt(createdAt.toLocalDateTime());
         }

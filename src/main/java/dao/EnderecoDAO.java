@@ -124,7 +124,7 @@ public class EnderecoDAO {
         endereco.setCidade(rs.getString("cidade"));
         endereco.setEstado(rs.getString("estado"));
         
-        Timestamp createdAt = rs.getTimestamp("created_at");
+        Timestamp createdAt = rs.getTimestamp("data_criacao");
         if (createdAt != null) {
             endereco.setCreatedAt(createdAt.toLocalDateTime());
         }

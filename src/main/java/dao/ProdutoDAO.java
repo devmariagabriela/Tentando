@@ -118,7 +118,7 @@ public class ProdutoDAO {
         produto.setVolumeM3(rs.getDouble("volume_m3"));
         produto.setValorUnitario(rs.getDouble("valor_unitario"));
         
-        Timestamp createdAt = rs.getTimestamp("created_at");
+        Timestamp createdAt = rs.getTimestamp("data_criacao");
         if (createdAt != null) {
             produto.setCreatedAt(createdAt.toLocalDateTime());
         }

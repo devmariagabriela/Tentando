@@ -141,7 +141,7 @@ public class ClienteDAO {
         cliente.setEmail(rs.getString("email"));
         cliente.setEnderecoId(rs.getInt("endereco_id"));
         
-        Timestamp createdAt = rs.getTimestamp("created_at");
+        Timestamp createdAt = rs.getTimestamp("data_criacao");
         if (createdAt != null) {
             cliente.setCreatedAt(createdAt.toLocalDateTime());
         }
