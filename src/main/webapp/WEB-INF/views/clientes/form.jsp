@@ -37,8 +37,8 @@
                         <label for="tipoDocumento">Tipo de Documento *</label>
                         <select id="tipoDocumento" name="tipoDocumento" required>
                             <option value="">Selecione...</option>
-                            <option value="CPF">CPF (Pessoa Física)</option>
-                            <option value="CNPJ">CNPJ (Pessoa Jurídica)</option>
+                            <option value="F">CPF (Pessoa Física)</option>
+                            <option value="J">CNPJ (Pessoa Jurídica)</option>
                         </select>
                     </div>
 

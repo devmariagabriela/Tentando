@@ -19,7 +19,7 @@ public class ClienteDAO {
     
  
     public Integer salvar(Cliente cliente) throws SQLException {
-        String sql = "INSERT INTO cliente (tipo_documento, documento, nome, telefone, email, endereco_id) " +
+        String sql = "INSERT INTO cliente (tipo, documento, nome, telefone, email, endereco_id) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = ConnectionFactory.getConnection();
@@ -100,7 +100,7 @@ public class ClienteDAO {
     
    
     public void atualizar(Cliente cliente) throws SQLException {
-        String sql = "UPDATE cliente SET tipo_documento = ?, documento = ?, nome = ?, " +
+        String sql = "UPDATE cliente SET tipo = ?, documento = ?, nome = ?, " +
                      "telefone = ?, email = ?, endereco_id = ? WHERE id = ?";
         
         try (Connection conn = ConnectionFactory.getConnection();
@@ -134,18 +134,14 @@ public class ClienteDAO {
     private Cliente mapResultSetToCliente(ResultSet rs) throws SQLException {
         Cliente cliente = new Cliente();
         cliente.setId(rs.getInt("id"));
-        cliente.setTipoDocumento(rs.getString("tipo_documento"));
+        cliente.setTipoDocumento(rs.getString("tipo"));
         cliente.setDocumento(rs.getString("documento"));
         cliente.setNome(rs.getString("nome"));
         cliente.setTelefone(rs.getString("telefone"));
         cliente.setEmail(rs.getString("email"));
         cliente.setEnderecoId(rs.getInt("endereco_id"));
         
-        Timestamp createdAt = rs.getTimestamp("data_criacao");
-        if (createdAt != null) {
-            cliente.setCreatedAt(createdAt.toLocalDateTime());
-        }
-        
+      
         // Aquii vai Carregar o endereço relacionado
         try {
             Endereco endereco = enderecoDAO.buscarPorId(cliente.getEnderecoId());

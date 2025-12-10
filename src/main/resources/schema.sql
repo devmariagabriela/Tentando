@@ -51,7 +51,7 @@ CREATE TABLE item_entrega(
 
 INSERT INTO endereco (logradouro, numero, complemento, bairro, cidade, estado, cep) VALUES
 
-'Rua das Flores', '123', 'Sala 101', 'Centro', 'São Paulo', 'SP', '01001-000'),
+('Rua das Flores', '123', 'Sala 101', 'Centro', 'São Paulo', 'SP', '01001-000'),
 ('Avenida Brasil', '456', 'Andar 5', 'Jardins', 'Rio de Janeiro', 'RJ', '20040-000'),
 ('Rua das Palmeiras', '789', 'Casa 2', 'Savassi', 'Belo Horizonte', 'MG', '30130-000'),
 ('Travessa dos Pinheiros', '321', NULL, 'Vila Mariana', 'São Paulo', 'SP', '04101-000'),

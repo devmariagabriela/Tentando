@@ -98,7 +98,8 @@
     </div>
 
     <footer>
-        <p>&copy; 2025 Tartaruga Cometa - Sistema de Controle de Entregas</p>
+        <p> Tartaruga cometa - Sistemas de entrega</p>
+           <p> To endoidano com isso aqui, namorallllll</p>
     </footer>
 </body>
 </html>
