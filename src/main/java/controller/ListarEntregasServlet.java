@@ -3,12 +3,14 @@ package controller;
 import java.awt.List;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Entrega;
 
 import dao.EntregaDAO;
 
@@ -25,12 +27,12 @@ public class ListarEntregasServlet extends HttpServlet {
             // Pelo o que vi, esse comando ele verifica se há filtro por status:
         	
             String statusFiltro = request.getParameter("status");
-            List entregas;
+            ArrayList<Entrega> entregas = new ArrayList<Entrega>();
             
             if (statusFiltro != null && !statusFiltro.isEmpty()) {
-                entregas = (List) entregaDAO.listarPorStatus(statusFiltro);
+                entregas =  (ArrayList<Entrega>) entregaDAO.listarPorStatus(statusFiltro);
             } else {
-                entregas = (List) entregaDAO.listarTodas();
+                entregas =  (ArrayList<Entrega>) entregaDAO.listarTodas();
             }
             
             // Depois ele adiciona a lista na requisição
