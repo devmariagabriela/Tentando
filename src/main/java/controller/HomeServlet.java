@@ -16,7 +16,8 @@ import model.Entrega;
 @WebServlet(urlPatterns = {"", "/"})
 public class HomeServlet extends HttpServlet {
     
-    private EntregaDAO entregaDAO = new EntregaDAO();
+    private static final long serialVersionUID = 1L;
+	private EntregaDAO entregaDAO = new EntregaDAO();
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 

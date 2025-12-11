@@ -16,7 +16,8 @@ import model.Produto;
 @WebServlet("/produtos")
 public class ProdutoServlet extends HttpServlet {
     
-    private ProdutoDAO produtoDAO = new ProdutoDAO();
+    private static final long serialVersionUID = 1L;
+	private ProdutoDAO produtoDAO = new ProdutoDAO();
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 

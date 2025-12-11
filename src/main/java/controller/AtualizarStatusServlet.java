@@ -16,7 +16,8 @@ import model.Entrega;
 @WebServlet("/entregas/atualizar-status")
 public class AtualizarStatusServlet extends HttpServlet {
     
-    private EntregaDAO entregaDAO = new EntregaDAO();
+    private static final long serialVersionUID = 1L;
+	private EntregaDAO entregaDAO = new EntregaDAO();
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 

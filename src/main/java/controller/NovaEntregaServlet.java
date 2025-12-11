@@ -26,7 +26,8 @@ import model.Produto;
 @WebServlet("/entregas/nova")
 public class NovaEntregaServlet extends HttpServlet {
     
-    private ClienteDAO clienteDAO = new ClienteDAO();
+    private static final long serialVersionUID = 1L;
+	private ClienteDAO clienteDAO = new ClienteDAO();
     private ProdutoDAO produtoDAO = new ProdutoDAO();
     private EntregaDAO entregaDAO = new EntregaDAO();
     private EnderecoDAO enderecoDAO = new EnderecoDAO();
@@ -141,4 +142,12 @@ public class NovaEntregaServlet extends HttpServlet {
                    .forward(request, response);
         }
     }
+
+	public EnderecoDAO getEnderecoDAO() {
+		return enderecoDAO;
+	}
+
+	public void setEnderecoDAO(EnderecoDAO enderecoDAO) {
+		this.enderecoDAO = enderecoDAO;
+	}
 }

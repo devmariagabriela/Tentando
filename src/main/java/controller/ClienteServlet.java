@@ -18,7 +18,8 @@ import model.Endereco;
 @WebServlet("/clientes")
 public class ClienteServlet extends HttpServlet {
     
-    private ClienteDAO clienteDAO = new ClienteDAO();
+    private static final long serialVersionUID = 1L;
+	private ClienteDAO clienteDAO = new ClienteDAO();
     private EnderecoDAO enderecoDAO = new EnderecoDAO();
     
     @Override
