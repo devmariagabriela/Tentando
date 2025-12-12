@@ -1,4 +1,4 @@
-c<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -22,7 +22,7 @@ c<%@ page contentType="text/html;charset=UTF-8" language="java" %>
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
             <li><a href="${pageContext.request.contextPath}/entregas/nova">Nova Entrega</a></li>
             <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li>
-            <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>
+            <li><a href="${pageContext.request.contextPath}/produtos?acao/novo">Produtos</a></li>
         </ul>
     </nav>
 
@@ -33,6 +33,18 @@ c<%@ page contentType="text/html;charset=UTF-8" language="java" %>
             <c:if test="${param.sucesso == 'true'}">
                 <div class="alert alert-success">
                     Cliente cadastrado com sucesso!
+                </div>
+            </c:if>
+
+            <c:if test="${param.sucesso == 'removido'}">
+                <div class="alert alert-success">
+                    Cliente removido com sucesso!
+                </div>
+            </c:if>
+            
+            <c:if test="${param.erro == 'falha_remocao'}">
+                <div class="alert alert-danger">
+                    Erro ao tentar remover o cliente. Verifique se ele possui entregas associadas.
                 </div>
             </c:if>
 
@@ -52,6 +64,7 @@ c<%@ page contentType="text/html;charset=UTF-8" language="java" %>
                                 <th>Telefone</th>
                                 <th>Email</th>
                                 <th>Cidade/UF</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,6 +77,11 @@ c<%@ page contentType="text/html;charset=UTF-8" language="java" %>
                                     <td>${cliente.telefone}</td>
                                     <td>${cliente.email}</td>
                                     <td>${cliente.endereco.cidade}/${cliente.endereco.estado}</td>
+                                    <td>
+                                        <a href="${pageContext.request.contextPath}/clientes/remover?id=${cliente.id}" 
+                                           onclick="return confirmarRemocao('${cliente.nome}' )" 
+                                           class="btn btn-danger">Excluir</a>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -79,5 +97,11 @@ c<%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <footer>
         <p>&copy; 2025 Tartaruga Cometa - Sistema de Controle de Entregas</p>
     </footer>
+    
+    <script>
+        function confirmarRemocao(nomeCliente) {
+            return confirm("Você tem certeza que deseja excluir o cliente " + nomeCliente + "?");
+        }
+    </script>
 </body>
 </html>

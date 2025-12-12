@@ -25,6 +25,7 @@ CREATE TABLE cliente(
 CREATE TABLE produto(
     id SERIAL PRIMARY KEY,
     nome VARCHAR(200) NOT NULL,
+	descricao TEXT,
     peso_kg DECIMAL(10,2) NOT NULL CHECK (peso_kg > 0),
     volume_m3 DECIMAL(10,3) NOT NULL CHECK (volume_m3 > 0),
     valor_unitario DECIMAL(10,2) NOT NULL CHECK (valor_unitario >= 0)

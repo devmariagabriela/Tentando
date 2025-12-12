@@ -20,7 +20,7 @@ public class ProdutoServlet extends HttpServlet {
 	private ProdutoDAO produtoDAO = new ProdutoDAO();
     
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         String acao = request.getParameter("acao");

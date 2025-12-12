@@ -22,7 +22,7 @@
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
             <li><a href="${pageContext.request.contextPath}/entregas/nova">Nova Entrega</a></li>
             <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li>
-            <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>
+            <li><a href="${pageContext.request.contextPath}/produtos?acao=novo">Produtos</a></li>  
         </ul>
     </nav>
 
@@ -99,7 +99,7 @@
 
     <footer>
         <p> Tartaruga cometa - Sistemas de entrega</p>
-           <p> To endoidano com isso aqui, namorallllll</p>
+           <p> </p>
     </footer>
 </body>
 </html>

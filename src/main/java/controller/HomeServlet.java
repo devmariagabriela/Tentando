@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.EntregaDAO;
 import model.Entrega;
 
+@SuppressWarnings("unused")
 @WebServlet(urlPatterns = {"", "/"})
 public class HomeServlet extends HttpServlet {
     
