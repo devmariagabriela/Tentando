@@ -16,21 +16,20 @@ public class ProdutoDAO {
     
     
     public Integer salvar(Produto produto) throws SQLException {
-        String sql = "INSERT INTO produto (nome, descricao, peso_kg, volume_m3, valor_unitario) " +
-                     "VALUES (?, ?, ?, ?, ?)";
+        // SQL CORRIGIDO: REMOVIDA A COLUNA 'descricao' para evitar o erro no seu banco desatualizado
+        String sql = "INSERT INTO produto (nome, peso_kg, volume_m3, valor_unitario) " +
+                     "VALUES (?, ?, ?, ?)";
         
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             stmt.setString(1, produto.getNome());
-            stmt.setString(2, produto.getDescricao());
-            stmt.setDouble(3, produto.getPesoKg());
-            stmt.setDouble(4, produto.getVolumeM3());
-            stmt.setDouble(5, produto.getValorUnitario());
+            // stmt.setString(2, produto.getDescricao()); // LINHA REMOVIDA
+            stmt.setDouble(2, produto.getPesoKg());
+            stmt.setDouble(3, produto.getVolumeM3());
+            stmt.setDouble(4, produto.getValorUnitario());
             
             stmt.executeUpdate();
-            
-            // Aqui eu to tentando fazer com que ele recumpere o ID que vai ser geradpo, dps eu ajusto
             
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
@@ -73,6 +72,9 @@ public class ProdutoDAO {
             while (rs.next()) {
                 produtos.add(mapResultSetToProduto(rs));
             }
+            
+            System.out.println("DEBUG: Consulta listarTodos() retornou " + produtos.size() + " produtos.");
+            
         }
         return produtos;
     }
@@ -113,14 +115,26 @@ public class ProdutoDAO {
         Produto produto = new Produto();
         produto.setId(rs.getInt("id"));
         produto.setNome(rs.getString("nome"));
-        produto.setDescricao(rs.getString("descricao"));
+        
+        // Tenta ler a descrição, mas ignora se a coluna não existir
+        try {
+            produto.setDescricao(rs.getString("descricao"));
+        } catch (SQLException e) {
+            // Ignora o erro se a coluna 'descricao' não existir
+        }
+        
         produto.setPesoKg(rs.getDouble("peso_kg"));
         produto.setVolumeM3(rs.getDouble("volume_m3"));
         produto.setValorUnitario(rs.getDouble("valor_unitario"));
         
-        Timestamp createdAt = rs.getTimestamp("data_criacao");
-        if (createdAt != null) {
-            produto.setCreatedAt(createdAt.toLocalDateTime());
+        // Tenta ler a data de criação, mas ignora se a coluna não existir
+        try {
+            Timestamp createdAt = rs.getTimestamp("data_criacao");
+            if (createdAt != null) {
+                produto.setCreatedAt(createdAt.toLocalDateTime());
+            }
+        } catch (SQLException e) {
+            // Ignora o erro se a coluna 'data_criacao' não existir
         }
         
         return produto;

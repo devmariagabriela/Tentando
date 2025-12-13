@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.ProdutoDAO;
+import db.ConnectionFactory;
 import model.Produto;
 
 @WebServlet("/produtos" )
@@ -26,6 +27,8 @@ public class ProdutoServlet extends HttpServlet {
         String acao = request.getParameter("acao");
         
         try {
+        	System.out.println("DEBUG: Testando conexão com o banco:" + ConnectionFactory.testConnection());
+        	
             if ("novo".equals(acao)) {
             	
                 // Aqui vai mostrar o formulário de novo produto

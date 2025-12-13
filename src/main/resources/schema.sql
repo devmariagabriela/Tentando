@@ -1,5 +1,5 @@
 CREATE DATABASE tartarugacometa;
-\c turtlee;
+\c tartarugacometa;
 
 CREATE TABLE endereco(
     id SERIAL PRIMARY KEY,
@@ -28,7 +28,8 @@ CREATE TABLE produto(
 	descricao TEXT,
     peso_kg DECIMAL(10,2) NOT NULL CHECK (peso_kg > 0),
     volume_m3 DECIMAL(10,3) NOT NULL CHECK (volume_m3 > 0),
-    valor_unitario DECIMAL(10,2) NOT NULL CHECK (valor_unitario >= 0)
+    valor_unitario DECIMAL(10,2) NOT NULL CHECK (valor_unitario >= 0),
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE entrega(
@@ -58,21 +59,21 @@ INSERT INTO endereco (logradouro, numero, complemento, bairro, cidade, estado, c
 ('Travessa dos Pinheiros', '321', NULL, 'Vila Mariana', 'São Paulo', 'SP', '04101-000'),
 ('Alameda Santos', '1000', 'Conjunto 304', 'Jardim Paulista', 'São Paulo', 'SP', '01418-000');
 
-INSERT INTO cientedocumento, nome, tipo, telefone, email, endereco_id) VALUES
+INSERT INTO cliente (documento, nome, tipo, telefone, email, endereco_id) VALUES
 ('12345678901', 'João Silva', 'F', '(11) 99999-8888', 'joao.silva@email.com', 1),
 ('98765432000198', 'Tech Solutions LTDA', 'J', '(11) 3333-4444', 'contato@techsolutions.com', 2),
 ('98765432109', 'Maria Oliveira', 'F', '(21) 98888-7777', 'maria.oliveira@email.com', 3),
 ('11122233344', 'Carlos Santos', 'F', '(31) 97777-6666', 'carlos.santos@email.com', 4),
 ('55667788000199', 'Logística Express', 'J', '(11) 2222-3333', 'vendas@logisticaexpress.com', 5);
 
-INSERT INTO produto  (nome, peso_kg, volume_m3, valor_unitario) VALUES
-('Notebook Dell Inspiron', 2.3, 0.003, 3500.00),
-('Smartphone Samsung Galaxy', 0.25, 0.00015, 2200.00),
-('Monitor LG 24"', 4.5, 0.012, 899.90),
-('Teclado Mecânico RGB', 1.2, 0.002, 299.00),
-('Mouse Gamer', 0.15, 0.0003, 150.00),
-('Tablet Apple iPad', 0.48, 0.0008, 4200.00),
-('Impressora Multifuncional', 8.7, 0.025, 650.00);
+INSERT INTO produto (nome, descricao, peso_kg, volume_m3, valor_unitario) VALUES
+('Notebook Dell Inspiron', 'Notebook para uso profissional', 2.3, 0.003, 3500.00),
+('Smartphone Samsung Galaxy', 'Smartphone Android', 0.25, 0.00015, 2200.00),
+('Monitor LG 24"', 'Monitor Full HD', 4.5, 0.012, 899.90),
+('Teclado Mecânico RGB', 'Teclado gamer com iluminação', 1.2, 0.002, 299.00),
+('Mouse Gamer', 'Mouse com sensor óptico', 0.15, 0.0003, 150.00),
+('Tablet Apple iPad', 'Tablet iOS', 0.48, 0.0008, 4200.00),
+('Impressora Multifuncional', 'Impressora, scanner e copiadora', 8.7, 0.025, 650.00);
 
 INSERT INTO entrega (codigo_rastreio, data_criacao, data_prevista_entrega, status, valor_frete, observacoes, remetente_id, destinatario_id) VALUES
 ('TC20240001', '2024-01-15', '2024-01-20', 'PENDENTE', 45.50, 'Fragil - Manuseio com cuidado', 2, 1),
@@ -82,7 +83,7 @@ INSERT INTO entrega (codigo_rastreio, data_criacao, data_prevista_entrega, statu
 ('TC20240005', '2024-01-14', '2024-01-18', 'CANCELADA', 40.00, 'Cancelada a pedido do cliente', 4, 5);
 
 
-INSERT INTO item_entrega entrega_id, produto_id, quantidade) VALUES
+INSERT INTO item_entrega (entrega_id, produto_id, quantidade) VALUES
 (1, 1, 1),
 (1, 2, 2),
 (2, 3, 1),
@@ -97,7 +98,7 @@ CREATE INDEX idx_entrega_rastreio ON entrega(codigo_rastreio);
 CREATE INDEX idx_cliente_documento ON cliente(documento);
 CREATE INDEX idx_item_entrega_id ON item_entrega(entrega_id);
 
-CREATE VIEWS elatorio_entregas AS
+CREATE VIEW relatorio_entregas AS
 SELECT 
     e.codigo_rastreio,
     e.data_criacao,
@@ -144,4 +145,3 @@ UNION ALL
 SELECT 'Entregas: ' || COUNT(*) FROM entrega
 UNION ALL
 SELECT 'Itens de Entrega: ' || COUNT(*) FROM item_entrega;
-

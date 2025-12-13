@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException; // Import adicionado
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ import model.ItemEntrega;
 import model.Produto;
 
 
-@WebServlet("/entregas/nova")
+@WebServlet("/entregas/nova" )
 public class NovaEntregaServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
@@ -76,8 +77,27 @@ public class NovaEntregaServlet extends HttpServlet {
             Integer destinatarioId = Integer.parseInt(request.getParameter("destinatarioId"));
             Integer enderecoOrigemId = Integer.parseInt(request.getParameter("enderecoOrigemId"));
             Integer enderecoDestinoId = Integer.parseInt(request.getParameter("enderecoDestinoId"));
-            LocalDate dataColeta = LocalDate.parse(request.getParameter("dataColeta"));
-            LocalDate dataEntregaPrevista = LocalDate.parse(request.getParameter("dataEntregaPrevista"));
+            
+            // --- INÍCIO DA CORREÇÃO DE VALIDAÇÃO DE DATA ---
+            String dataColetaStr = request.getParameter("dataColeta");
+            LocalDate dataColeta = null;
+            if (dataColetaStr != null && !dataColetaStr.isEmpty()) {
+                dataColeta = LocalDate.parse(dataColetaStr);
+            } else {
+                // Lança exceção se for nulo, pois o banco exige NOT NULL
+                throw new IllegalArgumentException("Data de Coleta é obrigatória.");
+            }
+            
+            String dataEntregaPrevistaStr = request.getParameter("dataEntregaPrevista");
+            LocalDate dataEntregaPrevista = null;
+            if (dataEntregaPrevistaStr != null && !dataEntregaPrevistaStr.isEmpty()) {
+                dataEntregaPrevista = LocalDate.parse(dataEntregaPrevistaStr);
+            } else {
+                // Lança exceção se for nulo, pois o banco exige NOT NULL
+                throw new IllegalArgumentException("Data de Entrega Prevista é obrigatória.");
+            }
+            // --- FIM DA CORREÇÃO DE VALIDAÇÃO DE DATA ---
+            
             Double valorFrete = new Double(request.getParameter("valorFrete"));
             String observacoes = request.getParameter("observacoes");
             
@@ -134,6 +154,18 @@ public class NovaEntregaServlet extends HttpServlet {
             e.printStackTrace();
             request.setAttribute("erro", "Erro ao cadastrar entrega: " + e.getMessage());
             request.getRequestDispatcher("/WEB-INF/views/erro.jsp")
+                   .forward(request, response);
+        } catch (IllegalArgumentException | DateTimeParseException e) { // Captura erro de validação e de formato de data
+            e.printStackTrace();
+            request.setAttribute("erro", e.getMessage());
+            // Carrega listas novamente para o formulário
+            try {
+                request.setAttribute("clientes", clienteDAO.listarTodos());
+                request.setAttribute("produtos", produtoDAO.listarTodos());
+            } catch (SQLException sqle) {
+                // Ignora erro de listagem
+            }
+            request.getRequestDispatcher("/WEB-INF/views/entregas/form.jsp") // Volta para o formulário
                    .forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
