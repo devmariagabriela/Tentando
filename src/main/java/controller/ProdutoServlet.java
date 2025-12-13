@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.ProdutoDAO;
 import model.Produto;
 
-@WebServlet("/produtos")
+@WebServlet("/produtos" )
 public class ProdutoServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
@@ -37,7 +37,11 @@ public class ProdutoServlet extends HttpServlet {
             	
                 List<Produto> produtos = produtoDAO.listarTodos();
                 request.setAttribute("produtos", produtos);
-                request.getRequestDispatcher("/WEB-INF/views/produtos/listar.jsp")
+                
+                // Debug: Verificar se a lista está vazia
+                System.out.println("Produtos carregados: " + (produtos != null ? produtos.size() : "null"));
+                
+                request.getRequestDispatcher("/WEB-INF/views/produtos/lista.jsp")
                        .forward(request, response);
             }
         } catch (SQLException e) {
@@ -55,13 +59,25 @@ public class ProdutoServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         
         try {
-            // Aqui vai ser pra ter os dados de cada produto, pelo o que eu entendi é meio que um cadastro
+            // Aqui vai ser pra ter os dados de cada produto
         	
             String nome = request.getParameter("nome");
             String descricao = request.getParameter("descricao");
-            Double pesoKg = new Double(request.getParameter("pesoKg"));
-            Double volumeM3 = new Double(request.getParameter("volumeM3"));
-            Double valorUnitario = new Double(request.getParameter("valorUnitario"));
+            String pesoKgStr = request.getParameter("pesoKg");
+            String volumeM3Str = request.getParameter("volumeM3");
+            String valorUnitarioStr = request.getParameter("valorUnitario");
+            
+            // Validação dos dados
+            if (nome == null || nome.trim().isEmpty()) {
+                request.setAttribute("erro", "Nome do produto é obrigatório!");
+                request.getRequestDispatcher("/WEB-INF/views/produtos/form.jsp")
+                       .forward(request, response);
+                return;
+            }
+            
+            Double pesoKg = Double.parseDouble(pesoKgStr);
+            Double volumeM3 = Double.parseDouble(volumeM3Str);
+            Double valorUnitario = Double.parseDouble(valorUnitarioStr);
             
             // Cria e salva o produto
             
@@ -74,10 +90,17 @@ public class ProdutoServlet extends HttpServlet {
             
             produtoDAO.salvar(produto);
             
+            System.out.println("Produto salvo com sucesso: " + nome);
+            
             // Esse aqui é o que vai redirecionar para a listagem dos produtos salvos
             
             response.sendRedirect(request.getContextPath() + "/produtos?sucesso=true");
             
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            request.setAttribute("erro", "Erro ao processar dados numéricos: " + e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/views/erro.jsp")
+                   .forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("erro", "Erro ao cadastrar produto: " + e.getMessage());

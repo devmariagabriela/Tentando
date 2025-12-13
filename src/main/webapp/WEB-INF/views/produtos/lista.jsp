@@ -21,9 +21,8 @@
         <ul>
             <li><a href="${pageContext.request.contextPath}/">Dashboard</a></li>
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
-            <li><a href="${pageContext.request.contextPath}/entregas/nova">Nova Entrega</a></li>
             <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li> 
-            <li><a href="${pageContext.request.contextPath}/produtos?acao=novo">Produtos</a></li>  
+            <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>  
                      
         </ul>
     </nav>
@@ -50,7 +49,7 @@
                                 <th>ID</th>
                                 <th>Nome</th>
                                 <th>Descrição</th>
-                                <th>Peso (kg)</th>
+                                <th>Peso (kg )</th>
                                 <th>Volume (m³)</th>
                                 <th>Valor Unitário</th>
                             </tr>

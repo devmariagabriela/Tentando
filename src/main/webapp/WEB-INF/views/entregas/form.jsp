@@ -20,9 +20,8 @@
         <ul>
             <li><a href="${pageContext.request.contextPath}/">Dashboard</a></li>
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
-            <li><a href="${pageContext.request.contextPath}/entregas/nova">Nova Entrega</a></li>
             <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li>
-            <li><a href="${pageContext.request.contextPath}/produtos?acao=novo">Produtos</a></li>
+            <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>
         </ul>
     </nav>
 
@@ -37,7 +36,7 @@
                         
                         <div class="form-group">
                             <label for="remetenteId">Remetente *</label>
-                            <select id="remetenteId" name="remetenteId" required onchange="updateEnderecoOrigem()">
+                            <select id="remetenteId" name="remetenteId" required onchange="updateEnderecoOrigem( )">
                                 <option value="">Selecione...</option>
                                 <c:forEach var="cliente" items="${clientes}">
                                     <option value="${cliente.id}" data-endereco="${cliente.enderecoId}">

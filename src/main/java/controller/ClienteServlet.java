@@ -15,7 +15,7 @@ import dao.EnderecoDAO;
 import model.Cliente;
 import model.Endereco;
 
-@WebServlet("/clientes")
+@WebServlet("/clientes" )
 public class ClienteServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
@@ -35,6 +35,24 @@ public class ClienteServlet extends HttpServlet {
             	
                 request.getRequestDispatcher("/WEB-INF/views/clientes/form.jsp")
                        .forward(request, response);
+            } else if ("editar".equals(acao)) {
+            	
+            	// Lógica para buscar o cliente a ser editado e carregar o formulário
+            	
+            	String idParam = request.getParameter("id");
+            	if (idParam != null && !idParam.isEmpty()) {
+            		Integer id = Integer.parseInt(idParam);
+            		Cliente cliente = clienteDAO.buscarPorId(id);
+            		if (cliente != null) {
+            			request.setAttribute("cliente", cliente);
+            			request.getRequestDispatcher("/WEB-INF/views/clientes/form.jsp")
+            			       .forward(request, response);
+            			return;
+            		}
+            	}
+            	// Se o ID for inválido ou o cliente não for encontrado, redireciona para a lista
+            	response.sendRedirect(request.getContextPath() + "/clientes?erro=cliente_nao_encontrado");
+            	return;
             } else {
             	
                 // Agora eu resolvi por uma list, pq  quando tiver os clientes, eu quero uma lista com todos eles:
@@ -80,8 +98,6 @@ public class ClienteServlet extends HttpServlet {
             endereco.setCidade(cidade);
             endereco.setEstado(estado);
             
-            Integer enderecoId = enderecoDAO.salvar(endereco); 
-            
             // Aqui eu usei o get, pra que o sistema consiga capturar os dados da pessoa cliente:
             
             String tipoDocumento = request.getParameter("tipoDocumento");
@@ -90,21 +106,55 @@ public class ClienteServlet extends HttpServlet {
             String telefone = request.getParameter("telefone");
             String email = request.getParameter("email");
             
-            // E é ai que uso o set dnv, pra definir e salvar esses dados:
+            // Verifica se é uma edição (UPDATE) ou um novo cadastro (INSERT)
+            String clienteIdParam = request.getParameter("clienteId");
+            String enderecoIdParam = request.getParameter("enderecoId");
             
             Cliente cliente = new Cliente();
-            cliente.setTipoDocumento(tipoDocumento);
-            cliente.setDocumento(documento);
-            cliente.setNome(nome);
-            cliente.setTelefone(telefone);
-            cliente.setEmail(email);
-            cliente.setEnderecoId(enderecoId);
             
-            clienteDAO.salvar(cliente);
-            
-            // Quando ja tiver esses dois dados no sistema, tem um comando que vai fazer com que seja direcionado para a listagem:
-            
-            response.sendRedirect(request.getContextPath() + "/clientes?sucesso=true");
+            if (clienteIdParam != null && !clienteIdParam.isEmpty() && enderecoIdParam != null && !enderecoIdParam.isEmpty()) {
+            	// É uma edição (UPDATE)
+            	Integer clienteId = Integer.parseInt(clienteIdParam);
+            	Integer enderecoIdExistente = Integer.parseInt(enderecoIdParam);
+            	
+            	cliente.setId(clienteId);
+            	cliente.setEnderecoId(enderecoIdExistente); // Mantém o ID do endereço existente
+            	
+            	// Atualiza o endereço
+            	endereco.setId(enderecoIdExistente);
+            	enderecoDAO.atualizar(endereco);
+            	
+            	// Atualiza o cliente
+            	cliente.setTipoDocumento(tipoDocumento);
+            	cliente.setDocumento(documento);
+            	cliente.setNome(nome);
+            	cliente.setTelefone(telefone);
+            	cliente.setEmail(email);
+            	
+            	clienteDAO.atualizar(cliente);
+            	
+            	// Quando ja tiver esses dois dados no sistema, tem um comando que vai fazer com que seja direcionado para a listagem:
+            	response.sendRedirect(request.getContextPath() + "/clientes?sucesso=editado");
+            	
+            } else {
+            	// É um novo cadastro (INSERT)
+            	
+            	// E é ai que uso o set dnv, pra definir e salvar esses dados:
+            	
+            	Integer enderecoIdNovo = enderecoDAO.salvar(endereco); 
+            	
+            	cliente.setTipoDocumento(tipoDocumento);
+            	cliente.setDocumento(documento);
+            	cliente.setNome(nome);
+            	cliente.setTelefone(telefone);
+            	cliente.setEmail(email);
+            	cliente.setEnderecoId(enderecoIdNovo);
+            	
+            	clienteDAO.salvar(cliente);
+            	
+            	// Quando ja tiver esses dois dados no sistema, tem um comando que vai fazer com que seja direcionado para a listagem:
+            	response.sendRedirect(request.getContextPath() + "/clientes?sucesso=true");
+            }
             
         } catch (SQLException e) {
             e.printStackTrace();

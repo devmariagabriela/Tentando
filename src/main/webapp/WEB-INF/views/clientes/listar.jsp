@@ -20,9 +20,8 @@
         <ul>
             <li><a href="${pageContext.request.contextPath}/">Dashboard</a></li>
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
-            <li><a href="${pageContext.request.contextPath}/entregas/nova">Nova Entrega</a></li>
             <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li>
-            <li><a href="${pageContext.request.contextPath}/produtos?acao=novo">Produtos</a></li>
+            <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>
         </ul>
     </nav>
 
@@ -33,6 +32,12 @@
             <c:if test="${param.sucesso == 'true'}">
                 <div class="alert alert-success">
                     Cliente cadastrado com sucesso!
+                </div>
+            </c:if>
+            
+            <c:if test="${param.sucesso == 'editado'}">
+                <div class="alert alert-success">
+                    Cliente editado com sucesso!
                 </div>
             </c:if>
 
@@ -78,8 +83,10 @@
                                     <td>${cliente.email}</td>
                                     <td>${cliente.endereco.cidade}/${cliente.endereco.estado}</td>
                                     <td>
+                                        <a href="${pageContext.request.contextPath}/clientes?acao=editar&id=${cliente.id}" 
+                                           class="btn btn-secondary">Editar</a>
                                         <a href="${pageContext.request.contextPath}/clientes/remover?id=${cliente.id}" 
-                                           onclick="return confirmarRemocao('${cliente.nome}' )" 
+                                           onclick="return confirmarRemocao('${cliente.nome}'  )" 
                                            class="btn btn-danger">Excluir</a>
                                     </td>
                                 </tr>
