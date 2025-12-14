@@ -24,7 +24,7 @@ public class EntregaDAO {
     public Integer salvar(Entrega entrega) throws SQLException {
         // CORRIGIDO: Usando codigo_rastreio e removendo colunas de endereço
         String sql = "INSERT INTO entrega (codigo_rastreio, remetente_id, destinatario_id, " +
-                    "data_coleta, data_entrega_prevista, status, valor_frete, observacoes) " +
+                    "data_coleta, data_prevista_entrega, status, valor_frete, observacoes) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = ConnectionFactory.getConnection();
@@ -128,7 +128,7 @@ public class EntregaDAO {
     public void atualizar(Entrega entrega) throws SQLException {
         // CORRIGIDO: Usando codigo_rastreio e removendo colunas de endereço
         String sql = "UPDATE entrega SET codigo_rastreio = ?, remetente_id = ?, destinatario_id = ?, " +
-                     "data_coleta = ?, data_entrega_prevista = ?, data_entrega_realizada = ?, status = ?, " +
+                     "data_coleta = ?, data_prevista_entrega = ?, data_entrega_realizada = ?, status = ?, " +
                      "valor_frete = ?, observacoes = ? WHERE id = ?";
         
         try (Connection conn = ConnectionFactory.getConnection();
@@ -201,7 +201,7 @@ public class EntregaDAO {
             entrega.setDataColeta(dataColeta.toLocalDate());
         }
         
-        Date dataEntregaPrevista = rs.getDate("data_entrega_prevista");
+        Date dataEntregaPrevista = rs.getDate("data_prevista_entrega");
         if (dataEntregaPrevista != null) {
             entrega.setDataEntregaPrevista(dataEntregaPrevista.toLocalDate());
         }
