@@ -99,7 +99,17 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <c:if test="${entrega.status != 'REALIZADA'}">
+                                        <c:if test="${entrega.status != 'REALIZADA' and entrega.status != 'CANCELADA'}">
+                                            
+                                            <!-- Botão de Cancelar com Confirmação -->
+                                            <form method="post" action="${pageContext.request.contextPath}/entregas/atualizar-status" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja CANCELAR a entrega ${entrega.codigo}? Esta ação não pode ser desfeita.' );">
+                                                <input type="hidden" name="entregaId" value="${entrega.id}">
+                                                <button type="submit" name="status" value="CANCELADA" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px; margin-right: 5px;">
+                                                    Cancelar
+                                                </button>
+                                            </form>
+                                            
+                                            <!-- Botões de Progresso (Iniciar/Finalizar) -->
                                             <form method="post" action="${pageContext.request.contextPath}/entregas/atualizar-status" style="display: inline;">
                                                 <input type="hidden" name="entregaId" value="${entrega.id}">
                                                 <c:if test="${entrega.status == 'PENDENTE'}">

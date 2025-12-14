@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.EntregaDAO;
 import model.Entrega;
 
-@WebServlet("/entregas/atualizar-status")
+@WebServlet("/entregas/atualizar-status" )
 public class AtualizarStatusServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
@@ -40,6 +40,9 @@ public class AtualizarStatusServlet extends HttpServlet {
                 
                 if ("REALIZADA".equals(novoStatus)) {
                     entrega.setDataEntregaRealizada(LocalDate.now());
+                } else if ("CANCELADA".equals(novoStatus)) {
+                    // Ao cancelar, remove a data de entrega realizada (se houver)
+                    entrega.setDataEntregaRealizada(null);
                 }
                 
                 // E é ai que entra a atualização:
@@ -66,7 +69,7 @@ public class AtualizarStatusServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/erro.jsp")
                    .forward(request, response);
         } catch (SQLException e) {
-						e.printStackTrace();
+			e.printStackTrace();
 		}
     }
 }
