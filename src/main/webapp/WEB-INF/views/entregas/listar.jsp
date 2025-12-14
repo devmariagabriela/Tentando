@@ -113,7 +113,7 @@
                                             <form method="post" action="${pageContext.request.contextPath}/entregas/atualizar-status" style="display: inline;">
                                                 <input type="hidden" name="entregaId" value="${entrega.id}">
                                                 <c:if test="${entrega.status == 'PENDENTE'}">
-                                                    <button type="submit" name="status" value="EM_TRANSITO" class="btn btn-primary" style="padding: 5px 10px; font-size: 12px;">
+                                                    <button type="submit" name="status" value="EM_TRANSITO" class="btn btn-warning" style="padding: 5px 10px; font-size: 12px;">
                                                         Iniciar Transporte
                                                     </button>
                                                 </c:if>

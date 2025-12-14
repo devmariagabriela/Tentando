@@ -14,7 +14,7 @@ import dao.ProdutoDAO;
 import db.ConnectionFactory;
 import model.Produto;
 
-@WebServlet("/produtos" )
+@WebServlet("/produtos"  )
 public class ProdutoServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
@@ -29,10 +29,16 @@ public class ProdutoServlet extends HttpServlet {
         try {
         	System.out.println("DEBUG: Testando conexão com o banco:" + ConnectionFactory.testConnection());
         	
-            if ("novo".equals(acao)) {
+            if ("novo".equals(acao) || "editar".equals(acao)) {
+            	
+                // Lógica para novo ou edição
+                if ("editar".equals(acao)) {
+                    Integer id = Integer.parseInt(request.getParameter("id"));
+                    Produto produto = produtoDAO.buscarPorId(id);
+                    request.setAttribute("produto", produto);
+                }
             	
                 // Aqui vai mostrar o formulário de novo produto
-            	
                 request.getRequestDispatcher("/WEB-INF/views/produtos/form.jsp")
                        .forward(request, response);
             } else {
@@ -82,16 +88,41 @@ public class ProdutoServlet extends HttpServlet {
             Double volumeM3 = Double.parseDouble(volumeM3Str);
             Double valorUnitario = Double.parseDouble(valorUnitarioStr);
             
-            // Cria e salva o produto
+            // Lógica para salvar ou atualizar o produto
             
-            Produto produto = new Produto();
-            produto.setNome(nome);
-            produto.setDescricao(descricao);
-            produto.setPesoKg(pesoKg);
-            produto.setVolumeM3(volumeM3);
-            produto.setValorUnitario(valorUnitario);
+            String idStr = request.getParameter("id");
+            Produto produto;
             
-            produtoDAO.salvar(produto);
+            if (idStr != null && !idStr.isEmpty()) {
+                // Edição: busca o produto existente
+                Integer id = Integer.parseInt(idStr);
+                produto = produtoDAO.buscarPorId(id);
+                
+                if (produto == null) {
+                    throw new Exception("Produto não encontrado para edição.");
+                }
+                
+                produto.setNome(nome);
+                produto.setDescricao(descricao);
+                produto.setPesoKg(pesoKg);
+                produto.setVolumeM3(volumeM3);
+                produto.setValorUnitario(valorUnitario);
+                
+                produtoDAO.atualizar(produto);
+                System.out.println("Produto atualizado com sucesso: " + nome);
+                
+            } else {
+                // Novo: cria um novo produto
+                produto = new Produto();
+                produto.setNome(nome);
+                produto.setDescricao(descricao);
+                produto.setPesoKg(pesoKg);
+                produto.setVolumeM3(volumeM3);
+                produto.setValorUnitario(valorUnitario);
+                
+                produtoDAO.salvar(produto);
+                System.out.println("Produto salvo com sucesso: " + nome);
+            }
             
             System.out.println("Produto salvo com sucesso: " + nome);
             

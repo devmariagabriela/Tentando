@@ -1,10 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Produto - Tartaruga Cometa</title>
+    <title><c:choose><c:when test="${produto != null}">Editar Produto</c:when><c:otherwise>Novo Produto</c:otherwise></c:choose> - Tartaruga Cometa</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
@@ -27,33 +28,34 @@
 
     <div class="container">
         <div class="card">
-            <h2>Cadastrar Novo Produto</h2>
+            <h2><c:choose><c:when test="${produto != null}">Editar Produto: ${produto.nome}</c:when><c:otherwise>Cadastrar Novo Produto</c:otherwise></c:choose></h2>
 
             <form method="post" action="${pageContext.request.contextPath}/produtos">
+                <input type="hidden" name="id" value="${produto.id}">
                 <div class="form-group">
                     <label for="nome">Nome do Produto *</label>
-                    <input type="text" id="nome" name="nome" required>
+                    <input type="text" id="nome" name="nome" value="${produto.nome}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="descricao">Descrição</label>
-                    <textarea id="descricao" name="descricao" rows="3"></textarea>
+                    <textarea id="descricao" name="descricao" rows="3">${produto.descricao}</textarea>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
                     <div class="form-group">
-                        <label for="pesoKg">Peso (kg) *</label>
-                        <input type="number" id="pesoKg" name="pesoKg" step="0.01" min="0.01" required>
+                        <label for="pesoKg">Peso (kg ) *</label>
+                        <input type="number" id="pesoKg" name="pesoKg" step="0.01" min="0.01" value="${produto.pesoKg}" required>
                     </div>
 
                     <div class="form-group">
                         <label for="volumeM3">Volume (m³) *</label>
-                        <input type="number" id="volumeM3" name="volumeM3" step="0.001" min="0.001" required>
+                        <input type="number" id="volumeM3" name="volumeM3" step="0.001" min="0.001" value="${produto.volumeM3}" required>
                     </div>
 
                     <div class="form-group">
                         <label for="valorUnitario">Valor Unitário (R$) *</label>
-                        <input type="number" id="valorUnitario" name="valorUnitario" step="0.01" min="0" required>
+                        <input type="number" id="valorUnitario" name="valorUnitario" step="0.01" min="0" value="${produto.valorUnitario}" required>
                     </div>
                 </div>
 
@@ -61,7 +63,7 @@
 
                 <div style="text-align: right;">
                     <a href="${pageContext.request.contextPath}/produtos" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-primary">Cadastrar Produto</button>
+                    <button type="submit" class="btn btn-primary"><c:choose><c:when test="${produto != null}">Salvar Alterações</c:when><c:otherwise>Cadastrar Produto</c:otherwise></c:choose></button>
                 </div>
             </form>
         </div>

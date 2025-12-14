@@ -24,8 +24,8 @@ public class EntregaDAO {
     public Integer salvar(Entrega entrega) throws SQLException {
         // CORRIGIDO: Usando codigo_rastreio e removendo colunas de endereço
         String sql = "INSERT INTO entrega (codigo_rastreio, remetente_id, destinatario_id, " +
-                    "data_coleta, data_prevista_entrega, status, valor_frete, observacoes) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    "endereco_origem_id, endereco_destino_id, data_coleta, data_prevista_entrega, status, valor_frete, observacoes) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -33,13 +33,38 @@ public class EntregaDAO {
             stmt.setString(1, entrega.getCodigo());
             stmt.setInt(2, entrega.getRemetenteId());
             stmt.setInt(3, entrega.getDestinatarioId());
-            // stmt.setInt(4, entrega.getEnderecoOrigemId()); // REMOVIDO
-            // stmt.setInt(5, entrega.getEnderecoDestinoId()); // REMOVIDO
-            stmt.setDate(4, Date.valueOf(entrega.getDataColeta()));
-            stmt.setDate(5, Date.valueOf(entrega.getDataEntregaPrevista()));
-            stmt.setString(6, entrega.getStatus());
-            stmt.setDouble(7, entrega.getValorFrete());
-            stmt.setString(8, entrega.getObservacoes());
+            
+            // Tratamento para enderecoOrigemId (Índice 4)
+            if (entrega.getEnderecoOrigemId() != null && entrega.getEnderecoOrigemId() > 0) {
+                stmt.setInt(4, entrega.getEnderecoOrigemId());
+            } else {
+                stmt.setNull(4, Types.INTEGER);
+            }
+            
+            // Tratamento para enderecoDestinoId (Índice 5)
+            if (entrega.getEnderecoDestinoId() != null && entrega.getEnderecoDestinoId() > 0) {
+                stmt.setInt(5, entrega.getEnderecoDestinoId());
+            } else {
+                stmt.setNull(5, Types.INTEGER);
+            }
+            
+            // Tratamento para dataColeta (Índice 6)
+            if (entrega.getDataColeta() != null) {
+                stmt.setDate(6, Date.valueOf(entrega.getDataColeta()));
+            } else {
+                stmt.setNull(6, Types.DATE);
+            }
+            
+            // Tratamento para dataEntregaPrevista (Índice 7)
+            if (entrega.getDataEntregaPrevista() != null) {
+                stmt.setDate(7, Date.valueOf(entrega.getDataEntregaPrevista()));
+            } else {
+                stmt.setNull(7, Types.DATE);
+            }
+            
+            stmt.setString(8, entrega.getStatus());
+            stmt.setDouble(9, entrega.getValorFrete());
+            stmt.setString(10, entrega.getObservacoes());
             
             stmt.executeUpdate();
             
@@ -128,7 +153,7 @@ public class EntregaDAO {
     public void atualizar(Entrega entrega) throws SQLException {
         // CORRIGIDO: Usando codigo_rastreio e removendo colunas de endereço
         String sql = "UPDATE entrega SET codigo_rastreio = ?, remetente_id = ?, destinatario_id = ?, " +
-                     "data_coleta = ?, data_prevista_entrega = ?, data_entrega_realizada = ?, status = ?, " +
+                     "endereco_origem_id = ?, endereco_destino_id = ?, data_coleta = ?, data_prevista_entrega = ?, data_entrega_realizada = ?, status = ?, " +
                      "valor_frete = ?, observacoes = ? WHERE id = ?";
         
         try (Connection conn = ConnectionFactory.getConnection();
@@ -137,21 +162,45 @@ public class EntregaDAO {
             stmt.setString(1, entrega.getCodigo());
             stmt.setInt(2, entrega.getRemetenteId());
             stmt.setInt(3, entrega.getDestinatarioId());
-            // stmt.setInt(4, entrega.getEnderecoOrigemId()); // REMOVIDO
-            // stmt.setInt(5, entrega.getEnderecoDestinoId()); // REMOVIDO
-            stmt.setDate(4, Date.valueOf(entrega.getDataColeta()));
-            stmt.setDate(5, Date.valueOf(entrega.getDataEntregaPrevista()));
             
-            if (entrega.getDataEntregaRealizada() != null) {
-                stmt.setDate(6, Date.valueOf(entrega.getDataEntregaRealizada()));
+            // Tratamento para enderecoOrigemId (Índice 4)
+            if (entrega.getEnderecoOrigemId() != null && entrega.getEnderecoOrigemId() > 0) {
+                stmt.setInt(4, entrega.getEnderecoOrigemId());
+            } else {
+                stmt.setNull(4, Types.INTEGER);
+            }
+            
+            // Tratamento para enderecoDestinoId (Índice 5)
+            if (entrega.getEnderecoDestinoId() != null && entrega.getEnderecoDestinoId() > 0) {
+                stmt.setInt(5, entrega.getEnderecoDestinoId());
+            } else {
+                stmt.setNull(5, Types.INTEGER);
+            }
+            
+            // Tratamento para dataColeta (Índice 6)
+            if (entrega.getDataColeta() != null) {
+                stmt.setDate(6, Date.valueOf(entrega.getDataColeta()));
             } else {
                 stmt.setNull(6, Types.DATE);
             }
             
-            stmt.setString(7, entrega.getStatus());
-            stmt.setDouble(8, entrega.getValorFrete());
-            stmt.setString(9, entrega.getObservacoes());
-            stmt.setInt(10, entrega.getId());
+            // Tratamento para dataEntregaPrevista (Índice 7)
+            if (entrega.getDataEntregaPrevista() != null) {
+                stmt.setDate(7, Date.valueOf(entrega.getDataEntregaPrevista()));
+            } else {
+                stmt.setNull(7, Types.DATE);
+            }
+            
+            if (entrega.getDataEntregaRealizada() != null) {
+                stmt.setDate(8, Date.valueOf(entrega.getDataEntregaRealizada()));
+            } else {
+                stmt.setNull(8, Types.DATE);
+            }
+            
+            stmt.setString(9, entrega.getStatus());
+            stmt.setDouble(10, entrega.getValorFrete());
+            stmt.setString(11, entrega.getObservacoes());
+            stmt.setInt(12, entrega.getId());
             
             stmt.executeUpdate();
         }
@@ -190,11 +239,8 @@ public class EntregaDAO {
         entrega.setRemetenteId(rs.getInt("remetente_id"));
         entrega.setDestinatarioId(rs.getInt("destinatario_id"));
         
-        // Tenta ler as colunas de endereço (ignora se não existirem)
-        try {
-            entrega.setEnderecoOrigemId(rs.getInt("endereco_origem_id"));
-            entrega.setEnderecoDestinoId(rs.getInt("endereco_destino_id"));
-        } catch (SQLException e) { /* Ignora */ }
+        entrega.setEnderecoOrigemId(rs.getInt("endereco_origem_id"));
+        entrega.setEnderecoDestinoId(rs.getInt("endereco_destino_id"));
         
         Date dataColeta = rs.getDate("data_coleta");
         if (dataColeta != null) {
@@ -234,11 +280,11 @@ public class EntregaDAO {
         try {
             entrega.setRemetente(clienteDAO.buscarPorId(entrega.getRemetenteId()));
             entrega.setDestinatario(clienteDAO.buscarPorId(entrega.getDestinatarioId()));
-            // Tenta carregar endereços (ignora se os IDs forem 0 ou se der erro)
-            if (entrega.getEnderecoOrigemId() != null && entrega.getEnderecoOrigemId() > 0) {
+            // Carrega endereços se os IDs forem válidos
+            if (entrega.getEnderecoOrigemId() != 0) {
                 entrega.setEnderecoOrigem(enderecoDAO.buscarPorId(entrega.getEnderecoOrigemId()));
             }
-            if (entrega.getEnderecoDestinoId() != null && entrega.getEnderecoDestinoId() > 0) {
+            if (entrega.getEnderecoDestinoId() != 0) {
                 entrega.setEnderecoDestino(enderecoDAO.buscarPorId(entrega.getEnderecoDestinoId()));
             }
             entrega.setItens(itemEntregaDAO.listarPorEntrega(entrega.getId()));

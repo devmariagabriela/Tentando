@@ -83,11 +83,22 @@
                                     <td>${cliente.email}</td>
                                     <td>${cliente.endereco.cidade}/${cliente.endereco.estado}</td>
                                     <td>
-                                        <a href="${pageContext.request.contextPath}/clientes?acao=editar&id=${cliente.id}" 
-                                           class="btn btn-secondary">Editar</a>
-                                        <a href="${pageContext.request.contextPath}/clientes/remover?id=${cliente.id}" 
-                                           onclick="return confirmarRemocao('${cliente.nome}'  )" 
-                                           class="btn btn-danger">Excluir</a>
+                                        <!-- Botão Editar (agora usando <form> e <button> ) -->
+                                        <form method="get" action="${pageContext.request.contextPath}/clientes" style="display: inline;">
+                                            <input type="hidden" name="acao" value="editar">
+                                            <input type="hidden" name="id" value="${cliente.id}">
+                                            <button type="submit" class="btn btn-secondary" style="padding: 5px 10px; font-size: 12px; margin-right: 5px;">
+                                                Editar
+                                            </button>
+                                        </form>
+                                        
+                                        <!-- Botão Excluir (agora usando <form> e <button>) -->
+                                        <form method="post" action="${pageContext.request.contextPath}/clientes/remover" style="display: inline;" onsubmit="return confirmarRemocao('${cliente.nome}');">
+                                            <input type="hidden" name="id" value="${cliente.id}">
+                                            <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">
+                                                Excluir
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             </c:forEach>
