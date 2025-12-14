@@ -36,13 +36,18 @@ CREATE TABLE entrega(
     id SERIAL PRIMARY KEY,
     codigo_rastreio VARCHAR(20) UNIQUE NOT NULL,
     data_criacao DATE DEFAULT CURRENT_DATE,
+    data_coleta DATE, -- ESTA LINHA DEVE ESTAR AQUI
     data_prevista_entrega DATE NOT NULL,
+    data_entrega_realizada DATE,
     status VARCHAR(20) NOT NULL DEFAULT 'PENDENTE',
     valor_frete DECIMAL(10,2) NOT NULL,
     observacoes TEXT,
     remetente_id INTEGER REFERENCES cliente(id) NOT NULL,
-    destinatario_id INTEGER REFERENCES cliente(id) NOT NULL
+    destinatario_id INTEGER REFERENCES cliente(id) NOT NULL,
+    endereco_origem_id INTEGER REFERENCES endereco(id),
+    endereco_destino_id INTEGER REFERENCES endereco(id)
 );
+
 
 CREATE TABLE item_entrega(
     id SERIAL PRIMARY KEY,
