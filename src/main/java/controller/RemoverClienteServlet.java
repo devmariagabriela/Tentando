@@ -18,7 +18,7 @@ public class RemoverClienteServlet extends HttpServlet {
     private ClienteDAO clienteDAO = new ClienteDAO(); // Chamando o DAO diretamente
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         
         String idParam = request.getParameter("id");
