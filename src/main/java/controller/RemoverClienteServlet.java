@@ -34,14 +34,14 @@ public class RemoverClienteServlet extends HttpServlet {
             // Lógica de remoção: Servlet chama diretamente o DAO
             clienteDAO.deletar(id);
             
-            // Redireciona para a lista de clientes com mensagem de sucesso
+            // Redireciona para a lista de clientes com mensagem de sucessooooooooooo
             response.sendRedirect(request.getContextPath() + "/clientes?sucesso=removido");
             
         } catch (NumberFormatException e) {
             response.sendRedirect(request.getContextPath() + "/clientes?erro=id_invalido");
         } catch (SQLException e) {
             e.printStackTrace();
-            // Redireciona para a lista de clientes com mensagem de erro
+            // Redireciona para a lista de clientes com mensagem de errooooooooooo
 
             response.sendRedirect(request.getContextPath() + "/clientes?erro=falha_remocao");
         } catch (Exception e) {

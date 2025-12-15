@@ -137,7 +137,7 @@ public class ClienteServlet extends HttpServlet {
             	response.sendRedirect(request.getContextPath() + "/clientes?sucesso=editado");
             	
             } else {
-            	// É um novo cadastro (INSERT)
+            	
             	
             	// E é ai que uso o set dnv, pra definir e salvar esses dados:
             	
