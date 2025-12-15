@@ -29,6 +29,12 @@
         <div class="card">
             <h2>Cadastrar Nova Entrega</h2>
 
+            <c:if test="${not empty erro}">
+                <div class="alert alert-danger">
+                    ${erro}
+                </div>
+            </c:if>
+
             <form method="post" action="${pageContext.request.contextPath}/entregas/nova">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div>

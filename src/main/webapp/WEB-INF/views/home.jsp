@@ -109,7 +109,7 @@
     </div>
 
     <footer>
-        <p> Tartaruga cometa - Sistemas de entrega</p>
+        <p> &copy; Tartaruga cometa - Sistemas de entrega</p>
            <p> </p>
     </footer>
 </body>

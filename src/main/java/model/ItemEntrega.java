@@ -98,8 +98,9 @@ public class ItemEntrega {
                 '}';
     }
 
-	public List listarPorEntrega(Integer id2) {
+	public List<?> listarPorEntrega(Integer id2) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 }
+

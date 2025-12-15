@@ -64,7 +64,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nome</th>
-                                <th>Tipo</th>
+                                 <th>Tipo</th>
                                 <th>Documento</th>
                                 <th>Telefone</th>
                                 <th>Email</th>

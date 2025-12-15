@@ -20,7 +20,7 @@
         <ul>
             <li><a href="${pageContext.request.contextPath}/">Dashboard</a></li>
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
-            <li><a href="${pageContext.request.contextPath}/clientes/remover">Clientes</a></li>
+            <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li>
             <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>
         </ul>
     </nav>

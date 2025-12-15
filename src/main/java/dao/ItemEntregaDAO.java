@@ -18,8 +18,8 @@ public class ItemEntregaDAO {
     
    
     public Integer salvar(ItemEntrega item) throws SQLException {
-        String sql = "INSERT INTO item_entrega (entrega_id, produto_id, quantidade, valor_total) " +
-                     "VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO item_entrega (entrega_id, produto_id, quantidade) " +
+                     "VALUES (?, ?, ?)";
         
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -27,7 +27,6 @@ public class ItemEntregaDAO {
             stmt.setInt(1, item.getEntregaId());
             stmt.setInt(2, item.getProdutoId());
             stmt.setInt(3, item.getQuantidade());
-            stmt.setDouble(4, item.getValorTotal());
             
             stmt.executeUpdate();
             
@@ -82,8 +81,9 @@ public class ItemEntregaDAO {
     
   
     public void atualizar(ItemEntrega item) throws SQLException {
+        // CORREÇÃO: Removida a coluna valor_total, que não existe no schema.sql
         String sql = "UPDATE item_entrega SET entrega_id = ?, produto_id = ?, " +
-                     "quantidade = ?, valor_total = ? WHERE id = ?";
+                     "quantidade = ? WHERE id = ?";
         
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -91,8 +91,7 @@ public class ItemEntregaDAO {
             stmt.setInt(1, item.getEntregaId());
             stmt.setInt(2, item.getProdutoId());
             stmt.setInt(3, item.getQuantidade());
-            stmt.setDouble(4, item.getValorTotal());
-            stmt.setInt(5, item.getId());
+            stmt.setInt(4, item.getId());
             
             stmt.executeUpdate();
         }
@@ -129,7 +128,6 @@ public class ItemEntregaDAO {
         item.setEntregaId(rs.getInt("entrega_id"));
         item.setProdutoId(rs.getInt("produto_id"));
         item.setQuantidade(rs.getInt("quantidade"));
-        item.setValorTotal(rs.getDouble("valor_total"));
         
         Timestamp createdAt = rs.getTimestamp("data_criacao");
         if (createdAt != null) {
