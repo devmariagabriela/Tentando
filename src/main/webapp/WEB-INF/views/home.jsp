@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tartaruga Cometa - Sistema de Entregas</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style2.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
     <header>
@@ -26,24 +26,36 @@
     </nav>
 
     <div class="container">
-        <h2 style="color: #667eea; margin-bottom: 30px;">Dashboard</h2>
+        <h2>Dashboard</h2>
 
         <div class="dashboard-stats">
-            <div class="stat-card">
-                <p>Total de Entregas</p>
-                <h3>${totalEntregas}</h3>
+            <div class="stat-card total">
+                <div>
+                    <p>Total de Entregas</p>
+                    <h3>${totalEntregas}</h3>
+                </div>
+                <span class="stat-icon" style="color: var(--primary-color );"></span>
             </div>
-            <div class="stat-card">
-                <p>Pendentes</p>
-                <h3 style="color: #ed8936;">${totalPendentes}</h3>
+            <div class="stat-card pendente">
+                <div>
+                    <p>Pendentes</p>
+                    <h3 style="color: var(--warning-color);">${totalPendentes}</h3>
+                </div>
+                <span class="stat-icon" style="color: var(--warning-color);"></span>
             </div>
-            <div class="stat-card">
-                <p>Em Trânsito</p>
-                <h3 style="color: #3182ce;">${totalEmTransito}</h3>
+            <div class="stat-card em-transito">
+                <div>
+                    <p>Em Trânsito</p>
+                    <h3 style="color: var(--secondary-color);">${totalEmTransito}</h3>
+                </div>
+                <span class="stat-icon" style="color: var(--secondary-color);"></span>
             </div>
-            <div class="stat-card">
-                <p>Realizadas</p>
-                <h3 style="color: #48bb78;">${totalRealizadas}</h3>
+            <div class="stat-card realizada">
+                <div>
+                    <p>Realizadas</p>
+                    <h3 style="color: var(--success-color);">${totalRealizadas}</h3>
+                </div>
+                <span class="stat-icon" style="color: var(--success-color);"></span>
             </div>
         </div>
 

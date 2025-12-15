@@ -42,7 +42,7 @@ public class RemoverClienteServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
             // Redireciona para a lista de clientes com mensagem de erro
-            // O erro de SQLException pode indicar que o cliente tem chaves estrangeiras (ex: entregas)
+
             response.sendRedirect(request.getContextPath() + "/clientes?erro=falha_remocao");
         } catch (Exception e) {
             e.printStackTrace();

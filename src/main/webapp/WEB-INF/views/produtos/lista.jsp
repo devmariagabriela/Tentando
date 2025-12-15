@@ -80,7 +80,8 @@
                                             </button>
                                         </form>
                                         
-                                        <!-- Botão Excluir (inalterado) -->
+                                        <!-- Botão Excluir (inalterado)-->
+                                     
                                         <form method="post" action="${pageContext.request.contextPath}/produtos/remover" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir o produto ${produto.nome}?');">
                                             <input type="hidden" name="produtoId" value="${produto.id}">
                                             <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">
