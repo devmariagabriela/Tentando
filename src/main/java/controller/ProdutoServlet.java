@@ -39,15 +39,18 @@ public class ProdutoServlet extends HttpServlet {
                 }
             	
                 // Aqui vai mostrar o formulário de novo produto
+                
                 request.getRequestDispatcher("/WEB-INF/views/produtos/form.jsp")
                        .forward(request, response);
             } else {
+            	
                 // E aqui vai listar todos os meus produtos
             	
                 List<Produto> produtos = produtoDAO.listarTodos();
                 request.setAttribute("produtos", produtos);
                 
                 // Debug: Verificar se a lista está vazia
+                
                 System.out.println("Produtos carregados: " + (produtos != null ? produtos.size() : "null"));
                 
                 request.getRequestDispatcher("/WEB-INF/views/produtos/lista.jsp")
@@ -77,6 +80,7 @@ public class ProdutoServlet extends HttpServlet {
             String valorUnitarioStr = request.getParameter("valorUnitario");
             
             // Validação dos dados
+            
             if (nome == null || nome.trim().isEmpty()) {
                 request.setAttribute("erro", "Nome do produto é obrigatório!");
                 request.getRequestDispatcher("/WEB-INF/views/produtos/form.jsp")
@@ -94,7 +98,7 @@ public class ProdutoServlet extends HttpServlet {
             Produto produto;
             
             if (idStr != null && !idStr.isEmpty()) {
-                // Edição: busca o produto existente
+            	            	
                 Integer id = Integer.parseInt(idStr);
                 produto = produtoDAO.buscarPorId(id);
                 
@@ -112,6 +116,7 @@ public class ProdutoServlet extends HttpServlet {
                 System.out.println("Produto atualizado com sucesso: " + nome);
                 
             } else {
+            	
                 // Novo: cria um novo produto
                 produto = new Produto();
                 produto.setNome(nome);

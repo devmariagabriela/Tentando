@@ -41,7 +41,9 @@ public class AtualizarStatusServlet extends HttpServlet {
                 if ("REALIZADA".equals(novoStatus)) {
                     entrega.setDataEntregaRealizada(LocalDate.now());
                 } else if ("CANCELADA".equals(novoStatus)) {
-                    // Ao cancelar, remove a data de entrega realizada (se houver)
+                	
+                    // Ao cancelar, remove a data de entrega realizada (se tiver)
+                	
                     entrega.setDataEntregaRealizada(null);
                 }
                 

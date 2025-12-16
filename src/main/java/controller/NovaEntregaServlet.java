@@ -74,7 +74,6 @@ public class NovaEntregaServlet extends HttpServlet {
         	
             String codigo = "ENT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
             
-            // --- INÍCIO DA CORREÇÃO DE TRATAMENTO DE PARÂMETROS ---
             
             // Função auxiliar para parsear Integer com segurança
             Integer remetenteId = parseInteger(request.getParameter("remetenteId"), "Remetente");
@@ -100,11 +99,11 @@ public class NovaEntregaServlet extends HttpServlet {
             }
             
             // Validação de Double
+            
             Double valorFrete = parseDouble(request.getParameter("valorFrete"), "Valor do Frete");
             
             String observacoes = request.getParameter("observacoes");
             
-            // --- FIM DA CORREÇÃO DE TRATAMENTO DE PARÂMETROS ---
             
             // Preciso criar objeto Entrega, pra isso eu uso o set:
             
@@ -121,6 +120,7 @@ public class NovaEntregaServlet extends HttpServlet {
             entrega.setStatus("PENDENTE");
             
             // Aqui eu salvo a minha entrega:
+            
             System.out.println("Salvando entrega no banco de dados...");
             entregaId = entregaDAO.salvar(entrega);
             entregaSalva = true;
@@ -159,18 +159,22 @@ public class NovaEntregaServlet extends HttpServlet {
                 }
             }
             
-            // Coloquei esse aqui pra confirmar o cadastro, se ele for bem sucedido:
+            // Coloquei esse aqui pra confirmar o cadastro, se ele for bem sucedido
+            
             System.out.println("Cadastro completo! Redirecionando para lista...");
             response.sendRedirect(request.getContextPath() + "/entregas/listar?sucesso=true");
             
         } catch (IllegalArgumentException | DateTimeParseException e) {
+        	
             // Captura erro de validação e de formato de data
+        	
             System.err.println("Erro de validação: " + e.getMessage());
             e.printStackTrace();
             
             request.setAttribute("erro", e.getMessage());
             
             // Carrega listas novamente para o formulário
+            
             try {
                 request.setAttribute("clientes", clienteDAO.listarTodos());
                 request.setAttribute("produtos", produtoDAO.listarTodos());
@@ -179,11 +183,14 @@ public class NovaEntregaServlet extends HttpServlet {
             }
             
             // Volta para o formulário
+            
             request.getRequestDispatcher("/WEB-INF/views/entregas/form.jsp")
                    .forward(request, response);
                    
         } catch (SQLException e) {
+        	
             // Erro de banco de dados
+        	
             System.err.println("Erro SQL: " + e.getMessage());
             e.printStackTrace();
             
@@ -198,7 +205,9 @@ public class NovaEntregaServlet extends HttpServlet {
                    .forward(request, response);
                    
         } catch (Exception e) {
+        	
             // Qualquer outro erro
+        	
             System.err.println("Erro inesperado: " + e.getMessage());
             e.printStackTrace();
             
@@ -215,7 +224,6 @@ public class NovaEntregaServlet extends HttpServlet {
         }
     }
 
-    // --- MÉTODOS AUXILIARES ADICIONADOS PARA ROBUSTEZ ---
     
     private Integer parseInteger(String value, String fieldName) {
         if (value == null || value.trim().isEmpty()) {
@@ -238,7 +246,6 @@ public class NovaEntregaServlet extends HttpServlet {
             throw new IllegalArgumentException("O valor para " + fieldName + " deve ser um número decimal válido.");
         }
     }
-    // --- FIM DOS MÉTODOS AUXILIARES ---
 
 	public EnderecoDAO getEnderecoDAO() {
 		return enderecoDAO;

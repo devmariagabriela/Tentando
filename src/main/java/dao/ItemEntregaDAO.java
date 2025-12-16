@@ -81,8 +81,8 @@ public class ItemEntregaDAO {
     
   
     public void atualizar(ItemEntrega item) throws SQLException {
-        // CORREÇÃO: Removida a coluna valor_total, que não existe no schema.sql
-        String sql = "UPDATE item_entrega SET entrega_id = ?, produto_id = ?, " +
+
+    	String sql = "UPDATE item_entrega SET entrega_id = ?, produto_id = ?, " +
                      "quantidade = ? WHERE id = ?";
         
         try (Connection conn = ConnectionFactory.getConnection();

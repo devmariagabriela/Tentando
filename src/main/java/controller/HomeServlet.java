@@ -32,7 +32,7 @@ public class HomeServlet extends HttpServlet {
             List<Entrega> entregasEmTransito = entregaDAO.listarPorStatus("EM_TRANSITO");
             List<Entrega> entregasRealizadas = entregaDAO.listarPorStatus("REALIZADA");
             
-            // E ai preciso que seja adicionado os atributos nas minhas requisiçoes, usei o set	:
+            // E ai preciso que seja adicionado os atributos nas minhas requisiçoes, usei o set
             
             request.setAttribute("totalEntregas", todasEntregas.size());
             request.setAttribute("totalPendentes", entregasPendentes.size());

@@ -51,6 +51,7 @@ public class ClienteServlet extends HttpServlet {
             		}
             	}
             	// Se o ID for inválido ou o cliente não for encontrado, redireciona para a lista
+            
             	response.sendRedirect(request.getContextPath() + "/clientes?erro=cliente_nao_encontrado");
             	return;
             } else {
@@ -113,6 +114,7 @@ public class ClienteServlet extends HttpServlet {
             Cliente cliente = new Cliente();
             
             if (clienteIdParam != null && !clienteIdParam.isEmpty() && enderecoIdParam != null && !enderecoIdParam.isEmpty()) {
+            
             	// É uma edição (UPDATE)
             	Integer clienteId = Integer.parseInt(clienteIdParam);
             	Integer enderecoIdExistente = Integer.parseInt(enderecoIdParam);
@@ -153,6 +155,7 @@ public class ClienteServlet extends HttpServlet {
             	clienteDAO.salvar(cliente);
             	
             	// Quando ja tiver esses dois dados no sistema, tem um comando que vai fazer com que seja direcionado para a listagem:
+            	
             	response.sendRedirect(request.getContextPath() + "/clientes?sucesso=true");
             }
             

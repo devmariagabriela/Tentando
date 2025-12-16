@@ -9,6 +9,7 @@
 
 
     <!-- Configuração de encoding UTF-8 -->
+    
     <filter>
         <filter-name>encodingFilter</filter-name>
         <filter-class>org.apache.catalina.filters.SetCharacterEncodingFilter</filter-class>
@@ -28,6 +29,7 @@
     </filter-mapping>
 
     <!-- Página de erro padrão -->
+    
     <error-page>
         <error-code>404</error-code>
         <location>/WEB-INF/views/erro.jsp</location>
@@ -39,6 +41,7 @@
     </error-page>
 
     <!-- Timeout de sessão (coloquei 30 minutos mesmo pq eu não sei ) -->
+    
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>

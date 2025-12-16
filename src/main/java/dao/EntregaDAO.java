@@ -22,8 +22,8 @@ public class EntregaDAO {
 
      
     public Integer salvar(Entrega entrega) throws SQLException {
-        // CORRIGIDO: Usando codigo_rastreio e removendo colunas de endereço
-        String sql = "INSERT INTO entrega (codigo_rastreio, remetente_id, destinatario_id, " +
+
+    	String sql = "INSERT INTO entrega (codigo_rastreio, remetente_id, destinatario_id, " +
                     "endereco_origem_id, endereco_destino_id, data_coleta, data_prevista_entrega, status, valor_frete, observacoes) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
@@ -34,28 +34,26 @@ public class EntregaDAO {
             stmt.setInt(2, entrega.getRemetenteId());
             stmt.setInt(3, entrega.getDestinatarioId());
             
-            // Tratamento para enderecoOrigemId (Índice 4)
+            // Tratamento para EnderecoOrigem 
+
             if (entrega.getEnderecoOrigemId() != null && entrega.getEnderecoOrigemId() > 0) {
                 stmt.setInt(4, entrega.getEnderecoOrigemId());
             } else {
                 stmt.setNull(4, Types.INTEGER);
             }
             
-            // Tratamento para enderecoDestinoId (Índice 5)
             if (entrega.getEnderecoDestinoId() != null && entrega.getEnderecoDestinoId() > 0) {
                 stmt.setInt(5, entrega.getEnderecoDestinoId());
             } else {
                 stmt.setNull(5, Types.INTEGER);
             }
             
-            // Tratamento para dataColeta (Índice 6)
             if (entrega.getDataColeta() != null) {
                 stmt.setDate(6, Date.valueOf(entrega.getDataColeta()));
             } else {
                 stmt.setNull(6, Types.DATE);
             }
             
-            // Tratamento para dataEntregaPrevista (Índice 7)
             if (entrega.getDataEntregaPrevista() != null) {
                 stmt.setDate(7, Date.valueOf(entrega.getDataEntregaPrevista()));
             } else {
@@ -151,8 +149,8 @@ public class EntregaDAO {
     
    
     public void atualizar(Entrega entrega) throws SQLException {
-        // CORRIGIDO: Usando codigo_rastreio e removendo colunas de endereço
-        String sql = "UPDATE entrega SET codigo_rastreio = ?, remetente_id = ?, destinatario_id = ?, " +
+
+    	String sql = "UPDATE entrega SET codigo_rastreio = ?, remetente_id = ?, destinatario_id = ?, " +
                      "endereco_origem_id = ?, endereco_destino_id = ?, data_coleta = ?, data_prevista_entrega = ?, data_entrega_realizada = ?, status = ?, " +
                      "valor_frete = ?, observacoes = ? WHERE id = ?";
         
@@ -163,28 +161,25 @@ public class EntregaDAO {
             stmt.setInt(2, entrega.getRemetenteId());
             stmt.setInt(3, entrega.getDestinatarioId());
             
-            // Tratamento para enderecoOrigemId (Índice 4)
+            // Tratamento para enderecoOrigemId
             if (entrega.getEnderecoOrigemId() != null && entrega.getEnderecoOrigemId() > 0) {
                 stmt.setInt(4, entrega.getEnderecoOrigemId());
             } else {
                 stmt.setNull(4, Types.INTEGER);
             }
             
-            // Tratamento para enderecoDestinoId (Índice 5)
             if (entrega.getEnderecoDestinoId() != null && entrega.getEnderecoDestinoId() > 0) {
                 stmt.setInt(5, entrega.getEnderecoDestinoId());
             } else {
                 stmt.setNull(5, Types.INTEGER);
             }
             
-            // Tratamento para dataColeta (Índice 6)
             if (entrega.getDataColeta() != null) {
                 stmt.setDate(6, Date.valueOf(entrega.getDataColeta()));
             } else {
                 stmt.setNull(6, Types.DATE);
             }
             
-            // Tratamento para dataEntregaPrevista (Índice 7)
             if (entrega.getDataEntregaPrevista() != null) {
                 stmt.setDate(7, Date.valueOf(entrega.getDataEntregaPrevista()));
             } else {
@@ -267,7 +262,7 @@ public class EntregaDAO {
             if (createdAt != null) {
                 entrega.setCreatedAt(createdAt.toLocalDateTime());
             }
-        } catch (SQLException e) { /* Ignora */ }
+        } catch (SQLException e) {}
         
         try {
             Timestamp updatedAt = rs.getTimestamp("updated_at");
@@ -280,6 +275,7 @@ public class EntregaDAO {
         try {
             entrega.setRemetente(clienteDAO.buscarPorId(entrega.getRemetenteId()));
             entrega.setDestinatario(clienteDAO.buscarPorId(entrega.getDestinatarioId()));
+            
             // Carrega endereços se os IDs forem válidos
             if (entrega.getEnderecoOrigemId() != 0) {
                 entrega.setEnderecoOrigem(enderecoDAO.buscarPorId(entrega.getEnderecoOrigemId()));

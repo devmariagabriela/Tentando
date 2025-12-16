@@ -16,7 +16,6 @@ public class ProdutoDAO {
     
     
     public Integer salvar(Produto produto) throws SQLException {
-        // SQL CORRIGIDO: REMOVIDA A COLUNA 'descricao' para evitar o erro no seu banco desatualizado
         String sql = "INSERT INTO produto (nome, peso_kg, volume_m3, valor_unitario) " +
                      "VALUES (?, ?, ?, ?)";
         
@@ -24,7 +23,6 @@ public class ProdutoDAO {
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             stmt.setString(1, produto.getNome());
-            // stmt.setString(2, produto.getDescricao()); // LINHA REMOVIDA
             stmt.setDouble(2, produto.getPesoKg());
             stmt.setDouble(3, produto.getVolumeM3());
             stmt.setDouble(4, produto.getValorUnitario());

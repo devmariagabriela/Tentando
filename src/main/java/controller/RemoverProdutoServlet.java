@@ -27,6 +27,7 @@ public class RemoverProdutoServlet extends HttpServlet {
             produtoDAO.deletar(produtoId);
             
             // Redireciona para a listagem com uma mensagem de sucesso
+            
             response.sendRedirect(request.getContextPath() + "/produtos?removido=true");
             
         } catch (NumberFormatException e) {
@@ -36,7 +37,9 @@ public class RemoverProdutoServlet extends HttpServlet {
                    .forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
+            
             // Trata o erro de chave estrangeira (se o produto estiver em uma entrega)
+            
             if (e.getMessage().contains("foreign key constraint")) {
                 request.setAttribute("erro", "Não é possível excluir o produto. Ele está associado a uma ou mais entregas.");
             } else {
