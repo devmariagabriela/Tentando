@@ -114,7 +114,7 @@ public class EntregaDAO {
     }
    
     public List<Entrega> listarTodas() throws SQLException {
-        String sql = "SELECT * FROM entrega ORDER BY data_criacao DESC";
+        String sql = "SELECT * FROM entrega ORDER BY data_criacao DESC"; // CORRIGIDO
         List<Entrega> entregas = new ArrayList<>();
         
         try (Connection conn = ConnectionFactory.getConnection();
@@ -130,7 +130,7 @@ public class EntregaDAO {
     
    
     public List<Entrega> listarPorStatus(String status) throws SQLException {
-        String sql = "SELECT * FROM entrega WHERE status = ? ORDER BY data_criacao DESC";
+        String sql = "SELECT * FROM entrega WHERE status = ? ORDER BY data_criacao DESC"; // CORRIGIDO
         List<Entrega> entregas = new ArrayList<>();
         
         try (Connection conn = ConnectionFactory.getConnection();
@@ -258,7 +258,7 @@ public class EntregaDAO {
         
         // Tenta ler data_criacao e updated_at (ignora se não existirem)
         try {
-            Timestamp createdAt = rs.getTimestamp("data_criacao");
+            Timestamp createdAt = rs.getTimestamp("data_criacao"); // CORRIGIDO
             if (createdAt != null) {
                 entrega.setCreatedAt(createdAt.toLocalDateTime());
             }
