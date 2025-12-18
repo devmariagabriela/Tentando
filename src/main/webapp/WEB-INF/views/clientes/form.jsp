@@ -52,19 +52,19 @@
                     <div class="form-group">
                         <label for="documento">CPF/CNPJ *</label>
                         <input type="text" id="documento" name="documento" required 
-                               placeholder="000.000.000-00 ou 00.000.000/0000-00" value="${cliente.documento}" maxlength="18">
+                               placeholder="000.000.000-00 ou 00.000.000/0000-00" value="${cliente.documento}" maxlength="18"oninput="this.value = this.value.replace(/\D/g, '')" /><br><br>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="nome">Nome/Razão Social *</label>
-                    <input type="text" id="nome" name="nome" required value="${cliente.nome}" maxlength="50">
+                    <input type="text" id="nome" name="nome" maxlength="50" oninput="this.value = this.value.replace(/[0-9]/g, '')"/><br><br>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
-                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" value="${cliente.telefone}" maxlength="15">
+                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" value="${cliente.telefone}" maxlength="15"oninput="this.value = this.value.replace(/\D/g, '')" /><br><br>
                     </div>
 
                     <div class="form-group">
@@ -80,7 +80,7 @@
                 <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
                     <div class="form-group">
                         <label for="cep">CEP *</label>
-                        <input type="tel" id="cep" name="cep" required placeholder="00000-000" value="${cliente.endereco.cep}" maxlength="9">
+                        <input type="tel" id="cep" name="cep" required placeholder="00000-000" value="${cliente.endereco.cep}" maxlength="9" oninput="this.value = this.value.replace(/\D/g, '')" /><br><br>
                     </div>
 
                     <div class="form-group">
@@ -109,7 +109,7 @@
                 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
                     <div class="form-group">
                         <label for="cidade">Cidade *</label>
-                        <input type="text" id="cidade" name="cidade" required value="${cliente.endereco.cidade}" maxlength="10">
+                        <input type="text" id="cidade" name="cidade" required value="${cliente.endereco.cidade}" maxlength="10" oninput="this.value = this.value.replace(/[0-9]/g, '')"/><br><br>
                     </div>
 
                     <div class="form-group">
