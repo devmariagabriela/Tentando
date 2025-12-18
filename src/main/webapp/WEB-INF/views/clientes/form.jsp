@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -29,6 +28,10 @@
         <div class="card">
             <h2><c:choose><c:when test="${not empty cliente}">Editar Cliente: ${cliente.nome}</c:when><c:otherwise>Cadastrar Novo Cliente</c:otherwise></c:choose></h2>
 
+            <c:if test="${not empty erro}">
+                <p style="color: red; font-weight: bold;">Erro: ${erro}</p>
+            </c:if>
+
             <form method="post" action="${pageContext.request.contextPath}/clientes">
             	<c:if test="${not empty cliente}">
             		<input type="hidden" name="clienteId" value="${cliente.id}">
@@ -41,72 +44,72 @@
                         <label for="tipoDocumento">Tipo de Documento *</label>
                         <select id="tipoDocumento" name="tipoDocumento" required>
                             <option value="">Selecione...</option>
-                            <option value="F" <c:if test="${cliente.tipoDocumento == 'F'}">selected</c:if>>CPF (Pessoa FÃ­sica )</option>
-                            <option value="J" <c:if test="${cliente.tipoDocumento == 'J'}">selected</c:if>>CNPJ (Pessoa JurÃ­dica)</option>
+                            <option value="F" <c:if test="${cliente.tipoDocumento == 'F'}">selected</c:if>>CPF (Pessoa Física  )</option>
+                            <option value="J" <c:if test="${cliente.tipoDocumento == 'J'}">selected</c:if>>CNPJ (Pessoa Jurídica)</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="documento">CPF/CNPJ *</label>
                         <input type="text" id="documento" name="documento" required 
-                               placeholder="000.000.000-00 ou 00.000.000/0000-00" value="${cliente.documento}">
+                               placeholder="000.000.000-00 ou 00.000.000/0000-00" value="${cliente.documento}" maxlength="18">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="nome">Nome/RazÃ£o Social *</label>
-                    <input type="text" id="nome" name="nome" required value="${cliente.nome}">
+                    <label for="nome">Nome/Razão Social *</label>
+                    <input type="text" id="nome" name="nome" required value="${cliente.nome}" maxlength="50">
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
-                        <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" value="${cliente.telefone}">
+                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" value="${cliente.telefone}" maxlength="15">
                     </div>
 
                     <div class="form-group">
                         <label for="email">E-mail</label>
-                        <input type="email" id="email" name="email" value="${cliente.email}">
+                        <input type="email" id="email" name="email" value="${cliente.email}" maxlength="40">
                     </div>
                 </div>
 
                 <hr style="margin: 30px 0; border: none; border-top: 1px solid #e2e8f0;">
 
-                <h3 style="color: #667eea; margin-bottom: 15px;">EndereÃ§o</h3>
+                <h3 style="color: #667eea; margin-bottom: 15px;">Endereço</h3>
 
                 <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
                     <div class="form-group">
                         <label for="cep">CEP *</label>
-                        <input type="text" id="cep" name="cep" required placeholder="00000-000" value="${cliente.endereco.cep}">
+                        <input type="tel" id="cep" name="cep" required placeholder="00000-000" value="${cliente.endereco.cep}" maxlength="9">
                     </div>
 
                     <div class="form-group">
                         <label for="logradouro">Logradouro *</label>
-                        <input type="text" id="logradouro" name="logradouro" required value="${cliente.endereco.logradouro}">
+                        <input type="text" id="logradouro" name="logradouro" required value="${cliente.endereco.logradouro}" maxlength="20">
                     </div>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
                     <div class="form-group">
-                        <label for="numero">NÃºmero *</label>
-                        <input type="text" id="numero" name="numero" required value="${cliente.endereco.numero}">
+                        <label for="numero">Número *</label>
+                        <input type="text" id="numero" name="numero" required value="${cliente.endereco.numero}" maxlength="5">
                     </div>
 
                     <div class="form-group">
                         <label for="complemento">Complemento</label>
-                        <input type="text" id="complemento" name="complemento" value="${cliente.endereco.complemento}">
+                        <input type="text" id="complemento" name="complemento" value="${cliente.endereco.complemento}" maxlength="25">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="bairro">Bairro *</label>
-                    <input type="text" id="bairro" name="bairro" required value="${cliente.endereco.bairro}">
+                    <input type="text" id="bairro" name="bairro" required value="${cliente.endereco.bairro}" maxlength="10">
                 </div>
 
                 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
                     <div class="form-group">
                         <label for="cidade">Cidade *</label>
-                        <input type="text" id="cidade" name="cidade" required value="${cliente.endereco.cidade}">
+                        <input type="text" id="cidade" name="cidade" required value="${cliente.endereco.cidade}" maxlength="10">
                     </div>
 
                     <div class="form-group">
@@ -148,7 +151,7 @@
 
                 <div style="text-align: right;">
                     <a href="${pageContext.request.contextPath}/clientes" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-primary"><c:choose><c:when test="${not empty cliente}">Salvar AlteraÃ§Ãµes</c:when><c:otherwise>Cadastrar Cliente</c:otherwise></c:choose></button>
+                    <button type="submit" class="btn btn-primary"><c:choose><c:when test="${not empty cliente}">Salvar Alterações</c:when><c:otherwise>Cadastrar Cliente</c:otherwise></c:choose></button>
                 </div>
             </form>
         </div>

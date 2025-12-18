@@ -15,7 +15,7 @@ import dao.EnderecoDAO;
 import model.Cliente;
 import model.Endereco;
 
-@WebServlet("/clientes" )
+@WebServlet("/clientes"  )
 public class ClienteServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
@@ -106,6 +106,123 @@ public class ClienteServlet extends HttpServlet {
             String nome = request.getParameter("nome");
             String telefone = request.getParameter("telefone");
             String email = request.getParameter("email");
+
+            // --- INICIO DA VALIDAÇÃO DE TAMANHO E TIPO ---
+            String erroValidacao = null;
+
+            // 1. Validação de Nome (Máx 20, Apenas Letras e Espaços)
+            if (nome != null) {
+                if (nome.length() > 20) {
+                    erroValidacao = "O campo Nome não pode ter mais de 20 caracteres.";
+                } else if (!nome.matches("[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÊÍÏÓÔÕÖÚÇÑ ]+")) {
+                    erroValidacao = "O campo Nome deve conter apenas letras e espaços.";
+                }
+            }
+            
+            // 2. Validação de Email (Máx 20)
+            if (erroValidacao == null && email != null && email.length() > 20) {
+                erroValidacao = "O campo E-mail não pode ter mais de 20 caracteres.";
+            }
+
+            // 3. Validação de Documento (CPF/CNPJ) (Máx 14/18, Apenas Números e Máscara)
+            if (erroValidacao == null && tipoDocumento != null && documento != null) {
+                if ("CPF".equalsIgnoreCase(tipoDocumento) && documento.length() > 14) {
+                    erroValidacao = "O campo CPF não pode ter mais de 14 caracteres (incluindo pontos e traço).";
+                } else if ("CNPJ".equalsIgnoreCase(tipoDocumento) && documento.length() > 18) {
+                    erroValidacao = "O campo CNPJ não pode ter mais de 18 caracteres (incluindo pontos, barra e traço).";
+                }
+                
+                // Validação de tipo (Apenas números e caracteres de máscara)
+                if (erroValidacao == null && !documento.matches("[0-9./-]+")) {
+                    erroValidacao = "O campo Documento (CPF/CNPJ) deve conter apenas números e a máscara correta.";
+                }
+            }
+            
+            // 4. Validação de Telefone (Máx 15, Apenas Números e Máscara)
+            if (erroValidacao == null && telefone != null && !telefone.isEmpty()) {
+                if (telefone.length() > 15) {
+                    erroValidacao = "O campo Telefone não pode ter mais de 15 caracteres.";
+                }
+                // Validação de tipo (Apenas números e caracteres de máscara)
+                if (erroValidacao == null && !telefone.matches("[0-9()\\- ]+")) {
+                    erroValidacao = "O campo Telefone deve conter apenas números e a máscara correta.";
+                }
+            }
+            
+            // 5. Validação de CEP (Máx 9, Apenas Números e Traço)
+            if (erroValidacao == null && cep != null && !cep.isEmpty()) {
+                if (cep.length() > 9) {
+                    erroValidacao = "O campo CEP não pode ter mais de 9 caracteres (incluindo o traço).";
+                }
+                // Validação de tipo (Apenas números e traço)
+                if (erroValidacao == null && !cep.matches("[0-9-]+")) {
+                    erroValidacao = "O campo CEP deve conter apenas números e o traço.";
+                }
+            }
+            
+            // 6. Validação de Número (Endereço) (Máx 5, Alfanumérico)
+            if (erroValidacao == null && numero != null && numero.length() > 5) {
+                erroValidacao = "O campo Número do Endereço não pode ter mais de 5 caracteres.";
+            }
+            
+            // 7. Validação de Logradouro (Máx 20, Alfanumérico)
+            if (erroValidacao == null && logradouro != null && logradouro.length() > 20) {
+                erroValidacao = "O campo Logradouro não pode ter mais de 20 caracteres.";
+            }
+            
+            // 8. Validação de Complemento (Máx 20, Alfanumérico)
+            if (erroValidacao == null && complemento != null && complemento.length() > 20) {
+                erroValidacao = "O campo Complemento não pode ter mais de 20 caracteres.";
+            }
+            
+            // 9. Validação de Bairro (Máx 10, Alfanumérico)
+            if (erroValidacao == null && bairro != null && bairro.length() > 10) {
+                erroValidacao = "O campo Bairro não pode ter mais de 10 caracteres.";
+            }
+            
+            // 10. Validação de Cidade (Máx 10, Alfanumérico)
+            if (erroValidacao == null && cidade != null && cidade.length() > 10) {
+                erroValidacao = "O campo Cidade não pode ter mais de 10 caracteres.";
+            }
+
+            if (erroValidacao != null) {
+                // Se houver erro, define o atributo de erro e retorna para o formulário
+                request.setAttribute("erro", erroValidacao);
+                
+                // Recria os objetos com os dados preenchidos para que o formulário possa ser recarregado
+                // Endereco já foi criado e preenchido (L93-L101)
+                
+                Cliente cliente = new Cliente();
+                cliente.setTipoDocumento(tipoDocumento);
+                cliente.setDocumento(documento);
+                cliente.setNome(nome);
+                cliente.setTelefone(telefone);
+                cliente.setEmail(email);
+                cliente.setEndereco(endereco); // Adiciona o objeto Endereco ao Cliente
+                
+                // Se for edição, tenta recuperar os IDs para manter o estado
+                String clienteIdParam = request.getParameter("clienteId");
+                String enderecoIdParam = request.getParameter("enderecoId");
+                if (clienteIdParam != null && !clienteIdParam.isEmpty()) {
+                    try {
+                        cliente.setId(Integer.parseInt(clienteIdParam));
+                    } catch (NumberFormatException ignored) {}
+                }
+                if (enderecoIdParam != null && !enderecoIdParam.isEmpty()) {
+                    try {
+                        cliente.setEnderecoId(Integer.parseInt(enderecoIdParam));
+                        endereco.setId(Integer.parseInt(enderecoIdParam));
+                    } catch (NumberFormatException ignored) {}
+                }
+                
+                request.setAttribute("cliente", cliente);
+                request.setAttribute("endereco", endereco);
+                
+                request.getRequestDispatcher("/WEB-INF/views/clientes/form.jsp")
+                       .forward(request, response);
+                return;
+            }
+            // --- FIM DA VALIDAÇÃO DE TAMANHO E TIPO ---
             
             // Verifica se é uma edição (UPDATE) ou um novo cadastro (INSERT)
             String clienteIdParam = request.getParameter("clienteId");
