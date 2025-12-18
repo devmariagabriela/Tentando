@@ -55,7 +55,8 @@ public class Entrega {
         this.status = "PENDENTE";
     }
     
-    // Getters e Setters
+    // GS
+    
     public Integer getId() {
         return id;
     }

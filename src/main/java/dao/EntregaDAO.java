@@ -114,7 +114,7 @@ public class EntregaDAO {
     }
    
     public List<Entrega> listarTodas() throws SQLException {
-        String sql = "SELECT * FROM entrega ORDER BY data_criacao DESC"; // CORRIGIDO
+        String sql = "SELECT * FROM entrega ORDER BY data_coleta DESC"; // CORRIGIDO
         List<Entrega> entregas = new ArrayList<>();
         
         try (Connection conn = ConnectionFactory.getConnection();
@@ -130,7 +130,7 @@ public class EntregaDAO {
     
    
     public List<Entrega> listarPorStatus(String status) throws SQLException {
-        String sql = "SELECT * FROM entrega WHERE status = ? ORDER BY data_criacao DESC"; // CORRIGIDO
+        String sql = "SELECT * FROM entrega WHERE status = ? ORDER BY data_coleta DESC"; // CORRIGIDO
         List<Entrega> entregas = new ArrayList<>();
         
         try (Connection conn = ConnectionFactory.getConnection();

@@ -47,7 +47,7 @@
                         <input type="number" id="pesoKg" name="pesoKg" step="0.01" min="0.01" value="${produto.pesoKg}" required>
                     </div>
 
-                    <div class="form-group">
+                    <div class="fm-group">
                         <label for="volumeM3">Volume (m³) *</label>
                         <input type="number" id="volumeM3" name="volumeM3" step="0.001" min="0.001" value="${produto.volumeM3}" required>
                     </div>

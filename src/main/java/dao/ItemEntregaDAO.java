@@ -62,7 +62,7 @@ public class ItemEntregaDAO {
     
    
     public List<ItemEntrega> listarPorEntrega(Integer entregaId) throws SQLException {
-        String sql = "SELECT * FROM item_entrega WHERE entrega_id = ?";
+        String sql = "SELECT * FROM item_entrega left join entrega e on item_entrega.entrega_id = e.id  WHERE entrega_id = ?";
         List<ItemEntrega> itens = new ArrayList<>();
         
         try (Connection conn = ConnectionFactory.getConnection();
