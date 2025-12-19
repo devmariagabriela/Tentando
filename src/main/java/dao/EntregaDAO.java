@@ -34,7 +34,7 @@ public class EntregaDAO {
             stmt.setInt(2, entrega.getRemetenteId());
             stmt.setInt(3, entrega.getDestinatarioId());
             
-            // Tratamento para EnderecoOrigem 
+            //  Meuu tratamento para EnderecoOrigem 
 
             if (entrega.getEnderecoOrigemId() != null && entrega.getEnderecoOrigemId() > 0) {
                 stmt.setInt(4, entrega.getEnderecoOrigemId());
@@ -161,7 +161,7 @@ public class EntregaDAO {
             stmt.setInt(2, entrega.getRemetenteId());
             stmt.setInt(3, entrega.getDestinatarioId());
             
-            // Tratamento para enderecoOrigemId
+            //  E aqui é o tratamento para enderecoOrigemId
             if (entrega.getEnderecoOrigemId() != null && entrega.getEnderecoOrigemId() > 0) {
                 stmt.setInt(4, entrega.getEnderecoOrigemId());
             } else {
@@ -256,7 +256,7 @@ public class EntregaDAO {
         entrega.setValorFrete(rs.getDouble("valor_frete"));
         entrega.setObservacoes(rs.getString("observacoes"));
         
-        // Tenta ler data_criacao e updated_at (ignora se não existirem)
+        // Tenta ler data_criacao e updated_at (aiii vai ignorar se não existirem)
         try {
             Timestamp createdAt = rs.getTimestamp("data_criacao"); // CORRIGIDO
             if (createdAt != null) {
@@ -269,7 +269,7 @@ public class EntregaDAO {
             if (updatedAt != null) {
                 entrega.setUpdatedAt(updatedAt.toLocalDateTime());
             }
-        } catch (SQLException e) { /* Ignora */ }
+        } catch (SQLException e) {}
         
         // To tentando carregar os objetos relacionados
         try {

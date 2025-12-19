@@ -121,6 +121,7 @@ public class ProdutoDAO {
             // Ignora o erro se a coluna 'descricao' não existir
         }
         
+        // TO ENDOIDANDO AQUI, MEU DEUSSSSSSSSSSS
         produto.setPesoKg(rs.getDouble("peso_kg"));
         produto.setVolumeM3(rs.getDouble("volume_m3"));
         produto.setValorUnitario(rs.getDouble("valor_unitario"));
