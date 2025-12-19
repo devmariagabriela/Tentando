@@ -50,4 +50,4 @@ O projeto segue a estrutura padrão de um aplicativo web Java:
     * Acesse a aplicação no seu navegador.
 
 ---
-Desenvolvido por **MARIA GABI**
+Desenvolvido por **MARIA GABI** 😼👍
