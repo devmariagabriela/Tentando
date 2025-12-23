@@ -15,6 +15,7 @@
         </div>
     </header>
 
+
     <nav>
         <ul>
             <li><a href="${pageContext.request.contextPath}/">Dashboard</a></li>
@@ -24,13 +25,16 @@
         </ul>
     </nav>
 
+
     <div class="container">
         <div class="card">
             <h2><c:choose><c:when test="${not empty cliente}">Editar Cliente: ${cliente.nome}</c:when><c:otherwise>Cadastrar Novo Cliente</c:otherwise></c:choose></h2>
 
+
             <c:if test="${not empty erro}">
                 <p style="color: red; font-weight: bold;">Erro: ${erro}</p>
             </c:if>
+
 
             <form method="post" action="${pageContext.request.contextPath}/clientes">
             	<c:if test="${not empty cliente}">
@@ -39,33 +43,46 @@
             	</c:if>
                 <h3 style="color: #667eea; margin-bottom: 15px;">Dados Pessoais</h3>
 
+
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="form-group">
                         <label for="tipoDocumento">Tipo de Documento *</label>
                         <select id="tipoDocumento" name="tipoDocumento" required>
                             <option value="">Selecione...</option>
-                            <option value="F" <c:if test="${cliente.tipoDocumento == 'F'}">selected</c:if>>CPF (Pessoa Física  )</option>
+                            <option value="F" <c:if test="${cliente.tipoDocumento == 'F'}">selected</c:if>>CPF (Pessoa Física   )</option>
                             <option value="J" <c:if test="${cliente.tipoDocumento == 'J'}">selected</c:if>>CNPJ (Pessoa Jurídica)</option>
                         </select>
                     </div>
 
+
                     <div class="form-group">
                         <label for="documento">CPF/CNPJ *</label>
                         <input type="text" id="documento" name="documento" required 
-                               placeholder="000.000.000-00 ou 00.000.000/0000-00" value="${cliente.documento}" maxlength="18"oninput="this.value = this.value.replace(/\D/g, '')" /><br><br>
+                               placeholder="000.000.000-00 ou 0.000.000/0000-00" value="${cliente.documento}" 
+                               onkeyup="mascaraDocumento(this)" oninput="this.value = this.value.replace(/[^0-9\.\-\/]/g, '')" />  
+  
+
                     </div>
                 </div>
 
+
                 <div class="form-group">
                     <label for="nome">Nome/Razão Social *</label>
-                    <input type="text" id="nome" name="nome" maxlength="50" oninput="this.value = this.value.replace(/[0-9]/g, '')"/><br><br>
+                    <input type="text" id="nome" name="nome" maxlength="50" oninput="this.value = this.value.replace(/[0-9]/g, '')" value="${cliente.nome}"/>  
+  
+
                 </div>
+
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
-                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" value="${cliente.telefone}" maxlength="15"oninput="this.value = this.value.replace(/\D/g, '')" /><br><br>
+                        <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" value="${cliente.telefone}" 
+                               onkeyup="mascaraTelefone(this)" oninput="this.value = this.value.replace(/[^0-9\(\)\-\s]/g, '')" />  
+  
+
                     </div>
+
 
                     <div class="form-group">
                         <label for="email">E-mail</label>
@@ -73,15 +90,22 @@
                     </div>
                 </div>
 
+
                 <hr style="margin: 30px 0; border: none; border-top: 1px solid #e2e8f0;">
 
+
                 <h3 style="color: #667eea; margin-bottom: 15px;">Endereço</h3>
+
 
                 <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
                     <div class="form-group">
                         <label for="cep">CEP *</label>
-                        <input type="tel" id="cep" name="cep" required placeholder="00000-000" value="${cliente.endereco.cep}" maxlength="9" oninput="this.value = this.value.replace(/\D/g, '')" /><br><br>
+                        <input type="tel" id="cep" name="cep" required placeholder="00000-000" value="${cliente.endereco.cep}" 
+                               onkeyup="mascaraCEP(this)" oninput="this.value = this.value.replace(/[^0-9\-]/g, '')" />  
+  
+
                     </div>
+
 
                     <div class="form-group">
                         <label for="logradouro">Logradouro *</label>
@@ -89,11 +113,13 @@
                     </div>
                 </div>
 
+
                 <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
                     <div class="form-group">
                         <label for="numero">Número *</label>
                         <input type="text" id="numero" name="numero" required value="${cliente.endereco.numero}" maxlength="5">
                     </div>
+
 
                     <div class="form-group">
                         <label for="complemento">Complemento</label>
@@ -101,16 +127,21 @@
                     </div>
                 </div>
 
+
                 <div class="form-group">
                     <label for="bairro">Bairro *</label>
                     <input type="text" id="bairro" name="bairro" required value="${cliente.endereco.bairro}" maxlength="10">
                 </div>
 
+
                 <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
                     <div class="form-group">
                         <label for="cidade">Cidade *</label>
-                        <input type="text" id="cidade" name="cidade" required value="${cliente.endereco.cidade}" maxlength="10" oninput="this.value = this.value.replace(/[0-9]/g, '')"/><br><br>
+                        <input type="text" id="cidade" name="cidade" required value="${cliente.endereco.cidade}" maxlength="10" oninput="this.value = this.value.replace(/[0-9]/g, '')"/>  
+  
+
                     </div>
+
 
                     <div class="form-group">
                         <label for="estado">Estado (UF) *</label>
@@ -147,7 +178,9 @@
                     </div>
                 </div>
 
+
                 <hr style="margin: 30px 0; border: none; border-top: 1px solid #e2e8f0;">
+
 
                 <div style="text-align: right;">
                     <a href="${pageContext.request.contextPath}/clientes" class="btn btn-secondary">Cancelar</a>
@@ -156,6 +189,78 @@
             </form>
         </div>
     </div>
+    
+    <script>
+        // Função para aplicar a máscara de CPF ou CNPJ
+        function mascaraDocumento(campo) {
+            let valor = campo.value.replace(/\D/g, ''); // Remove tudo o que não é dígito
+            
+            if (valor.length <= 11) { // CPF
+                valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+                valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
+                valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                campo.maxLength = 14; // 000.000.000-00
+            } else { // CNPJ
+                valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
+                valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2');
+                valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
+                valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
+                campo.maxLength = 18; // 00.000.000/0000-00
+            }
+            
+            campo.value = valor;
+        }
+
+        // Função para aplicar a máscara de Telefone (com 9º dígito)
+        function mascaraTelefone(campo) {
+            let valor = campo.value.replace(/\D/g, ''); // Remove tudo o que não é dígito
+            
+            if (valor.length > 11) {
+                valor = valor.substring(0, 11); // Limita a 11 dígitos para evitar problemas com a máscara
+            }
+
+            valor = valor.replace(/^(\d{2})(\d)/g, '($1) $2'); // Coloca parênteses em volta dos dois primeiros dígitos
+            
+            if (valor.length <= 14) { // Telefone com 8 dígitos (ex: (00) 0000-0000)
+                valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
+                campo.maxLength = 14;
+            } else { // Telefone com 9 dígitos (ex: (00) 00000-0000)
+                valor = valor.replace(/(\d{5})(\d)/, '$1-$2');
+                campo.maxLength = 15;
+            }
+            
+            campo.value = valor;
+        }
+
+        // Função para aplicar a máscara de CEP
+        function mascaraCEP(campo) {
+            let valor = campo.value.replace(/\D/g, ''); // Remove tudo o que não é dígito
+            
+            valor = valor.replace(/^(\d{5})(\d)/, '$1-$2');
+            campo.maxLength = 9; // 00000-000
+            
+            campo.value = valor;
+        }
+
+        // Inicializa as máscaras se o campo já tiver valor (caso de edição)
+        document.addEventListener('DOMContentLoaded', function() {
+            const documento = document.getElementById('documento');
+            if (documento && documento.value) {
+                mascaraDocumento(documento);
+            }
+            
+            const telefone = document.getElementById('telefone');
+            if (telefone && telefone.value) {
+                mascaraTelefone(telefone);
+            }
+            
+            const cep = document.getElementById('cep');
+            if (cep && cep.value) {
+                mascaraCEP(cep);
+            }
+        });
+    </script>
+
 
     <footer>
         <p>&copy; 2025 Tartaruga Cometa - Sistema de Controle de Entregas</p>

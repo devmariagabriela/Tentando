@@ -44,7 +44,7 @@
             </c:if>
 
             <div style="margin-bottom: 20px;">
-                <a href="${pageContext.request.contextPath}/produtos?acao=novo" class="btn btn-primary">+ Novo Produto</a>
+                <a href="${pageContext.request.contextPath}/produtos?acao=novo" class="btn btn-primary">CADASTRAR</a>
             </div>
 
             <c:choose>

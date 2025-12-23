@@ -43,14 +43,14 @@
             </c:if>
 
             <div style="margin-bottom: 20px;">
-                <a href="${pageContext.request.contextPath}/entregas/nova" class="btn btn-primary">+ Nova Entrega</a>
+                <a href="${pageContext.request.contextPath}/entregas/nova" class="btn btn-primary">CADASTRAR</a>
                 
                 <div style="margin-top: 15px;">
-                    <strong>Filtrar por status:</strong>
-                    <a href="${pageContext.request.contextPath}/entregas/listar" class="btn btn-secondary" style="margin-left: 10px;">Todos</a>
-                    <a href="${pageContext.request.contextPath}/entregas/listar?status=PENDENTE" class="btn btn-warning">Pendentes</a>
-                    <a href="${pageContext.request.contextPath}/entregas/listar?status=EM_TRANSITO" class="btn btn-primary">Em Trânsito</a>
-                    <a href="${pageContext.request.contextPath}/entregas/listar?status=REALIZADA" class="btn btn-success">Realizadas</a>
+                    <strong>FILTRAR POR STATUS:</strong>
+                    <a href="${pageContext.request.contextPath}/entregas/listar" class="btn btn-secondary" style="margin-left: 10px;">TODOS</a>&nbsp;&nbsp;&nbsp;
+                    <a href="${pageContext.request.contextPath}/entregas/listar?status=PENDENTE" class="btn btn-warning">PENDENTES</a>&nbsp;&nbsp;&nbsp;
+                    <a href="${pageContext.request.contextPath}/entregas/listar?status=EM_TRANSITO" class="btn btn-primary">EM TRÂNSITO</a>&nbsp;&nbsp;&nbsp;
+                    <a href="${pageContext.request.contextPath}/entregas/listar?status=REALIZADA" class="btn btn-success">REALIZADAS</a>
                 </div>
             </div>
 
