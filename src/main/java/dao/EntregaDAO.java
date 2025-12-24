@@ -25,44 +25,43 @@ public class EntregaDAO {
 
     	String sql = "INSERT INTO entrega (codigo_rastreio, remetente_id, destinatario_id, " +
                     "endereco_origem_id, endereco_destino_id, data_coleta, data_prevista_entrega, status, valor_frete, observacoes) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                     "VALUES (gerar_codigo_rastreio(), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
-            stmt.setString(1, entrega.getCodigo());
-            stmt.setInt(2, entrega.getRemetenteId());
-            stmt.setInt(3, entrega.getDestinatarioId());
+            stmt.setInt(1, entrega.getRemetenteId());
+            stmt.setInt(2, entrega.getDestinatarioId());
             
             //  Meuu tratamento para EnderecoOrigem 
 
             if (entrega.getEnderecoOrigemId() != null && entrega.getEnderecoOrigemId() > 0) {
-                stmt.setInt(4, entrega.getEnderecoOrigemId());
+                stmt.setInt(3, entrega.getEnderecoOrigemId());
+            } else {
+                stmt.setNull(3, Types.INTEGER);
+            }
+            
+            if (entrega.getEnderecoDestinoId() != null && entrega.getEnderecoDestinoId() > 0) {
+                stmt.setInt(4, entrega.getEnderecoDestinoId());
             } else {
                 stmt.setNull(4, Types.INTEGER);
             }
             
-            if (entrega.getEnderecoDestinoId() != null && entrega.getEnderecoDestinoId() > 0) {
-                stmt.setInt(5, entrega.getEnderecoDestinoId());
+            if (entrega.getDataColeta() != null) {
+                stmt.setDate(5, Date.valueOf(entrega.getDataColeta()));
             } else {
-                stmt.setNull(5, Types.INTEGER);
+                stmt.setNull(5, Types.DATE);
             }
             
-            if (entrega.getDataColeta() != null) {
-                stmt.setDate(6, Date.valueOf(entrega.getDataColeta()));
+            if (entrega.getDataEntregaPrevista() != null) {
+                stmt.setDate(6, Date.valueOf(entrega.getDataEntregaPrevista()));
             } else {
                 stmt.setNull(6, Types.DATE);
             }
             
-            if (entrega.getDataEntregaPrevista() != null) {
-                stmt.setDate(7, Date.valueOf(entrega.getDataEntregaPrevista()));
-            } else {
-                stmt.setNull(7, Types.DATE);
-            }
-            
-            stmt.setString(8, entrega.getStatus());
-            stmt.setDouble(9, entrega.getValorFrete());
-            stmt.setString(10, entrega.getObservacoes());
+            stmt.setString(7, entrega.getStatus());
+            stmt.setDouble(8, entrega.getValorFrete());
+            stmt.setString(9, entrega.getObservacoes());
             
             stmt.executeUpdate();
             

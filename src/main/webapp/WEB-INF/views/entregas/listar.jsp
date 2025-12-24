@@ -48,11 +48,16 @@
                 <a href="${pageContext.request.contextPath}/entregas/nova" class="btn btn-primary">CADASTRAR</a>
                 
                 <div style="margin-top: 15px;">
-                    <strong>FILTRAR POR STATUS:</strong>
-                    <a href="${pageContext.request.contextPath}/entregas/listar" class="btn btn-secondary" style="margin-left: 10px;">TODOS</a>&nbsp;&nbsp;&nbsp;
-                    <a href="${pageContext.request.contextPath}/entregas/listar?status=PENDENTE" class="btn btn-warning">PENDENTES</a>&nbsp;&nbsp;&nbsp;
-                    <a href="${pageContext.request.contextPath}/entregas/listar?status=EM_TRANSITO" class="btn btn-primary">EM TRÂNSITO</a>&nbsp;&nbsp;&nbsp;
-                    <a href="${pageContext.request.contextPath}/entregas/listar?status=REALIZADA" class="btn btn-success">REALIZADAS</a>
+                    <form action="${pageContext.request.contextPath}/entregas/listar" method="get" style="display: inline-block;">
+                        <label for="status-filtro"><strong>FILTRAR POR STATUS:</strong></label>
+                        <select name="status" id="status-filtro" onchange="this.form.submit( )" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                            <option value="" ${empty param.status ? 'selected' : ''}>TODOS</option>
+                            <option value="PENDENTE" ${param.status == 'PENDENTE' ? 'selected' : ''}>PENDENTES</option>
+                            <option value="EM_TRANSITO" ${param.status == 'EM_TRANSITO' ? 'selected' : ''}>EM TRÂNSITO</option>
+                            <option value="REALIZADA" ${param.status == 'REALIZADA' ? 'selected' : ''}>REALIZADAS</option>
+                            <option value="CANCELADA" ${param.status == 'CANCELADA' ? 'selected' : ''}>CANCELADAS</option>
+                        </select>
+                    </form>
                 </div>
             </div>
 

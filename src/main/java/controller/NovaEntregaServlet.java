@@ -76,7 +76,7 @@ public class NovaEntregaServlet extends HttpServlet {
         	
             // O código de rastreio deve ser gerado pelo banco de dados (função gerar_codigo_rastreio)
             // String codigo = "ENT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-            String codigo = null; // Deixa o DAO/BD gerar, se for o caso. Se o seu BD não gera, descomente a linha acima.
+            // O código de rastreio será gerado automaticamente pelo banco de dados.
             
             
             // Função auxiliar para parsear Integer com segurança
@@ -112,7 +112,7 @@ public class NovaEntregaServlet extends HttpServlet {
             // Preciso criar objeto Entrega, pra isso eu uso o set:
             
             Entrega entrega = new Entrega();
-            entrega.setCodigo(codigo);
+            // entrega.setCodigo(codigo); // Removido, pois o código é gerado no banco de dados
             entrega.setRemetenteId(remetenteId);
             entrega.setDestinatarioId(destinatarioId);
             entrega.setEnderecoOrigemId(enderecoOrigemId);
