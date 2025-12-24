@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Entrega {
     
-    private static List itens = null;
+    // private static List itens = null; // Vestígio, removido
 	private Integer id;
     private String codigo;
     private Integer remetenteId;
@@ -31,6 +31,20 @@ public class Entrega {
     private Endereco enderecoOrigem;
     private Endereco enderecoDestino;
     private List<ItemEntrega> itens1;
+    
+    // Campos calculados
+    public Double getValorTotalProdutos() {
+        if (itens1 == null) {
+            return 0.0;
+        }
+        return itens1.stream()
+                .mapToDouble(ItemEntrega::getValorTotal)
+                .sum();
+    }
+    
+    public Double getValorTotalGeral() {
+        return getValorTotalProdutos() + (valorFrete != null ? valorFrete : 0.0);
+    }
     
     // CONS
     
@@ -202,15 +216,15 @@ public class Entrega {
     }
     
     public List<ItemEntrega> getItens() {
-        return itens;
+        return itens1;
     }
     
-    public void setItens(List itens) {
-        this.itens = itens;
+    public void setItens(List<ItemEntrega> itens) {
+        this.itens1 = itens;
     }
     
     public void addItem(ItemEntrega item) {
-        this.itens.add(item);
+        this.itens1.add(item);
     }
     
     public boolean isRealizada() {

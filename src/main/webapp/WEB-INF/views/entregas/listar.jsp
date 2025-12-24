@@ -22,7 +22,9 @@
             <li><a href="${pageContext.request.contextPath}/">Dashboard</a></li>
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
             <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li>
-            <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>           
+            <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>    
+         	<li><a href="${pageContext.request.contextPath}/produtos/estoque">Gerenciar Estoque</a></li>           
+                   
         </ul>
     </nav>
 
@@ -67,6 +69,8 @@
                                 <th>Data Coleta</th>
                                 <th>Previsão</th>
                                 <th>Valor Frete</th>
+                                <th>Valor Produtos</th>
+                                <th>Valor Total</th>
                                 <th>Status</th>
                                 <th>Ações</th>
                             </tr>
@@ -82,6 +86,8 @@
                                     <td>${entrega.dataColeta}</td>
                                     <td>${entrega.dataEntregaPrevista}</td>
                                     <td>R$ <fmt:formatNumber value="${entrega.valorFrete}" pattern="#,##0.00"/></td>
+                                    <td>R$ <fmt:formatNumber value="${entrega.valorTotalProdutos}" pattern="#,##0.00"/></td>
+                                    <td><strong>R$ <fmt:formatNumber value="${entrega.valorTotalGeral}" pattern="#,##0.00"/></strong></td>
                                     <td>
                                         <c:choose>
                                             <c:when test="${entrega.status == 'PENDENTE'}">
@@ -102,7 +108,7 @@
                                         <c:if test="${entrega.status != 'REALIZADA' and entrega.status != 'CANCELADA'}">
                                             
                                             <!-- Botão de Cancelar com Confirmação -->
-                                            <form method="post" action="${pageContext.request.contextPath}/entregas/atualizar-status" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja CANCELAR a entrega ${entrega.codigo}? Esta ação não pode ser desfeita.' );">
+                                            <form method="post" action="${pageContext.request.contextPath}/entregas/atualizar-status" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja CANCELAR a entrega ${entrega.codigo}? Esta ação não pode ser desfeita.'  );">
                                                 <input type="hidden" name="entregaId" value="${entrega.id}">
                                                 <button type="submit" name="status" value="CANCELADA" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px; margin-right: 5px;">
                                                     Cancelar

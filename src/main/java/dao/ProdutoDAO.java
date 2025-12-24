@@ -16,8 +16,8 @@ public class ProdutoDAO {
     
     
     public Integer salvar(Produto produto) throws SQLException {
-        String sql = "INSERT INTO produto (nome, peso_kg, volume_m3, valor_unitario) " +
-                     "VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO produto (nome, peso_kg, volume_m3, valor_unitario, quantidade_estoque) " + // ALTERADO
+                     "VALUES (?, ?, ?, ?, ?)"; // ALTERADO
         
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -26,6 +26,7 @@ public class ProdutoDAO {
             stmt.setDouble(2, produto.getPesoKg());
             stmt.setDouble(3, produto.getVolumeM3());
             stmt.setDouble(4, produto.getValorUnitario());
+            stmt.setInt(5, produto.getQuantidadeEstoque()); // NOVO
             
             stmt.executeUpdate();
             
@@ -80,7 +81,7 @@ public class ProdutoDAO {
   
     public void atualizar(Produto produto) throws SQLException {
         String sql = "UPDATE produto SET nome = ?, descricao = ?, peso_kg = ?, " +
-                     "volume_m3 = ?, valor_unitario = ? WHERE id = ?";
+                     "volume_m3 = ?, valor_unitario = ?, quantidade_estoque = ? WHERE id = ?"; // ALTERADO
         
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -90,7 +91,8 @@ public class ProdutoDAO {
             stmt.setDouble(3, produto.getPesoKg());
             stmt.setDouble(4, produto.getVolumeM3());
             stmt.setDouble(5, produto.getValorUnitario());
-            stmt.setInt(6, produto.getId());
+            stmt.setInt(6, produto.getQuantidadeEstoque()); // NOVO
+            stmt.setInt(7, produto.getId()); // ALTERADO
             
             stmt.executeUpdate();
         }
@@ -126,6 +128,13 @@ public class ProdutoDAO {
         produto.setVolumeM3(rs.getDouble("volume_m3"));
         produto.setValorUnitario(rs.getDouble("valor_unitario"));
         
+        // Adicionando o campo de estoque
+        try {
+            produto.setQuantidadeEstoque(rs.getInt("quantidade_estoque")); // NOVO
+        } catch (SQLException e) {
+            // Ignora o erro se a coluna 'quantidade_estoque' não existir
+        }
+        
         // Tenta ler a data de criação, mas ignora se a coluna não existir
         try {
             Timestamp createdAt = rs.getTimestamp("data_criacao");
@@ -137,6 +146,28 @@ public class ProdutoDAO {
         }
         
         return produto;
+    }
+
+    /**
+     * Atualiza a quantidade em estoque de um produto.
+     * @param produtoId ID do produto.
+     * @param quantidade Variação do estoque (positivo para adicionar, negativo para remover).
+     * @throws SQLException
+     */
+    public void atualizarEstoque(Integer produtoId, Integer quantidade) throws SQLException { // NOVO MÉTODO
+        String sql = "UPDATE produto SET quantidade_estoque = quantidade_estoque + ? WHERE id = ?";
+        
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, quantidade);
+            stmt.setInt(2, produtoId);
+            
+            int rowsAffected = stmt.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new SQLException("Produto com ID " + produtoId + " não encontrado para atualização de estoque.");
+            }
+        }
     }
 
 }

@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List; // NOVO
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,13 +12,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.EntregaDAO;
+import dao.ItemEntregaDAO; // NOVO
 import model.Entrega;
+import model.ItemEntrega; // NOVO
+import bo.ProdutoBO; // NOVO
 
-@WebServlet("/entregas/atualizar-status" )
+@WebServlet("/entregas/atualizar-status"  )
 public class AtualizarStatusServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
 	private EntregaDAO entregaDAO = new EntregaDAO();
+    private ItemEntregaDAO itemEntregaDAO = new ItemEntregaDAO(); // NOVO
+    private ProdutoBO produtoBO = new ProdutoBO(); // NOVO
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
@@ -34,6 +40,8 @@ public class AtualizarStatusServlet extends HttpServlet {
             Entrega entrega = entregaDAO.buscarPorId(entregaId);
             
             if (entrega != null) {
+                
+                String statusAnterior = entrega.getStatus(); // Guarda o status anterior
                 entrega.setStatus(novoStatus);
                 
                 // Se o status for REALIZADA, define a data de entrega realizada
@@ -45,6 +53,18 @@ public class AtualizarStatusServlet extends HttpServlet {
                     // Ao cancelar, remove a data de entrega realizada (se tiver)
                 	
                     entrega.setDataEntregaRealizada(null);
+                    
+                    // --- NOVO: Reposição de Estoque ---
+                    // Apenas repõe se o status anterior não era CANCELADA (para evitar dupla reposição)
+                    if (!"CANCELADA".equals(statusAnterior)) { // Usa o statusAnterior
+                        List<ItemEntrega> itens = itemEntregaDAO.listarPorEntrega(entregaId);
+                        for (ItemEntrega item : itens) {
+                            // Repõe a quantidade no estoque (quantidade positiva)
+                            produtoBO.atualizarEstoque(item.getProdutoId(), item.getQuantidade());
+                        }
+                        System.out.println("Estoque reposto para a entrega cancelada ID: " + entregaId);
+                    }
+                    // --- FIM NOVO ---
                 }
                 
                 // E é ai que entra a atualização:
@@ -72,6 +92,13 @@ public class AtualizarStatusServlet extends HttpServlet {
                    .forward(request, response);
         } catch (SQLException e) {
 			e.printStackTrace();
+            request.setAttribute("erro", "Erro de banco de dados ao atualizar status: " + e.getMessage());
+            try {
+                request.getRequestDispatcher("/WEB-INF/views/erro.jsp")
+                       .forward(request, response);
+            } catch (ServletException | IOException se) {
+                se.printStackTrace();
+            }
 		}
     }
 }

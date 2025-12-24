@@ -22,14 +22,16 @@ import model.Cliente;
 import model.Entrega;
 import model.ItemEntrega;
 import model.Produto;
+import bo.ProdutoBO; // NOVO IMPORT
 
 
-@WebServlet("/entregas/nova"  )
+@WebServlet("/entregas/nova"   )
 public class NovaEntregaServlet extends HttpServlet {
     
     private static final long serialVersionUID = 1L;
 	private ClienteDAO clienteDAO = new ClienteDAO();
     private ProdutoDAO produtoDAO = new ProdutoDAO();
+    private ProdutoBO produtoBO = new ProdutoBO(); // NOVO
     private EntregaDAO entregaDAO = new EntregaDAO();
     private EnderecoDAO enderecoDAO = new EnderecoDAO();
     private ItemEntregaDAO itemEntregaDAO = new ItemEntregaDAO();
@@ -72,7 +74,9 @@ public class NovaEntregaServlet extends HttpServlet {
         try {
             // Cada entrega tem que ter um codigo, e esse codigo é unico, esse comando faz isso:
         	
-            String codigo = "ENT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+            // O código de rastreio deve ser gerado pelo banco de dados (função gerar_codigo_rastreio)
+            // String codigo = "ENT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+            String codigo = null; // Deixa o DAO/BD gerar, se for o caso. Se o seu BD não gera, descomente a linha acima.
             
             
             // Função auxiliar para parsear Integer com segurança
@@ -146,6 +150,15 @@ public class NovaEntregaServlet extends HttpServlet {
                         throw new IllegalArgumentException("Produto com ID " + produtoId + " não encontrado.");
                     }
                     
+                    // --- NOVO: Verificação de Estoque ---
+                    if (produto.getQuantidadeEstoque() < quantidade) {
+                        // Se o estoque for insuficiente, lança exceção e a transação deve ser revertida (se estiver usando transação)
+                        // Como não estamos em um BO com controle de transação explícito, o erro será capturado e a entrega será revertida manualmente
+                        throw new IllegalArgumentException("Estoque insuficiente para o produto: " + produto.getNome() + 
+                                                           ". Estoque atual: " + produto.getQuantidadeEstoque() + 
+                                                           ", Quantidade solicitada: " + quantidade);
+                    }
+                    // --- FIM NOVO ---
                     
                     //  É ai que eu crio o item da entrega
                     
@@ -155,6 +168,11 @@ public class NovaEntregaServlet extends HttpServlet {
                     item.setQuantidade(quantidade);
                     
                     itemEntregaDAO.salvar(item);
+                    
+                    // --- NOVO: Decremento de Estoque ---
+                    produtoBO.atualizarEstoque(produtoId, -quantidade);
+                    // --- FIM NOVO ---
+                    
                     System.out.println("Item " + (i+1) + " salvo com sucesso!");
                 }
             }
@@ -166,10 +184,20 @@ public class NovaEntregaServlet extends HttpServlet {
             
         } catch (IllegalArgumentException | DateTimeParseException e) {
         	
-            // Captura erro de validação e de formato de data
+            // Captura erro de validação, de formato de data e de estoque insuficiente // ALTERADO
         	
-            System.err.println("Erro de validação: " + e.getMessage());
+            System.err.println("Erro de validação/estoque: " + e.getMessage()); // ALTERADO
             e.printStackTrace();
+            
+            // Se a entrega foi salva, mas deu erro no item (ex: estoque), precisamos deletar a entrega // NOVO
+            if (entregaSalva && entregaId != null) { // NOVO
+                try { // NOVO
+                    entregaDAO.deletar(entregaId); // NOVO
+                    System.out.println("Entrega ID " + entregaId + " deletada devido a erro no item/estoque."); // NOVO
+                } catch (SQLException deleteEx) { // NOVO
+                    System.err.println("ERRO CRÍTICO: Falha ao deletar entrega ID " + entregaId + " após erro de item/estoque: " + deleteEx.getMessage()); // NOVO
+                } // NOVO
+            } // NOVO
             
             request.setAttribute("erro", e.getMessage());
             

@@ -9,7 +9,7 @@ public class ItemEntrega {
     private Integer entregaId;
     private Integer produtoId;
     private Integer quantidade;
-    private Double valorTotal;
+    // private Double valorTotal; // Vestígio, será calculado
     private LocalDateTime createdAt;
     
     // OBJETOS
@@ -21,11 +21,11 @@ public class ItemEntrega {
     public ItemEntrega() {
     }
     
-    public ItemEntrega(Integer entregaId, Integer produtoId, Integer quantidade,Double valorTotal) {
+    public ItemEntrega(Integer entregaId, Integer produtoId, Integer quantidade) {
         this.entregaId = entregaId;
         this.produtoId = produtoId;
         this.quantidade = quantidade;
-        this.valorTotal = valorTotal;
+        // this.valorTotal = valorTotal; // Vestígio, removido do construtor
     }
     
     // GS
@@ -64,11 +64,15 @@ public class ItemEntrega {
     }
     
     public Double getValorTotal() {
-        return valorTotal;
+        if (produto != null && quantidade != null) {
+            return produto.getValorUnitario() * quantidade;
+        }
+        return 0.0;
     }
-    
+
     public void setValorTotal(Double valorTotal) {
-        this.valorTotal = valorTotal;
+        // Este campo é calculado, o setter não deve ser usado.
+        // Mantenho para compatibilidade com o vestígio, mas não faz nada.
     }
     
     public LocalDateTime getCreatedAt() {
@@ -94,13 +98,9 @@ public class ItemEntrega {
                 ", entregaId=" + entregaId +
                 ", produtoId=" + produtoId +
                 ", quantidade=" + quantidade +
-                ", valorTotal=" + valorTotal +
+                ", valorTotal=" + getValorTotal() +
                 '}';
     }
 
-	public List<?> listarPorEntrega(Integer id2) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    // Método listarPorEntrega removido daqui, pois pertence ao DAO
 }
-

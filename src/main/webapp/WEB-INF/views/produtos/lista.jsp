@@ -23,6 +23,8 @@
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
             <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li> 
             <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>  
+            <li><a href="${pageContext.request.contextPath}/produtos/estoque">Gerenciar Estoque</a></li>           
+
                      
         </ul>
     </nav>
@@ -45,6 +47,7 @@
 
             <div style="margin-bottom: 20px;">
                 <a href="${pageContext.request.contextPath}/produtos?acao=novo" class="btn btn-primary">CADASTRAR</a>
+                <a href="${pageContext.request.contextPath}/produtos/estoque" class="btn btn-secondary">GERENCIAR ESTOQUE</a>
             </div>
 
             <c:choose>
@@ -55,9 +58,10 @@
                                 <th>ID</th>
                                 <th>Nome</th>
                                 <th>Descrição</th>
-                                <th>Peso (kg  )</th>
+                                <th>Peso (kg   )</th>
                                 <th>Volume (m³)</th>
                                 <th>Valor Unitário</th>
+                                <th>Estoque</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -70,6 +74,7 @@
                                     <td><fmt:formatNumber value="${produto.pesoKg}" pattern="#,##0.00"/></td>
                                     <td><fmt:formatNumber value="${produto.volumeM3}" pattern="#,##0.000"/></td>
                                     <td>R$ <fmt:formatNumber value="${produto.valorUnitario}" pattern="#,##0.00"/></td>
+                                    <td>${produto.quantidadeEstoque}</td>
                                     <td>
                                         <!-- Botão Editar (agora usando <form> e <button>) -->
                                         <form method="get" action="${pageContext.request.contextPath}/produtos" style="display: inline;">

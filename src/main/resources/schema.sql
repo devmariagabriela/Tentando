@@ -29,6 +29,7 @@ CREATE TABLE produto(
     peso_kg DECIMAL(10,2) NOT NULL CHECK (peso_kg > 0),
     volume_m3 DECIMAL(10,3) NOT NULL CHECK (volume_m3 > 0),
     valor_unitario DECIMAL(10,2) NOT NULL CHECK (valor_unitario >= 0),
+    quantidade_estoque INTEGER NOT NULL DEFAULT 0 CHECK (quantidade_estoque >= 0), -- NOVO CAMPO
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -71,14 +72,14 @@ INSERT INTO cliente (documento, nome, tipo, telefone, email, endereco_id) VALUES
 ('11122233344', 'Carlos Santos', 'F', '(31) 97777-6666', 'carlos.santos@email.com', 4),
 ('55667788000199', 'Logística Express', 'J', '(11) 2222-3333', 'vendas@logisticaexpress.com', 5);
 
-INSERT INTO produto (nome, descricao, peso_kg, volume_m3, valor_unitario) VALUES
-('Notebook Dell Inspiron', 'Notebook para uso profissional', 2.3, 0.003, 3500.00),
-('Smartphone Samsung Galaxy', 'Smartphone Android', 0.25, 0.00015, 2200.00),
-('Monitor LG 24"', 'Monitor Full HD', 4.5, 0.012, 899.90),
-('Teclado Mecânico RGB', 'Teclado gamer com iluminação', 1.2, 0.002, 299.00),
-('Mouse Gamer', 'Mouse com sensor óptico', 0.15, 0.0003, 150.00),
-('Tablet Apple iPad', 'Tablet iOS', 0.48, 0.0008, 4200.00),
-('Impressora Multifuncional', 'Impressora, scanner e copiadora', 8.7, 0.025, 650.00);
+INSERT INTO produto (nome, descricao, peso_kg, volume_m3, valor_unitario, quantidade_estoque) VALUES -- ALTERADO
+('Notebook Dell Inspiron', 'Notebook para uso profissional', 2.3, 0.003, 3500.00, 100), -- ALTERADO
+('Smartphone Samsung Galaxy', 'Smartphone Android', 0.25, 0.00015, 2200.00, 100), -- ALTERADO
+('Monitor LG 24"', 'Monitor Full HD', 4.5, 0.012, 899.90, 100), -- ALTERADO
+('Teclado Mecânico RGB', 'Teclado gamer com iluminação', 1.2, 0.002, 299.00, 100), -- ALTERADO
+('Mouse Gamer', 'Mouse com sensor óptico', 0.15, 0.0003, 150.00, 100), -- ALTERADO
+('Tablet Apple iPad', 'Tablet iOS', 0.48, 0.0008, 4200.00, 100), -- ALTERADO
+('Impressora Multifuncional', 'Impressora, scanner e copiadora', 8.7, 0.025, 650.00, 100); -- ALTERADO
 
 INSERT INTO entrega (codigo_rastreio, data_criacao, data_prevista_entrega, status, valor_frete, observacoes, remetente_id, destinatario_id) VALUES
 ('TC20240001', '2024-01-15', '2024-01-20', 'PENDENTE', 45.50, 'Fragil - Manuseio com cuidado', 2, 1),
