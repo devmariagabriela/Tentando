@@ -173,7 +173,7 @@
 <body>
     <header>
         <div class="container">
-            <h1> 🐢 Tartaruga Cometa</h1>
+            <h1>  Tartaruga Cometa</h1>
             <p>Sistema de Controle de Entregas</p>
         </div>
     </header>

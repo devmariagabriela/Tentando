@@ -140,7 +140,7 @@
 </head>
 <body>
     <header>
-        <h1>🐢 Tartaruga Cometa</h1>
+        <h1> Tartaruga Cometa</h1>
         <p>Sistema de Controle de Entregas</p>
     </header>
 
