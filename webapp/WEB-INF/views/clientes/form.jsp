@@ -50,8 +50,8 @@
                         <label for="tipoDocumento">Tipo de Documento *</label>
                         <select id="tipoDocumento" name="tipoDocumento" required>
                             <option value="">Selecione...</option>
-                            <option value="F" <c:if test="${cliente.tipoDocumento == 'F'}">selected</c:if>>CPF (Pessoa Física   )</option>
-                            <option value="J" <c:if test="${cliente.tipoDocumento == 'J'}">selected</c:if>>CNPJ (Pessoa Jurídica)</option>
+                            <option value="F" <c:if test="${cliente.tipoDocumento == 'F'}">selected</c:if>>CPF (Pessoa Fï¿½sica   )</option>
+                            <option value="J" <c:if test="${cliente.tipoDocumento == 'J'}">selected</c:if>>CNPJ (Pessoa Jurï¿½dica)</option>
                         </select>
                     </div>
 
@@ -68,7 +68,7 @@
 
 
                 <div class="form-group">
-                    <label for="nome">Nome/Razão Social *</label>
+                    <label for="nome">Nome/Razï¿½o Social *</label>
                     <input type="text" id="nome" name="nome" maxlength="50" oninput="this.value = this.value.replace(/[0-9]/g, '')" value="${cliente.nome}"/>  
   
 
@@ -95,7 +95,7 @@
                 <hr style="margin: 30px 0; border: none; border-top: 1px solid #e2e8f0;">
 
 
-                <h3 style="color: #667eea; margin-bottom: 15px;">Endereço</h3>
+                <h3 style="color: #667eea; margin-bottom: 15px;">Endereï¿½o</h3>
 
 
                 <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
@@ -117,7 +117,7 @@
 
                 <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
                     <div class="form-group">
-                        <label for="numero">Número *</label>
+                        <label for="numero">Nï¿½mero *</label>
                         <input type="text" id="numero" name="numero" required value="${cliente.endereco.numero}" maxlength="5">
                     </div>
 
@@ -185,16 +185,16 @@
 
                 <div style="text-align: right;">
                     <a href="${pageContext.request.contextPath}/clientes" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-primary"><c:choose><c:when test="${not empty cliente}">Salvar Alterações</c:when><c:otherwise>Cadastrar Cliente</c:otherwise></c:choose></button>
+                    <button type="submit" class="btn btn-primary"><c:choose><c:when test="${not empty cliente}">Salvar Alteraï¿½ï¿½es</c:when><c:otherwise>Cadastrar Cliente</c:otherwise></c:choose></button>
                 </div>
             </form>
         </div>
     </div>
     
     <script>
-        // Função para aplicar a máscara de CPF ou CNPJ
+        // Funï¿½ï¿½o para aplicar a mï¿½scara de CPF ou CNPJ
         function mascaraDocumento(campo) {
-            let valor = campo.value.replace(/\D/g, ''); // Remove tudo o que não é dígito
+            let valor = campo.value.replace(/\D/g, ''); // Remove tudo o que nï¿½o ï¿½ dï¿½gito
             
             if (valor.length <= 11) { // CPF
                 valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
@@ -212,20 +212,20 @@
             campo.value = valor;
         }
 
-        // Função para aplicar a máscara de Telefone (com 9º dígito)
+        // Funï¿½ï¿½o para aplicar a mï¿½scara de Telefone (com 9ï¿½ dï¿½gito)
         function mascaraTelefone(campo) {
-            let valor = campo.value.replace(/\D/g, ''); // Remove tudo o que não é dígito
+            let valor = campo.value.replace(/\D/g, ''); // Remove tudo o que nï¿½o ï¿½ dï¿½gito
             
             if (valor.length > 11) {
-                valor = valor.substring(0, 11); // Limita a 11 dígitos para evitar problemas com a máscara
+                valor = valor.substring(0, 11); // Limita a 11 dï¿½gitos para evitar problemas com a mï¿½scara
             }
 
-            valor = valor.replace(/^(\d{2})(\d)/g, '($1) $2'); // Coloca parênteses em volta dos dois primeiros dígitos
+            valor = valor.replace(/^(\d{2})(\d)/g, '($1) $2'); // Coloca parï¿½nteses em volta dos dois primeiros dï¿½gitos
             
-            if (valor.length <= 14) { // Telefone com 8 dígitos (ex: (00) 0000-0000)
+            if (valor.length <= 14) { // Telefone com 8 dï¿½gitos (ex: (00) 0000-0000)
                 valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
                 campo.maxLength = 14;
-            } else { // Telefone com 9 dígitos (ex: (00) 00000-0000)
+            } else { // Telefone com 9 dï¿½gitos (ex: (00) 00000-0000)
                 valor = valor.replace(/(\d{5})(\d)/, '$1-$2');
                 campo.maxLength = 15;
             }
@@ -233,9 +233,9 @@
             campo.value = valor;
         }
 
-        // Função para aplicar a máscara de CEP
+        // Funï¿½ï¿½o para aplicar a mï¿½scara de CEP
         function mascaraCEP(campo) {
-            let valor = campo.value.replace(/\D/g, ''); // Remove tudo o que não é dígito
+            let valor = campo.value.replace(/\D/g, ''); // Remove tudo o que nï¿½o ï¿½ dï¿½gito
             
             valor = valor.replace(/^(\d{5})(\d)/, '$1-$2');
             campo.maxLength = 9; // 00000-000
@@ -243,7 +243,7 @@
             campo.value = valor;
         }
 
-        // Inicializa as máscaras se o campo já tiver valor (caso de edição)
+        // Inicializa as mï¿½scaras se o campo jï¿½ tiver valor (caso de ediï¿½ï¿½o)
         document.addEventListener('DOMContentLoaded', function() {
             const documento = document.getElementById('documento');
             if (documento && documento.value) {

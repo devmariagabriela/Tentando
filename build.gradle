@@ -1,32 +1,30 @@
 plugins {
-   id 'java'
-   id 'war'
+    id 'java'
+    id 'war'
 }
+
 group = 'br.com.tartarugacometa'
 version = '1.0.0'
+
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
+
+// CONFIGURAÇÃO PARA RECONHECER A PASTA NA RAIZ
+webAppDirName = 'webapp'
+
 repositories {
-   mavenCentral()
+    mavenCentral()
 }
+
 dependencies {
-   // API de Servlets (escopo 'providedCompile', pq o Tomcat já tem)
-   providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
-  
-   // API de JSP (também 'providedCompile')
-   providedCompile 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
-  
-   // JSTL para JSP
-   implementation 'javax.servlet:jstl:1.2'
-  
-   // Driver do PostgreSQL
-   implementation 'org.postgresql:postgresql:42.6.0'
+    providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
+    providedCompile 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
+    implementation 'javax.servlet:jstl:1.2'
+    implementation 'org.postgresql:postgresql:42.6.0'
 }
+
 war {
-   archiveFileName = 'turtlee.war'
+    archiveFileName = 'turtlee.war'
+    from 'webapp'
+    webXml = file('webapp/WEB-INF/web.xml')
 }
-
-
-
-
-
