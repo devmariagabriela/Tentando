@@ -22,7 +22,7 @@
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
             <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li>
             <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>
-     		<li><a href="${pageContext.request.contextPath}/produtos/estoque">Estoque</a></li>           
+            <li><a href="${pageContext.request.contextPath}/produtos/estoque">Estoque</a></li>           
             
         </ul>
     </nav>
@@ -49,15 +49,27 @@
                         <input type="number" id="pesoKg" name="pesoKg" step="0.01" min="0.01" value="${produto.pesoKg}" required>
                     </div>
 
-                    <div class="fm-group">
-                        <label for="volumeM3">Volume (m³) *</label>
+                    <!-- ALTERADO: Dividido em dois campos - valor e unidade -->
+                    <div class="form-group">
+                        <label for="volumeM3">Volume *</label>
                         <input type="number" id="volumeM3" name="volumeM3" step="0.001" min="0.001" value="${produto.volumeM3}" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="valorUnitario">Valor Unitário (R$) *</label>
-                        <input type="number" id="valorUnitario" name="valorUnitario" step="0.01" min="0" value="${produto.valorUnitario}" required>
+                        <label for="unidadeVolume">Unidade de Volume *</label>
+                        <select id="unidadeVolume" name="unidadeVolume" required>
+                            <option value="cm3" ${produto.unidadeVolume == 'cm3' ? 'selected' : ''}>cm³ (centímetros cúbicos)</option>
+                            <option value="ml" ${produto.unidadeVolume == 'ml' ? 'selected' : ''}>mL (mililitros)</option>
+                            <option value="dm3" ${produto.unidadeVolume == 'dm3' ? 'selected' : ''}>dm³ (decímetros cúbicos)</option>
+                            <option value="l" ${produto.unidadeVolume == 'l' ? 'selected' : ''}>L (litros)</option>
+                            <option value="m3" ${produto.unidadeVolume == 'm3' || produto.unidadeVolume == null ? 'selected' : ''}>m³ (metros cúbicos)</option>
+                        </select>
                     </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="valorUnitario">Valor Unitário (R$) *</label>
+                    <input type="number" id="valorUnitario" name="valorUnitario" step="0.01" min="0" value="${produto.valorUnitario}" required>
                 </div>
 
                 <hr style="margin: 30px 0; border: none; border-top: 1px solid #e2e8f0;">

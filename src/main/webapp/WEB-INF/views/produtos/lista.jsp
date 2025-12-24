@@ -58,8 +58,8 @@
                                 <th>ID</th>
                                 <th>Nome</th>
                                 <th>Descrição</th>
-                                <th>Peso (kg   )</th>
-                                <th>Volume (m³)</th>
+                                <th>Peso (kg )</th>
+                                <th>Volume</th> <!-- ALTERADO: removido unidade fixa -->
                                 <th>Valor Unitário</th>
                                 <th>Estoque</th>
                                 <th>Ações</th>
@@ -72,7 +72,18 @@
                                     <td><strong>${produto.nome}</strong></td>
                                     <td>${produto.descricao}</td>
                                     <td><fmt:formatNumber value="${produto.pesoKg}" pattern="#,##0.00"/></td>
-                                    <td><fmt:formatNumber value="${produto.volumeM3}" pattern="#,##0.000"/></td>
+                                    <!-- ALTERADO: Exibir volume com unidade -->
+                                    <td>
+                                        <fmt:formatNumber value="${produto.volumeM3}" pattern="#,##0.000"/> 
+                                        <c:choose>
+                                            <c:when test="${produto.unidadeVolume == 'cm3'}">cm³</c:when>
+                                            <c:when test="${produto.unidadeVolume == 'ml'}">mL</c:when>
+                                            <c:when test="${produto.unidadeVolume == 'dm3'}">dm³</c:when>
+                                            <c:when test="${produto.unidadeVolume == 'l'}">L</c:when>
+                                            <c:when test="${produto.unidadeVolume == 'm3'}">m³</c:when>
+                                            <c:otherwise>m³</c:otherwise>
+                                        </c:choose>
+                                    </td>
                                     <td>R$ <fmt:formatNumber value="${produto.valorUnitario}" pattern="#,##0.00"/></td>
                                     <td>${produto.quantidadeEstoque}</td>
                                     <td>

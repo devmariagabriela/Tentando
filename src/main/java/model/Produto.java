@@ -9,26 +9,28 @@ public class Produto {
     private String descricao;
     private Double pesoKg;
     private Double volumeM3;
+    private String unidadeVolume; // NOVO CAMPO
     private Double valorUnitario;
-    private Integer quantidadeEstoque; // NOVO CAMPO
+    private Integer quantidadeEstoque;
     private LocalDateTime createdAt;
     
-    // CONS
+    // CONSTRUTORES
     
     public Produto() {
     }
     
     public Produto(String nome, String descricao, Double pesoKg, 
-                   Double volumeM3, Double valorUnitario, Integer quantidadeEstoque) { // CONSTRUTOR ALTERADO
+                   Double volumeM3, String unidadeVolume, Double valorUnitario, Integer quantidadeEstoque) {
         this.nome = nome;
         this.descricao = descricao;
         this.pesoKg = pesoKg;
         this.volumeM3 = volumeM3;
+        this.unidadeVolume = unidadeVolume; // NOVO
         this.valorUnitario = valorUnitario;
-        this.quantidadeEstoque = quantidadeEstoque; // NOVO
+        this.quantidadeEstoque = quantidadeEstoque;
     }
     
-    // GS
+    // GETTERS E SETTERS
     
     public Integer getId() {
         return id;
@@ -70,11 +72,20 @@ public class Produto {
         this.volumeM3 = volumeM3;
     }
     
-    public Integer getQuantidadeEstoque() { // NOVO GETTER
+    // NOVO GETTER E SETTER PARA UNIDADE DE VOLUME
+    public String getUnidadeVolume() {
+        return unidadeVolume;
+    }
+    
+    public void setUnidadeVolume(String unidadeVolume) {
+        this.unidadeVolume = unidadeVolume;
+    }
+    
+    public Integer getQuantidadeEstoque() {
         return quantidadeEstoque;
     }
 
-    public void setQuantidadeEstoque(Integer quantidadeEstoque) { // NOVO SETTER
+    public void setQuantidadeEstoque(Integer quantidadeEstoque) {
         this.quantidadeEstoque = quantidadeEstoque;
     }
 
@@ -94,15 +105,71 @@ public class Produto {
         this.createdAt = createdAt;
     }
     
+    /**
+     * Converte o volume para metros cúbicos (m³) independente da unidade cadastrada.
+     * Útil para cálculos de frete e logística.
+     * @return Volume em metros cúbicos
+     */
+    public Double getVolumeEmMetrosCubicos() {
+        if (volumeM3 == null || unidadeVolume == null) {
+            return volumeM3;
+        }
+        
+        switch (unidadeVolume.toLowerCase()) {
+            case "cm3":
+            case "ml":
+                return volumeM3 / 1000000.0; // 1 m³ = 1.000.000 cm³
+            case "dm3":
+            case "l":
+                return volumeM3 / 1000.0; // 1 m³ = 1.000 dm³
+            case "m3":
+            default:
+                return volumeM3;
+        }
+    }
+    
+    /**
+     * Retorna o volume formatado com sua unidade.
+     * @return String formatada (ex: "500 cm³", "2.5 L")
+     */
+    public String getVolumeFormatado() {
+        if (volumeM3 == null || unidadeVolume == null) {
+            return "-";
+        }
+        
+        String unidadeExibicao;
+        switch (unidadeVolume.toLowerCase()) {
+            case "cm3":
+                unidadeExibicao = "cm³";
+                break;
+            case "dm3":
+                unidadeExibicao = "dm³";
+                break;
+            case "m3":
+                unidadeExibicao = "m³";
+                break;
+            case "ml":
+                unidadeExibicao = "mL";
+                break;
+            case "l":
+                unidadeExibicao = "L";
+                break;
+            default:
+                unidadeExibicao = unidadeVolume;
+        }
+        
+        return String.format("%.3f %s", volumeM3, unidadeExibicao);
+    }
+    
     @Override
     public String toString() {
         return "Produto{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", pesoKg=" + pesoKg +
-                ", volumeM3=" + volumeM3 +
+                ", volume=" + getVolumeFormatado() +
                 ", valorUnitario=" + valorUnitario +
-                ", quantidadeEstoque=" + quantidadeEstoque + // ALTERADO
+                ", quantidadeEstoque=" + quantidadeEstoque +
                 '}';
     }
 }

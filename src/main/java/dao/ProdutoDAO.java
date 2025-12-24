@@ -16,17 +16,19 @@ public class ProdutoDAO {
     
     
     public Integer salvar(Produto produto) throws SQLException {
-        String sql = "INSERT INTO produto (nome, peso_kg, volume_m3, valor_unitario, quantidade_estoque) " + // ALTERADO
-                     "VALUES (?, ?, ?, ?, ?)"; // ALTERADO
+        String sql = "INSERT INTO produto (nome, descricao, peso_kg, volume_m3, unidade_volume, valor_unitario, quantidade_estoque) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?)"; // ALTERADO - adicionado unidade_volume
         
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             
             stmt.setString(1, produto.getNome());
-            stmt.setDouble(2, produto.getPesoKg());
-            stmt.setDouble(3, produto.getVolumeM3());
-            stmt.setDouble(4, produto.getValorUnitario());
-            stmt.setInt(5, produto.getQuantidadeEstoque()); // NOVO
+            stmt.setString(2, produto.getDescricao());
+            stmt.setDouble(3, produto.getPesoKg());
+            stmt.setDouble(4, produto.getVolumeM3());
+            stmt.setString(5, produto.getUnidadeVolume() != null ? produto.getUnidadeVolume() : "m3"); // NOVO
+            stmt.setDouble(6, produto.getValorUnitario());
+            stmt.setInt(7, produto.getQuantidadeEstoque());
             
             stmt.executeUpdate();
             
@@ -81,7 +83,7 @@ public class ProdutoDAO {
   
     public void atualizar(Produto produto) throws SQLException {
         String sql = "UPDATE produto SET nome = ?, descricao = ?, peso_kg = ?, " +
-                     "volume_m3 = ?, valor_unitario = ?, quantidade_estoque = ? WHERE id = ?"; // ALTERADO
+                     "volume_m3 = ?, unidade_volume = ?, valor_unitario = ?, quantidade_estoque = ? WHERE id = ?"; // ALTERADO
         
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -90,9 +92,10 @@ public class ProdutoDAO {
             stmt.setString(2, produto.getDescricao());
             stmt.setDouble(3, produto.getPesoKg());
             stmt.setDouble(4, produto.getVolumeM3());
-            stmt.setDouble(5, produto.getValorUnitario());
-            stmt.setInt(6, produto.getQuantidadeEstoque()); // NOVO
-            stmt.setInt(7, produto.getId()); // ALTERADO
+            stmt.setString(5, produto.getUnidadeVolume() != null ? produto.getUnidadeVolume() : "m3"); // NOVO
+            stmt.setDouble(6, produto.getValorUnitario());
+            stmt.setInt(7, produto.getQuantidadeEstoque());
+            stmt.setInt(8, produto.getId());
             
             stmt.executeUpdate();
         }
@@ -123,14 +126,23 @@ public class ProdutoDAO {
             // Ignora o erro se a coluna 'descricao' não existir
         }
         
-        // TO ENDOIDANDO AQUI, MEU DEUSSSSSSSSSSS
         produto.setPesoKg(rs.getDouble("peso_kg"));
         produto.setVolumeM3(rs.getDouble("volume_m3"));
+        
+        // NOVO: Ler unidade de volume
+        try {
+            String unidadeVolume = rs.getString("unidade_volume");
+            produto.setUnidadeVolume(unidadeVolume != null ? unidadeVolume : "m3");
+        } catch (SQLException e) {
+            // Se a coluna não existir, usa m3 como padrão
+            produto.setUnidadeVolume("m3");
+        }
+        
         produto.setValorUnitario(rs.getDouble("valor_unitario"));
         
         // Adicionando o campo de estoque
         try {
-            produto.setQuantidadeEstoque(rs.getInt("quantidade_estoque")); // NOVO
+            produto.setQuantidadeEstoque(rs.getInt("quantidade_estoque"));
         } catch (SQLException e) {
             // Ignora o erro se a coluna 'quantidade_estoque' não existir
         }
@@ -154,7 +166,7 @@ public class ProdutoDAO {
      * @param quantidade Variação do estoque (positivo para adicionar, negativo para remover).
      * @throws SQLException
      */
-    public void atualizarEstoque(Integer produtoId, Integer quantidade) throws SQLException { // NOVO MÉTODO
+    public void atualizarEstoque(Integer produtoId, Integer quantidade) throws SQLException {
         String sql = "UPDATE produto SET quantidade_estoque = quantidade_estoque + ? WHERE id = ?";
         
         try (Connection conn = ConnectionFactory.getConnection();
