@@ -7,11 +7,173 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tartaruga Cometa - Sistema de Entregas</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <style>
+        /* Estilização Adicionada */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #27ae60;
+            --warning-color: #f39c12;
+            --info-color: #3498db;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --light-bg: #f4f7f6;
+            --white: #ffffff;
+            --text-color: #333;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1 );
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            opacity: 0.8;
+        }
+
+        nav {
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card {
+            text-align: center;
+            border-top: 5px solid var(--accent-color);
+        }
+
+        .stat-card p {
+            font-size: 0.9em;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .stat-card h3 {
+            font-size: 2em;
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th {
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: left;
+            padding: 12px;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: white;
+            display: inline-block;
+        }
+
+        .badge-pendente { background-color: var(--warning-color); }
+        .badge-em-transito { background-color: var(--info-color); }
+        .badge-realizada { background-color: var(--success-color); }
+        .badge-cancelada { background-color: var(--danger-color); }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            background-color: var(--primary-color);
+            color: var(--white);
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1> Tartaruga Cometa</h1>
+            <h1> 🐢 Tartaruga Cometa</h1>
             <p>Sistema de Controle de Entregas</p>
         </div>
     </header>
@@ -22,7 +184,6 @@
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
             <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li>
             <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>  
-            
         </ul>
     </nav>
 
