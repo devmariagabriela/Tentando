@@ -27,7 +27,7 @@ public class EstoqueServlet extends HttpServlet {
             List<Produto> produtos = produtoBO.listarTodos();
             request.setAttribute("produtos", produtos);
             
-            // O caminho do JSP deve ser /WEB-INF/views/produtos/estoque/gerenciar.jsp
+         
             request.getRequestDispatcher("/WEB-INF/views/produtos/estoque/gerenciar.jsp")
                    .forward(request, response);
             
@@ -54,7 +54,6 @@ public class EstoqueServlet extends HttpServlet {
                 throw new IllegalArgumentException("A quantidade deve ser um número positivo.");
             }
             
-            // A lógica do BO/DAO é: positivo para adicionar, negativo para remover.
             Integer variacaoEstoque = quantidade;
             String mensagemSucesso = "Entrada de estoque realizada com sucesso!";
             
@@ -62,12 +61,10 @@ public class EstoqueServlet extends HttpServlet {
                 variacaoEstoque = -quantidade;
                 mensagemSucesso = "Saída de estoque realizada com sucesso!";
                 
-                // Verificação de estoque antes de subtrair
                 Produto produto = produtoBO.buscarPorId(produtoId);
                 if (produto == null) {
                     throw new IllegalArgumentException("Produto não encontrado.");
                 }
-                // Verifica se o estoque atual (produto.getQuantidadeEstoque()) menos a quantidade a ser removida (variacaoEstoque é negativo) é menor que zero.
                 if (produto.getQuantidadeEstoque() + variacaoEstoque < 0) {
                     throw new IllegalArgumentException("Estoque insuficiente para realizar a saída. Estoque atual: " + produto.getQuantidadeEstoque());
                 }

@@ -18,16 +18,10 @@ public class ProdutoBO {
         return produtoDAO.buscarPorId(id);
     }
 
-    /**
-     * Atualiza a quantidade em estoque de um produto.
-     * @param produtoId ID do produto.
-     * @param quantidade Variação do estoque (positivo para adicionar, negativo para remover).
-     * @throws SQLException
-     */
+
     public void atualizarEstoque(Integer produtoId, Integer quantidade) throws SQLException { // NOVO MÉTODO
         produtoDAO.atualizarEstoque(produtoId, quantidade);
     }
     
-    // Outros métodos de BO (salvar, atualizar, deletar) podem ser adicionados aqui se necessário.
-    // Por enquanto, focamos no controle de estoque.
+    
 }
