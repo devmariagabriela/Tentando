@@ -33,7 +33,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1300px; /* Aumentado para acomodar mais colunas */
             margin: 0 auto;
             padding: 20px;
         }
@@ -220,6 +220,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
+            font-size: 14px;
         }
 
         table th {
@@ -269,6 +270,11 @@
         .btn-danger { background-color: var(--danger-color); color: white; }
         .btn-new { background-color: var(--accent-color); color: white; padding: 10px 20px; font-size: 14px; }
 
+        .valor-negrito {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
         footer {
             text-align: center;
             padding: 30px 0;
@@ -289,7 +295,7 @@
 <body>
     <header>
         <div class="container">
-            <h1>Tartaruga Cometa</h1>
+            <h1> Tartaruga Cometa</h1>
             <p>Sistema de Controle de Entregas</p>
         </div>
     </header>
@@ -341,7 +347,9 @@
                         <th>Remetente</th>
                         <th>Destinatário</th>
                         <th>Origem/Destino</th>
-                        <th>Valor Total</th>
+                        <th>V. Produtos</th>
+                        <th>V. Frete</th>
+                        <th>Total Geral</th>
                         <th>Status</th>
                         <th>Ações</th>
                     </tr>
@@ -353,7 +361,9 @@
                             <td>${entrega.remetente.nome}</td>
                             <td>${entrega.destinatario.nome}</td>
                             <td>${entrega.enderecoOrigem.cidade} → ${entrega.enderecoDestino.cidade}</td>
-                            <td>R$ <fmt:formatNumber value="${entrega.valorTotalGeral}" pattern="#,##0.00"/></td>
+                            <td>R$ <fmt:formatNumber value="${entrega.valorTotalProdutos}" pattern="#,##0.00"/></td>
+                            <td>R$ <fmt:formatNumber value="${entrega.valorFrete}" pattern="#,##0.00"/></td>
+                            <td class="valor-negrito">R$ <fmt:formatNumber value="${entrega.valorTotalGeral}" pattern="#,##0.00"/></td>
                             <td>
                                 <c:choose>
                                     <c:when test="${entrega.status == 'PENDENTE'}"><span class="badge badge-pendente">Pendente</span></c:when>
