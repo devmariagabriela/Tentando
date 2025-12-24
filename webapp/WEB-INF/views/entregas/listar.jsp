@@ -108,57 +108,108 @@
             transform: translateY(-5px);
         }
 
-        /* Estilo dos Filtros de Status (Restaurados) */
-        .filters-container {
+        /* Estilo do Dropdown de Filtro */
+        .controls-row {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            justify-content: space-between;
             align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
-        .filter-btn {
-            padding: 8px 15px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 13px;
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            background-color: var(--white);
+            color: var(--text-color);
+            padding: 10px 20px;
+            font-size: 14px;
             font-weight: 600;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             transition: all 0.3s;
-            border: 2px solid transparent;
+            outline: none;
         }
 
-        .filter-all { background: #eee; color: #333; }
-        .filter-pendente { background: #fef9e7; color: var(--warning-color); border-color: var(--warning-color); }
-        .filter-transito { background: #ebf5fb; color: var(--info-color); border-color: var(--info-color); }
-        .filter-realizada { background: #eafaf1; color: var(--success-color); border-color: var(--success-color); }
-        .filter-cancelada { background: #fdedec; color: var(--danger-color); border-color: var(--danger-color); }
-
-        .filter-btn:hover, .filter-btn.active {
-            transform: scale(1.05);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        .dropdown-btn:hover, .dropdown-btn.active {
+            border-color: var(--accent-color);
+            background-color: #f9f9f9;
         }
 
-        .filter-all.active { background: #333; color: white; }
-        .filter-pendente.active { background: var(--warning-color); color: white; }
-        .filter-transito.active { background: var(--info-color); color: white; }
-        .filter-realizada.active { background: var(--success-color); color: white; }
-        .filter-cancelada.active { background: var(--danger-color); color: white; }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--white);
+            min-width: 220px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1001;
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .dropdown-content.show {
+            display: block;
+            animation: fadeIn 0.2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-content a {
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #f9f9f9;
+        }
+
+        .dropdown-content a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+            color: var(--accent-color);
+        }
+
+        .active-filter-label {
+            font-size: 12px;
+            color: var(--accent-color);
+            font-weight: bold;
+            background: #eafaf1;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
 
         /* Estilo da Barra de Pesquisa */
         .search-container {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
+            flex: 1;
+            min-width: 300px;
         }
 
         .search-input {
-            flex: 1;
-            padding: 12px 15px;
+            width: 100%;
+            padding: 10px 15px;
             border: 2px solid #ddd;
             border-radius: 5px;
             font-size: 14px;
             transition: border-color 0.3s;
             outline: none;
+            box-sizing: border-box;
         }
 
         .search-input:focus {
@@ -218,12 +269,6 @@
         .btn-danger { background-color: var(--danger-color); color: white; }
         .btn-new { background-color: var(--accent-color); color: white; padding: 10px 20px; font-size: 14px; }
 
-        .btn-new:hover {
-            background-color: #229954;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
         footer {
             text-align: center;
             padding: 30px 0;
@@ -244,7 +289,7 @@
 <body>
     <header>
         <div class="container">
-            <h1> Tartaruga Cometa</h1>
+            <h1>Tartaruga Cometa</h1>
             <p>Sistema de Controle de Entregas</p>
         </div>
     </header>
@@ -265,25 +310,35 @@
                 <a href="${pageContext.request.contextPath}/entregas/nova" class="btn btn-new">➕ NOVA ENTREGA</a>
             </div>
 
-            <!-- Filtros de Status (Restaurados) -->
-            <div class="filters-container">
-                <span style="font-weight: 600; color: #666; margin-right: 10px;">Filtrar por Status:</span>
-                <a href="${pageContext.request.contextPath}/entregas/listar" class="filter-btn filter-all ${empty statusFiltro ? 'active' : ''}">Todas</a>
-                <a href="${pageContext.request.contextPath}/entregas/listar?status=PENDENTE" class="filter-btn filter-pendente ${statusFiltro == 'PENDENTE' ? 'active' : ''}">Pendentes</a>
-                <a href="${pageContext.request.contextPath}/entregas/listar?status=EM_TRANSITO" class="filter-btn filter-transito ${statusFiltro == 'EM_TRANSITO' ? 'active' : ''}">Em Trânsito</a>
-                <a href="${pageContext.request.contextPath}/entregas/listar?status=REALIZADA" class="filter-btn filter-realizada ${statusFiltro == 'REALIZADA' ? 'active' : ''}">Realizadas</a>
-                <a href="${pageContext.request.contextPath}/entregas/listar?status=CANCELADA" class="filter-btn filter-cancelada ${statusFiltro == 'CANCELADA' ? 'active' : ''}">Canceladas</a>
-            </div>
+            <!-- Controles: Dropdown de Filtro e Barra de Pesquisa -->
+            <div class="controls-row">
+                <div class="dropdown">
+                    <button class="dropdown-btn" id="dropdownBtn" onclick="toggleDropdown()">
+                        🔍 Filtrar por Status 
+                        <c:if test="${not empty statusFiltro}">
+                            <span class="active-filter-label">${statusFiltro}</span>
+                        </c:if>
+                        <span style="font-size: 10px; margin-left: 5px;">▼</span>
+                    </button>
+                    <div class="dropdown-content" id="dropdownContent">
+                        <a href="${pageContext.request.contextPath}/entregas/listar">Todas as Entregas</a>
+                        <a href="${pageContext.request.contextPath}/entregas/listar?status=PENDENTE">Pendentes</a>
+                        <a href="${pageContext.request.contextPath}/entregas/listar?status=EM_TRANSITO">Em Trânsito</a>
+                        <a href="${pageContext.request.contextPath}/entregas/listar?status=REALIZADA">Realizadas</a>
+                        <a href="${pageContext.request.contextPath}/entregas/listar?status=CANCELADA">Canceladas</a>
+                    </div>
+                </div>
 
-            <!-- Barra de Pesquisa -->
-            <div class="search-container">
-                <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar nesta lista por código, destinatário ou cidade..." onkeyup="filterTable()">
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar por código, remetente, destinatário ou cidade..." onkeyup="filterTable()">
+                </div>
             </div>
 
             <table id="dataTable">
                 <thead>
                     <tr>
                         <th>Código</th>
+                        <th>Remetente</th>
                         <th>Destinatário</th>
                         <th>Origem/Destino</th>
                         <th>Valor Total</th>
@@ -295,6 +350,7 @@
                     <c:forEach var="entrega" items="${entregas}">
                         <tr>
                             <td><strong>#${entrega.codigo}</strong></td>
+                            <td>${entrega.remetente.nome}</td>
                             <td>${entrega.destinatario.nome}</td>
                             <td>${entrega.enderecoOrigem.cidade} → ${entrega.enderecoDestino.cidade}</td>
                             <td>R$ <fmt:formatNumber value="${entrega.valorTotalGeral}" pattern="#,##0.00"/></td>
@@ -337,6 +393,24 @@
     </footer>
 
     <script>
+        function toggleDropdown() {
+            document.getElementById("dropdownContent").classList.toggle("show");
+            document.getElementById("dropdownBtn").classList.toggle("active");
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-btn') && !event.target.closest('.dropdown-btn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                        document.getElementById("dropdownBtn").classList.remove('active');
+                    }
+                }
+            }
+        }
+
         function filterTable() {
             const input = document.getElementById("searchInput");
             const filter = input.value.toLowerCase();
