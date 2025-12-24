@@ -7,95 +7,222 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nova Entrega - Tartaruga Cometa</title>
     <style>
+        /* Estilização Adicionada */
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #34495e;
             --accent-color: #27ae60;
+            --warning-color: #f39c12;
+            --info-color: #3498db;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
             --light-bg: #f4f7f6;
             --white: #ffffff;
-            --border-color: #dce4ec;
+            --text-color: #333;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1 );
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--light-bg );
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
             margin: 0;
             padding: 0;
+            line-height: 1.6;
         }
 
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
         header {
             background-color: var(--primary-color);
-            color: white;
-            padding: 20px 0;
+            color: var(--white);
+            padding: 40px 0;
             text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            opacity: 0.8;
         }
 
         nav {
             background-color: var(--secondary-color);
             padding: 10px 0;
-            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        nav ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 20px; }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
 
-        nav a { color: white; text-decoration: none; font-weight: bold; }
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
 
         .card {
-            background: white;
+            background: var(--white);
             border-radius: 8px;
-            padding: 30px;
-            margin-top: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
         }
 
-        h2, h3 { color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 8px; }
+        .card:hover {
+            transform: translateY(-5px);
+        }
 
-        .form-group { margin-bottom: 15px; }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-        label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
 
-        select, input, textarea {
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
             font-size: 14px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
         }
 
         .btn {
-            padding: 10px 20px;
-            border-radius: 4px;
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
             border: none;
             cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            text-decoration: none;
-            display: inline-block;
+            font-size: 14px;
+            margin-right: 10px;
         }
 
-        .btn-primary { background-color: var(--accent-color); color: white; }
-        .btn-secondary { background-color: #95a5a6; color: white; }
-        .btn-danger { background-color: #e74c3c; color: white; }
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
 
-        hr { border: 0; border-top: 1px solid #eee; margin: 25px 0; }
+        .btn-primary:hover {
+            background-color: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #2c3e50;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 8px 16px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            background-color: var(--primary-color);
+            color: var(--white);
+            margin-top: 50px;
+        }
+
+        hr {
+            margin: 30px 0;
+            border: none;
+            border-top: 1px solid #e2e8f0;
+        }
 
         .produto-item {
             background: #f9f9f9;
-            padding: 15px;
-            border-radius: 6px;
-            border-left: 4px solid var(--accent-color);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 5px solid var(--accent-color);
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        footer { text-align: center; padding: 20px; color: #7f8c8d; }
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1> Tartaruga Cometa</h1>
-        <p>Sistema de Controle de Entregas</p>
+        <div class="container">
+            <h1> Tartaruga Cometa</h1>
+            <p>Sistema de Controle de Entregas</p>
+        </div>
     </header>
 
     <nav>
@@ -112,7 +239,7 @@
             <h2>Cadastrar Nova Entrega</h2>
 
             <c:if test="${not empty erro}">
-                <div style="background: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
+                <div class="alert-error">
                     ${erro}
                 </div>
             </c:if>
@@ -187,7 +314,7 @@
                 <hr>
                 <h3>Produtos</h3>
                 <div id="produtos-container">
-                    <div class="produto-item" style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 15px; margin-bottom: 15px; align-items: flex-end;">
+                    <div class="produto-item" style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 15px; align-items: flex-end;">
                         <div class="form-group">
                             <label>Produto *</label>
                             <select name="produtoId" required>
@@ -208,7 +335,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-secondary" onclick="addProduto()">+ Adicionar Produto</button>
+                <button type="button" class="btn btn-secondary" onclick="addProduto()" style="margin-top: 10px;">➕ Adicionar Produto</button>
 
                 <hr>
                 <div style="text-align: right;">

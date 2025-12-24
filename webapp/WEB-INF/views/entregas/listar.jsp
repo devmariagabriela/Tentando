@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listar Entregas - Tartaruga Cometa</title>
     <style>
+        /* Estilização Adicionada */
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #34495e;
@@ -40,71 +41,141 @@
         header {
             background-color: var(--primary-color);
             color: var(--white);
-            padding: 30px 0;
+            padding: 40px 0;
             text-align: center;
             box-shadow: var(--shadow);
         }
 
-        header h1 { margin: 0; font-size: 2em; }
-        header p { margin: 5px 0 0; opacity: 0.8; }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: 2px;
+        }
+
+        header p {
+            margin: 10px 0 0;
+            opacity: 0.8;
+        }
 
         nav {
             background-color: var(--secondary-color);
             padding: 10px 0;
-            text-align: center;
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        nav a {
-            color: var(--white);
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: 600;
-            transition: color 0.3s;
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
         }
 
-        nav a:hover { color: var(--accent-color); }
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
 
         .card {
             background: var(--white);
             border-radius: 8px;
             padding: 25px;
-            margin-top: 20px;
+            margin-bottom: 20px;
             box-shadow: var(--shadow);
+            transition: transform 0.3s;
         }
 
-        h2 { color: var(--primary-color); margin: 0; }
+        .card:hover {
+            transform: translateY(-5px);
+        }
 
-        .btn {
-            padding: 8px 16px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
+        /* Estilo dos Filtros de Status (Restaurados) */
+        .filters-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 13px;
             font-weight: 600;
             transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
+            border: 2px solid transparent;
         }
 
-        .btn-primary { background-color: var(--info-color); color: white; }
-        .btn-primary:hover { background-color: #2980b9; }
-        .btn-success { background-color: var(--success-color); color: white; }
-        .btn-danger { background-color: var(--danger-color); color: white; }
+        .filter-all { background: #eee; color: #333; }
+        .filter-pendente { background: #fef9e7; color: var(--warning-color); border-color: var(--warning-color); }
+        .filter-transito { background: #ebf5fb; color: var(--info-color); border-color: var(--info-color); }
+        .filter-realizada { background: #eafaf1; color: var(--success-color); border-color: var(--success-color); }
+        .filter-cancelada { background: #fdedec; color: var(--danger-color); border-color: var(--danger-color); }
+
+        .filter-btn:hover, .filter-btn.active {
+            transform: scale(1.05);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .filter-all.active { background: #333; color: white; }
+        .filter-pendente.active { background: var(--warning-color); color: white; }
+        .filter-transito.active { background: var(--info-color); color: white; }
+        .filter-realizada.active { background: var(--success-color); color: white; }
+        .filter-cancelada.active { background: var(--danger-color); color: white; }
+
+        /* Estilo da Barra de Pesquisa */
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-color);
+        }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         table th {
-            background-color: #f8f9fa;
-            color: var(--primary-color);
+            background-color: var(--primary-color);
+            color: var(--white);
             text-align: left;
             padding: 12px;
-            border-bottom: 2px solid #dee2e6;
         }
 
         table td {
@@ -112,12 +183,17 @@
             border-bottom: 1px solid #eee;
         }
 
+        table tr:hover {
+            background-color: #f9f9f9;
+        }
+
         .badge {
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 0.8em;
+            font-size: 0.85em;
             font-weight: bold;
             color: white;
+            display: inline-block;
         }
 
         .badge-pendente { background-color: var(--warning-color); }
@@ -125,40 +201,86 @@
         .badge-realizada { background-color: var(--success-color); }
         .badge-cancelada { background-color: var(--danger-color); }
 
-        .actions-flex form {
-            display: flex;
-            gap: 5px;
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-primary { background-color: var(--info-color); color: white; }
+        .btn-success { background-color: var(--success-color); color: white; }
+        .btn-danger { background-color: var(--danger-color); color: white; }
+        .btn-new { background-color: var(--accent-color); color: white; padding: 10px 20px; font-size: 14px; }
+
+        .btn-new:hover {
+            background-color: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
 
         footer {
             text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
+            padding: 30px 0;
+            background-color: var(--primary-color);
+            color: var(--white);
+            margin-top: 50px;
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 20px;
             color: #666;
+            font-style: italic;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1> Tartaruga Cometa</h1>
-        <p>Sistema de Controle de Entregas</p>
+        <div class="container">
+            <h1> Tartaruga Cometa</h1>
+            <p>Sistema de Controle de Entregas</p>
+        </div>
     </header>
 
     <nav>
-        <a href="${pageContext.request.contextPath}/">Dashboard</a>
-        <a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a>
-        <a href="${pageContext.request.contextPath}/clientes">Clientes</a>
-        <a href="${pageContext.request.contextPath}/produtos">Produtos</a>
+        <ul>
+            <li><a href="${pageContext.request.contextPath}/">Dashboard</a></li>
+            <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
+            <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li>
+            <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>
+        </ul>
     </nav>
 
     <div class="container">
         <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2>Entregas Cadastradas</h2>
-                <a href="${pageContext.request.contextPath}/entregas/nova" class="btn btn-primary">+ NOVA ENTREGA</a>
+                <a href="${pageContext.request.contextPath}/entregas/nova" class="btn btn-new">➕ NOVA ENTREGA</a>
             </div>
 
-            <table>
+            <!-- Filtros de Status (Restaurados) -->
+            <div class="filters-container">
+                <span style="font-weight: 600; color: #666; margin-right: 10px;">Filtrar por Status:</span>
+                <a href="${pageContext.request.contextPath}/entregas/listar" class="filter-btn filter-all ${empty statusFiltro ? 'active' : ''}">Todas</a>
+                <a href="${pageContext.request.contextPath}/entregas/listar?status=PENDENTE" class="filter-btn filter-pendente ${statusFiltro == 'PENDENTE' ? 'active' : ''}">Pendentes</a>
+                <a href="${pageContext.request.contextPath}/entregas/listar?status=EM_TRANSITO" class="filter-btn filter-transito ${statusFiltro == 'EM_TRANSITO' ? 'active' : ''}">Em Trânsito</a>
+                <a href="${pageContext.request.contextPath}/entregas/listar?status=REALIZADA" class="filter-btn filter-realizada ${statusFiltro == 'REALIZADA' ? 'active' : ''}">Realizadas</a>
+                <a href="${pageContext.request.contextPath}/entregas/listar?status=CANCELADA" class="filter-btn filter-cancelada ${statusFiltro == 'CANCELADA' ? 'active' : ''}">Canceladas</a>
+            </div>
+
+            <!-- Barra de Pesquisa -->
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar nesta lista por código, destinatário ou cidade..." onkeyup="filterTable()">
+            </div>
+
+            <table id="dataTable">
                 <thead>
                     <tr>
                         <th>Código</th>
@@ -186,33 +308,64 @@
                             </td>
                             <td>
                                 <c:if test="${entrega.status != 'REALIZADA' and entrega.status != 'CANCELADA'}">
-                                    <div class="actions-flex">
-                                        <form method="post" action="${pageContext.request.contextPath}/entregas/atualizar-status">
-                                            <input type="hidden" name="entregaId" value="${entrega.id}">
-                                            
-                                            <c:if test="${entrega.status == 'PENDENTE'}">
-                                                <button type="submit" name="status" value="EM_TRANSITO" class="btn btn-primary">Iniciar</button>
-                                            </c:if>
-                                            
-                                            <c:if test="${entrega.status == 'EM_TRANSITO'}">
-                                                <button type="submit" name="status" value="REALIZADA" class="btn btn-success">Finalizar</button>
-                                            </c:if>
+                                    <form method="post" action="${pageContext.request.contextPath}/entregas/atualizar-status" style="display: flex; gap: 5px;">
+                                        <input type="hidden" name="entregaId" value="${entrega.id}">
+                                        
+                                        <c:if test="${entrega.status == 'PENDENTE'}">
+                                            <button type="submit" name="status" value="EM_TRANSITO" class="btn btn-primary">Iniciar</button>
+                                        </c:if>
+                                        
+                                        <c:if test="${entrega.status == 'EM_TRANSITO'}">
+                                            <button type="submit" name="status" value="REALIZADA" class="btn btn-success">Finalizar</button>
+                                        </c:if>
 
-                                            <button type="submit" name="status" value="CANCELADA" class="btn btn-danger" 
-                                                    onclick="return confirm('Deseja realmente cancelar esta entrega?')">Cancelar</button>
-                                        </form>
-                                    </div>
+                                        <button type="submit" name="status" value="CANCELADA" class="btn btn-danger" 
+                                                onclick="return confirm('Deseja realmente cancelar esta entrega?')">Cancelar</button>
+                                    </form>
                                 </c:if>
                             </td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
+            <div id="noResults" class="no-results">Nenhuma entrega encontrada para a sua pesquisa nesta categoria.</div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2025 Tartaruga Cometa - Desenvolvido por Maria Gabi 😼👍</p>
+        <p>&copy; 2025 Tartaruga Cometa - Sistema de Controle de Entregas</p>
     </footer>
+
+    <script>
+        function filterTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById("dataTable");
+            const tr = table.getElementsByTagName("tr");
+            const noResults = document.getElementById("noResults");
+            let visibleRows = 0;
+
+            for (let i = 1; i < tr.length; i++) {
+                let found = false;
+                const td = tr[i].getElementsByTagName("td");
+                for (let j = 0; j < td.length - 1; j++) {
+                    if (td[j]) {
+                        const textValue = td[j].textContent || td[j].innerText;
+                        if (textValue.toLowerCase().indexOf(filter) > -1) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if (found) {
+                    tr[i].style.display = "";
+                    visibleRows++;
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+            if (noResults) noResults.style.display = visibleRows === 0 ? "block" : "none";
+        }
+    </script>
 </body>
 </html>
