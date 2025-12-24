@@ -108,10 +108,31 @@
             transform: translateY(-5px);
         }
 
+        /* Estilo da Barra de Pesquisa */
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-color);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         table th {
@@ -130,59 +151,22 @@
             background-color: #f9f9f9;
         }
 
-        .alert {
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
         .btn {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 5px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
             border: none;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #229954;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .btn-secondary {
-            background-color: var(--info-color);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: #2980b9;
-        }
-
-        .btn-danger {
-            background-color: var(--danger-color);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #c0392b;
-        }
+        .btn-primary { background-color: var(--info-color); color: white; }
+        .btn-success { background-color: var(--accent-color); color: white; }
+        .btn-warning { background-color: var(--warning-color); color: white; }
+        .btn-danger { background-color: var(--danger-color); color: white; }
 
         footer {
             text-align: center;
@@ -190,6 +174,14 @@
             background-color: var(--primary-color);
             color: var(--white);
             margin-top: 50px;
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-style: italic;
         }
     </style>
 </head>
@@ -205,35 +197,29 @@
         <ul>
             <li><a href="${pageContext.request.contextPath}/">Dashboard</a></li>
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
-            <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li> 
-            <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>  
+            <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li>
+            <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>
         </ul>
     </nav>
 
     <div class="container">
         <div class="card">
-            <h2>Produtos Cadastrados</h2>
-
-            <c:if test="${param.sucesso == 'true'}">
-                <div class="alert alert-success">
-                    Produto cadastrado com sucesso!
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Produtos Cadastrados</h2>
+                <div style="display: flex; gap: 10px;">
+                    <a href="${pageContext.request.contextPath}/produtos?acao=novo" class="btn btn-success">➕ CADASTRAR</a>
+                    <a href="${pageContext.request.contextPath}/produtos/estoque" class="btn btn-warning">📦 GERENCIAR ESTOQUE</a>
                 </div>
-            </c:if>
-            
-            <c:if test="${param.removido == 'true'}">
-                <div class="alert alert-success">
-                    Produto removido com sucesso!
-                </div>
-            </c:if>
+            </div>
 
-            <div style="margin-bottom: 20px;">
-                <a href="${pageContext.request.contextPath}/produtos?acao=novo" class="btn btn-primary">➕ CADASTRAR</a>
-                <a href="${pageContext.request.contextPath}/produtos/estoque" class="btn btn-secondary">📦 GERENCIAR ESTOQUE</a>
+            <!-- Barra de Pesquisa -->
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar por nome, descrição, ID ou valor..." onkeyup="filterTable()">
             </div>
 
             <c:choose>
                 <c:when test="${not empty produtos}">
-                    <table>
+                    <table id="dataTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -253,41 +239,22 @@
                                     <td><strong>${produto.nome}</strong></td>
                                     <td>${produto.descricao}</td>
                                     <td><fmt:formatNumber value="${produto.pesoKg}" pattern="#,##0.00"/></td>
-                                    <td>
-                                        <fmt:formatNumber value="${produto.volumeM3}" pattern="#,##0.000"/> 
-                                        <c:choose>
-                                            <c:when test="${produto.unidadeVolume == 'cm3'}">cm³</c:when>
-                                            <c:when test="${produto.unidadeVolume == 'ml'}">mL</c:when>
-                                            <c:when test="${produto.unidadeVolume == 'dm3'}">dm³</c:when>
-                                            <c:when test="${produto.unidadeVolume == 'l'}">L</c:when>
-                                            <c:when test="${produto.unidadeVolume == 'm3'}">m³</c:when>
-                                            <c:otherwise>m³</c:otherwise>
-                                        </c:choose>
-                                    </td>
+                                    <td><fmt:formatNumber value="${produto.volumeM3}" pattern="#,##0.000"/> ${produto.unidadeVolume}</td>
                                     <td>R$ <fmt:formatNumber value="${produto.valorUnitario}" pattern="#,##0.00"/></td>
-                                    <td>${produto.quantidadeEstoque}</td>
+                                    <td><span style="font-weight: bold; color: ${produto.quantidadeEstoque < 10 ? 'var(--danger-color)' : 'inherit'}">${produto.quantidadeEstoque}</span></td>
                                     <td>
-                                        <!-- Botão Editar -->
-                                        <form method="get" action="${pageContext.request.contextPath}/produtos" style="display: inline;">
-                                            <input type="hidden" name="acao" value="editar">
-                                            <input type="hidden" name="id" value="${produto.id}">
-                                            <button type="submit" class="btn btn-secondary" style="padding: 5px 10px; font-size: 12px; margin-right: 5px;">
-                                                Editar
-                                            </button>
-                                        </form>
+                                        <a href="${pageContext.request.contextPath}/produtos?acao=editar&id=${produto.id}" class="btn btn-primary">Editar</a>
                                         
-                                        <!-- Botão Excluir -->
-                                        <form method="post" action="${pageContext.request.contextPath}/produtos/remover" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja excluir o produto ${produto.nome}?');">
-                                            <input type="hidden" name="produtoId" value="${produto.id}">
-                                            <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">
-                                                Excluir
-                                            </button>
+                                        <form method="post" action="${pageContext.request.contextPath}/produtos/remover" style="display: inline;" onsubmit="return confirm('Deseja excluir o produto ${produto.nome}?');">
+                                            <input type="hidden" name="id" value="${produto.id}">
+                                            <button type="submit" class="btn btn-danger">Excluir</button>
                                         </form>
                                     </td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
+                    <div id="noResults" class="no-results">Nenhum produto encontrado para a sua pesquisa.</div>
                 </c:when>
                 <c:otherwise>
                     <p>Nenhum produto cadastrado ainda.</p>
@@ -299,5 +266,39 @@
     <footer>
         <p>&copy; 2025 Tartaruga Cometa - Sistema de Controle de Entregas</p>
     </footer>
+
+    <script>
+        function filterTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById("dataTable");
+            const tr = table.getElementsByTagName("tr");
+            const noResults = document.getElementById("noResults");
+            let visibleRows = 0;
+
+            if (!table) return;
+
+            for (let i = 1; i < tr.length; i++) {
+                let found = false;
+                const td = tr[i].getElementsByTagName("td");
+                for (let j = 0; j < td.length - 1; j++) {
+                    if (td[j]) {
+                        const textValue = td[j].textContent || td[j].innerText;
+                        if (textValue.toLowerCase().indexOf(filter) > -1) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if (found) {
+                    tr[i].style.display = "";
+                    visibleRows++;
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+            if (noResults) noResults.style.display = visibleRows === 0 ? "block" : "none";
+        }
+    </script>
 </body>
 </html>

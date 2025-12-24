@@ -107,10 +107,31 @@
             transform: translateY(-5px);
         }
 
+        /* Estilo da Barra de Pesquisa */
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-color);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         table th {
@@ -129,65 +150,21 @@
             background-color: #f9f9f9;
         }
 
-        .alert {
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
         .btn {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 8px 16px;
             border-radius: 5px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
             border: none;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #229954;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .btn-secondary {
-            background-color: var(--info-color);
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: #2980b9;
-        }
-
-        .btn-danger {
-            background-color: var(--danger-color);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #c0392b;
-        }
+        .btn-primary { background-color: var(--info-color); color: white; }
+        .btn-success { background-color: var(--accent-color); color: white; }
+        .btn-danger { background-color: var(--danger-color); color: white; }
 
         footer {
             text-align: center;
@@ -195,6 +172,14 @@
             background-color: var(--primary-color);
             color: var(--white);
             margin-top: 50px;
+        }
+
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-style: italic;
         }
     </style>
 </head>
@@ -217,39 +202,19 @@
 
     <div class="container">
         <div class="card">
-            <h2>Clientes Cadastrados</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Clientes Cadastrados</h2>
+                <a href="${pageContext.request.contextPath}/clientes?acao=novo" class="btn btn-success">➕ CADASTRAR</a>
+            </div>
 
-            <c:if test="${param.sucesso == 'true'}">
-                <div class="alert alert-success">
-                    Cliente cadastrado com sucesso!
-                </div>
-            </c:if>
-            
-            <c:if test="${param.sucesso == 'editado'}">
-                <div class="alert alert-success">
-                    Cliente editado com sucesso!
-                </div>
-            </c:if>
-
-            <c:if test="${param.sucesso == 'removido'}">
-                <div class="alert alert-success">
-                    Cliente removido com sucesso!
-                </div>
-            </c:if>
-            
-            <c:if test="${param.erro == 'falha_remocao'}">
-                <div class="alert alert-danger">
-                    Erro ao tentar remover o cliente. Verifique se ele possui entregas associadas.
-                </div>
-            </c:if>
-
-            <div style="margin-bottom: 20px;">
-                <a href="${pageContext.request.contextPath}/clientes?acao=novo" class="btn btn-primary">➕ CADASTRAR</a>
+            <!-- Barra de Pesquisa -->
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar por nome, documento, email ou cidade..." onkeyup="filterTable()">
             </div>
 
             <c:choose>
                 <c:when test="${not empty clientes}">
-                    <table>
+                    <table id="dataTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -273,27 +238,18 @@
                                     <td>${cliente.email}</td>
                                     <td>${cliente.endereco.cidade}/${cliente.endereco.estado}</td>
                                     <td>
-                                        <!-- Botão Editar (agora usando <form> e <button> ) -->
-                                        <form method="get" action="${pageContext.request.contextPath}/clientes" style="display: inline;">
-                                            <input type="hidden" name="acao" value="editar">
-                                            <input type="hidden" name="id" value="${cliente.id}">
-                                            <button type="submit" class="btn btn-secondary" style="padding: 5px 10px; font-size: 12px; margin-right: 5px;">
-                                                Editar
-                                            </button>
-                                        </form>
+                                        <a href="${pageContext.request.contextPath}/clientes?acao=editar&id=${cliente.id}" class="btn btn-primary">Editar</a>
                                         
-                                        <!-- Botão Excluir (agora usando <form> e <button>) -->
-                                        <form method="post" action="${pageContext.request.contextPath}/clientes/remover" style="display: inline;" onsubmit="return confirmarRemocao('${cliente.nome}');">
+                                        <form method="post" action="${pageContext.request.contextPath}/clientes/remover" style="display: inline;" onsubmit="return confirm('Deseja excluir o cliente ${cliente.nome}?');">
                                             <input type="hidden" name="id" value="${cliente.id}">
-                                            <button type="submit" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">
-                                                Excluir
-                                            </button>
+                                            <button type="submit" class="btn btn-danger">Excluir</button>
                                         </form>
                                     </td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
+                    <div id="noResults" class="no-results">Nenhum cliente encontrado para a sua pesquisa.</div>
                 </c:when>
                 <c:otherwise>
                     <p>Nenhum cliente cadastrado ainda.</p>
@@ -305,10 +261,36 @@
     <footer>
         <p>&copy; 2025 Tartaruga Cometa - Sistema de Controle de Entregas</p>
     </footer>
-    
+
     <script>
-        function confirmarRemocao(nomeCliente) {
-            return confirm("Você tem certeza que deseja excluir o cliente " + nomeCliente + "?");
+        function filterTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById("dataTable");
+            const tr = table.getElementsByTagName("tr");
+            const noResults = document.getElementById("noResults");
+            let visibleRows = 0;
+
+            for (let i = 1; i < tr.length; i++) {
+                let found = false;
+                const td = tr[i].getElementsByTagName("td");
+                for (let j = 0; j < td.length - 1; j++) {
+                    if (td[j]) {
+                        const textValue = td[j].textContent || td[j].innerText;
+                        if (textValue.toLowerCase().indexOf(filter) > -1) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if (found) {
+                    tr[i].style.display = "";
+                    visibleRows++;
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+            if (noResults) noResults.style.display = visibleRows === 0 ? "block" : "none";
         }
     </script>
 </body>
