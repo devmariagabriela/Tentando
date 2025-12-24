@@ -22,7 +22,7 @@
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
             <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li>
             <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>  
-            <li><a href="${pageContext.request.contextPath}/produtos/estoque">Gerenciar Estoque</a></li>           
+            <li><a href="${pageContext.request.contextPath}/produtos/estoque">Estoque</a></li>           
             
         </ul>
     </nav>
@@ -30,34 +30,30 @@
     <div class="container">
         <h2>Dashboard</h2>
 
-        <div class="dashboard-stats">
-            <div class="stat-card total">
+        <div class="dashboard-stats" style="display: flex; justify-content: space-between; gap: 20px; margin-bottom: 30px;">
+            <div class="card stat-card" style="flex: 1;">
                 <div>
                     <p>Total de Entregas</p>
-                    <h3>${totalEntregas}</h3>
+                    <h3 style="color: var(--primary-color );">${totalEntregas}</h3>
                 </div>
-                <span class="stat-icon" style="color: var(--primary-color );"></span>
             </div>
-            <div class="stat-card pendente">
+            <div class="card stat-card" style="flex: 1;">
                 <div>
                     <p>Pendentes</p>
                     <h3 style="color: var(--warning-color);">${totalPendentes}</h3>
                 </div>
-                <span class="stat-icon" style="color: var(--warning-color);"></span>
             </div>
-            <div class="stat-card em-transito">
+            <div class="card stat-card" style="flex: 1;">
                 <div>
                     <p>Em Trânsito</p>
-                    <h3 style="color: var(--secondary-color);">${totalEmTransito}</h3>
+                    <h3 style="color: var(--info-color);">${totalEmTransito}</h3>
                 </div>
-                <span class="stat-icon" style="color: var(--secondary-color);"></span>
             </div>
-            <div class="stat-card realizada">
+            <div class="card stat-card" style="flex: 1;">
                 <div>
                     <p>Realizadas</p>
                     <h3 style="color: var(--success-color);">${totalRealizadas}</h3>
                 </div>
-                <span class="stat-icon" style="color: var(--success-color);"></span>
             </div>
         </div>
 
@@ -111,8 +107,7 @@
     </div>
 
     <footer>
-        <p> &copy; Tartaruga cometa - Sistemas de entrega</p>
-           <p> </p>
+        <p>&copy; 2025 Tartaruga Cometa - Sistema de Controle de Entregas</p>
     </footer>
 </body>
 </html>

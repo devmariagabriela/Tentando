@@ -40,11 +40,11 @@
             <form method="post" action="${pageContext.request.contextPath}/entregas/nova">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div>
-                        <h3 style="color: #667eea; margin-bottom: 15px;">Dados do Remetente</h3>
+                        <h3>Dados do Remetente</h3>
                         
                         <div class="form-group">
                             <label for="remetenteId">Remetente *</label>
-                            <select id="remetenteId" name="remetenteId" required onchange="updateEnderecoOrigem( )">
+                            <select id="remetenteId" name="remetenteId" required onchange="updateEnderecoOrigem(  )">
                                 <option value="">Selecione...</option>
                                 <c:forEach var="cliente" items="${clientes}">
                                     <option value="${cliente.id}" data-endereco="${cliente.enderecoId}">
@@ -63,7 +63,7 @@
                     </div>
 
                     <div>
-                        <h3 style="color: #667eea; margin-bottom: 15px;">Dados do Destinatário</h3>
+                        <h3>Dados do Destinatário</h3>
                         
                         <div class="form-group">
                             <label for="destinatarioId">Destinatário *</label>
@@ -86,9 +86,9 @@
                     </div>
                 </div>
 
-                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e2e8f0;">
+                <hr>
 
-                <h3 style="color: #667eea; margin-bottom: 15px;">Dados da Entrega</h3>
+                <h3>Dados da Entrega</h3>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
                     <div class="form-group">
@@ -112,13 +112,13 @@
                     <textarea id="observacoes" name="observacoes" rows="3"></textarea>
                 </div>
 
-                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e2e8f0;">
+                <hr>
 
-                <h3 style="color: #667eea; margin-bottom: 15px;">Produtos</h3>
+                <h3>Produtos</h3>
 
                 <div id="produtos-container">
-                    <div class="produto-item" style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 15px; margin-bottom: 15px;">
-                        <div class="form-group" style="margin-bottom: 0;">
+                    <div class="produto-item" style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 15px; margin-bottom: 15px; align-items: flex-start;">
+                        <div class="form-group">
                             <label>Produto *</label>
                             <select name="produtoId" required>
                                 <option value="">Selecione...</option>
@@ -129,11 +129,11 @@
                                 </c:forEach>
                             </select>
                         </div>
-                        <div class="form-group" style="margin-bottom: 0;">
+                        <div class="form-group">
                             <label>Quantidade *</label>
                             <input type="number" name="quantidade" min="1" value="1" required>
                         </div>
-                        <div style="padding-top: 28px;">
+                        <div style="align-self: flex-end;">
                             <button type="button" class="btn btn-danger" onclick="removeProduto(this)">Remover</button>
                         </div>
                     </div>
@@ -141,9 +141,9 @@
 
                 <button type="button" class="btn btn-secondary" onclick="addProduto()">+ Adicionar Produto</button>
 
-                <hr style="margin: 30px 0; border: none; border-top: 1px solid #e2e8f0;">
+                <hr>
 
-                <div style="text-align: right;">
+                <div style="text-align: right; margin-top: 20px;">
                     <a href="${pageContext.request.contextPath}/entregas/listar" class="btn btn-secondary">Cancelar</a>
                     <button type="submit" class="btn btn-primary">Cadastrar Entrega</button>
                 </div>
