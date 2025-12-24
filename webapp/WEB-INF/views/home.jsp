@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tartaruga Cometa - Sistema de Entregas</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/modern-style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
     <header>
@@ -22,28 +22,37 @@
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
             <li><a href="${pageContext.request.contextPath}/clientes">Clientes</a></li>
             <li><a href="${pageContext.request.contextPath}/produtos">Produtos</a></li>  
+            
         </ul>
     </nav>
 
     <div class="container">
-        <h2 style="margin-bottom: 1.5rem;">Dashboard</h2>
+        <h2>Dashboard</h2>
 
-        <div class="dashboard-stats">
-            <div class="stat-card">
-                <p>Total de Entregas</p>
-                <h3 style="color: var(--primary );">${totalEntregas}</h3>
+        <div class="dashboard-stats" style="display: flex; justify-content: space-between; gap: 20px; margin-bottom: 30px;">
+            <div class="card stat-card" style="flex: 1;">
+                <div>
+                    <p>Total de Entregas</p>
+                    <h3 style="color: var(--primary-color );">${totalEntregas}</h3>
+                </div>
             </div>
-            <div class="stat-card">
-                <p>Pendentes</p>
-                <h3 style="color: var(--warning);">${totalPendentes}</h3>
+            <div class="card stat-card" style="flex: 1;">
+                <div>
+                    <p>Pendentes</p>
+                    <h3 style="color: var(--warning-color);">${totalPendentes}</h3>
+                </div>
             </div>
-            <div class="stat-card">
-                <p>Em Trânsito</p>
-                <h3 style="color: var(--info);">${totalEmTransito}</h3>
+            <div class="card stat-card" style="flex: 1;">
+                <div>
+                    <p>Em Trânsito</p>
+                    <h3 style="color: var(--info-color);">${totalEmTransito}</h3>
+                </div>
             </div>
-            <div class="stat-card">
-                <p>Realizadas</p>
-                <h3 style="color: var(--success);">${totalRealizadas}</h3>
+            <div class="card stat-card" style="flex: 1;">
+                <div>
+                    <p>Realizadas</p>
+                    <h3 style="color: var(--success-color);">${totalRealizadas}</h3>
+                </div>
             </div>
         </div>
 
@@ -51,45 +60,43 @@
             <h2>Últimas Entregas</h2>
             <c:choose>
                 <c:when test="${not empty ultimasEntregas}">
-                    <div class="table-container">
-                        <table>
-                            <thead>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Remetente</th>
+                                <th>Destinatário</th>
+                                <th>Data Coleta</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="entrega" items="${ultimasEntregas}">
                                 <tr>
-                                    <th>Código</th>
-                                    <th>Remetente</th>
-                                    <th>Destinatário</th>
-                                    <th>Data Coleta</th>
-                                    <th>Status</th>
+                                    <td><strong>${entrega.codigo}</strong></td>
+                                    <td>${entrega.remetente.nome}</td>
+                                    <td>${entrega.destinatario.nome}</td>
+                                    <td>${entrega.dataColeta}</td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${entrega.status == 'PENDENTE'}">
+                                                <span class="badge badge-pendente">Pendente</span>
+                                            </c:when>
+                                            <c:when test="${entrega.status == 'EM_TRANSITO'}">
+                                                <span class="badge badge-em-transito">Em Trânsito</span>
+                                            </c:when>
+                                            <c:when test="${entrega.status == 'REALIZADA'}">
+                                                <span class="badge badge-realizada">Realizada</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="badge badge-cancelada">Cancelada</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach var="entrega" items="${ultimasEntregas}">
-                                    <tr>
-                                        <td><strong>${entrega.codigo}</strong></td>
-                                        <td>${entrega.remetente.nome}</td>
-                                        <td>${entrega.destinatario.nome}</td>
-                                        <td>${entrega.dataColeta}</td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="${entrega.status == 'PENDENTE'}">
-                                                    <span class="badge badge-pendente">Pendente</span>
-                                                </c:when>
-                                                <c:when test="${entrega.status == 'EM_TRANSITO'}">
-                                                    <span class="badge badge-em-transito">Em Trânsito</span>
-                                                </c:when>
-                                                <c:when test="${entrega.status == 'REALIZADA'}">
-                                                    <span class="badge badge-realizada">Realizada</span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="badge badge-cancelada">Cancelada</span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                    </div>
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </c:when>
                 <c:otherwise>
                     <p>Nenhuma entrega cadastrada ainda.</p>
