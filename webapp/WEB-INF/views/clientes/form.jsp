@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -19,7 +18,7 @@
             --light-bg: #f4f7f6;
             --white: #ffffff;
             --text-color: #333;
-            --shadow: 0 4px 6px rgba(0,0,0,0.1 );
+            --shadow: 0 4px 6px rgba(0,0,0,0.1  );
         }
 
         body {
@@ -159,9 +158,10 @@
         <div class="card">
             <h2><c:choose><c:when test="${not empty cliente}">Editar Cliente</c:when><c:otherwise>Cadastrar Novo Cliente</c:otherwise></c:choose></h2>
             
-            <form action="${pageContext.request.contextPath}/clientes/${not empty cliente ? 'editar' : 'cadastrar'}" method="post">
+            <form action="${pageContext.request.contextPath}/clientes" method="post">
                 <c:if test="${not empty cliente}">
-                    <input type="hidden" name="id" value="${cliente.id}">
+                    <input type="hidden" name="clienteId" value="${cliente.id}">
+                    <input type="hidden" name="enderecoId" value="${cliente.enderecoId}">
                 </c:if>
 
                 <div class="form-group">
@@ -173,8 +173,8 @@
                     <div class="form-group">
                         <label for="tipo">Tipo de Pessoa *</label>
                         <select id="tipo" name="tipo" required onchange="limparDocumento()">
-                            <option value="F" <c:if test="${cliente.tipo == 'F'}">selected</c:if>>Pessoa Física (CPF)</option>
-                            <option value="J" <c:if test="${cliente.tipo == 'J'}">selected</c:if>>Pessoa Jurídica (CNPJ)</option>
+                            <option value="F" <c:if test="${cliente.tipoDocumento == 'CPF'}">selected</c:if>>Pessoa Física (CPF)</option>
+                            <option value="J" <c:if test="${cliente.tipoDocumento == 'CNPJ'}">selected</c:if>>Pessoa Jurídica (CNPJ)</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -250,7 +250,7 @@
         </div>
     </div>
     
-    <<script>
+    <script>
     function limparDocumento() {
         const docInput = document.getElementById('documento');
         const tipo = document.getElementById('tipo').value;
