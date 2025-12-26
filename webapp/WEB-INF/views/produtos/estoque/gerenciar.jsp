@@ -289,7 +289,9 @@
                     
                     <div class="form-group">
                         <label for="quantidade">Quantidade:</label>
-                        <input type="number" id="quantidade" name="quantidade" min="1" required>
+                        <input type="text" id="quantidade" name="quantidade" required inputmode= "numeric" maxlength="9"
+                                oninput="this.value = this.value.replace(/\D/g, '')"
+                        >
                     </div>
                     
                     <div class="form-group">

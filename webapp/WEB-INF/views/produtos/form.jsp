@@ -220,24 +220,77 @@
                 
                 <div class="form-group">
                     <label for="nome">Nome do Produto *</label>
-                    <input type="text" id="nome" name="nome" value="${produto.nome}" required>
+                    <input type="text" id="nome" name="nome" value="${produto.nome}"   minlength="3"   maxlength="50"  required>
                 </div>
 
                 <div class="form-group">
                     <label for="descricao">Descrição</label>
-                    <textarea id="descricao" name="descricao" rows="3">${produto.descricao}</textarea>
+                    <textarea id="descricao" name="descricao" rows="3"   maxlength="300" placeholder="Máximo de 300 caracteres">${produto.descricao != null ? produto.descricao : ''}</textarea>
+               
+               		<small id="contadorDescricao">0 / 300</small>
                 </div>
+                
+                <script>
+					document.addEventListener("DOMContentLoaded", function () {
+    				const textarea = document.getElementById("descricao");
+    				const contador = document.getElementById("contadorDescricao");
+   					const max = textarea.getAttribute("maxlength");
+
+  					function atualizarContador() {
+        			const atual = textarea.value.length;
+        			contador.textContent = atual + " / " + max;
+   				 }
+
+    				textarea.addEventListener("input", atualizarContador);
+    				atualizarContador(); 
+					});
+				</script>
+
+
+
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
                     <div class="form-group">
                         <label for="pesoKg">Peso (kg) *</label>
-                        <input type="number" id="pesoKg" name="pesoKg" step="0.01" min="0.01" value="${produto.pesoKg}" required>
+                        <input type="text" id="pesoKg" name="pesoKg"   value="${produto.pesoKg}" required maxlength="15" oninput="formatarPeso(this)">
                     </div>
+                      <script>
+                      function formatarPeso(campo) {
+                    	    let valor = campo.value.replace(/\D/g, "");
+                    	    if (valor.length > 12) {
+                    	        valor = valor.slice(0, 12);
+                          }
+                    	    valor = (Number(valor) / 100).toFixed(2);
+                    	    campo.value = valor
+                            .replace(".", ",")                // decimal
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, "."); // milhar
+                      }       
+                      </script>
+
 
                     <div class="form-group">
                         <label for="volumeM3">Volume *</label>
-                        <input type="number" id="volumeM3" name="volumeM3" step="0.001" min="0.001" value="${produto.volumeM3}" required>
+                        <input type="text" id="volumeM3" name="volumeM3" step="0.001" min="0.001" value="${produto.volumeM3}" required  maxlength="15"    oninput="formatarNumero(this)">
                     </div>
+                    <script>
+                    function limitarVolume(input) {
+                        const maxCaracteres = 5;
+                        let valor = input.value.toString();
+                        if (valor.length > maxCaracteres) {
+                            input.value = valor.slice(0, maxCaracteres);
+                        }
+                    }       
+                    </script>
+                    <script>
+                    function formatarNumero(campo) {
+                        let valor = campo.value.replace(/\D/g, "");
+                        valor = (Number(valor) / 1000).toFixed(3);
+                        campo.value = valor
+                        .replace(".", ",")              // decimal
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, "."); // milhar
+                    }
+                    </script>
+
 
                     <div class="form-group">
                         <label for="unidadeVolume">Unidade de Volume *</label>
@@ -253,8 +306,21 @@
 
                 <div class="form-group">
                     <label for="valorUnitario">Valor Unitário (R$) *</label>
-                    <input type="number" id="valorUnitario" name="valorUnitario" step="0.01" min="0" value="${produto.valorUnitario}" required>
+                    <input type="text" id="valorUnitario" name="valorUnitario"  value="${produto.valorUnitario}" required     maxlength="15" oninput="formatarValor(this)">
                 </div>
+                <script>
+                function formatarValor(campo) {
+                    let valor = campo.value.replace(/\D/g, ""); // remove tudo que não for número
+                    if (valor.length > 12) {
+                        valor = valor.slice(0, 12);
+                    }
+                    valor = (Number(valor) / 100).toFixed(2);
+                    campo.value = valor
+                    .replace(".", ",")                // decimal
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, "."); // milhar
+                }
+                </script>
+
 
                 <hr>
 
