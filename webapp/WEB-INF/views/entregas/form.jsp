@@ -317,6 +317,7 @@
   						const maxLength = 9; // total de caracteres
   						if (input.value.length > maxLength) {
  						   input.value = input.value.slice(0, maxLength);
+ 						   
  						 }
 					}
 						</script>
@@ -327,8 +328,24 @@
 
                 <div class="form-group">
                     <label for="observacoes">Observações</label>
-                    <textarea id="observacoes" name="observacoes" rows="3"></textarea>
+                    <textarea 
+                    	id="observacoes" 
+                    	name="observacoes" 
+                    	rows="3"
+                    	maxlength="300"
+                    	placeholder="Máximo de 300 caracteres"
+                    	 oninput="contarCaracteres(this)"></textarea>
+                    	
+                    	<small id="contador">0 / 300</small>
                 </div>
+                <script>
+						function contarCaracteres(textarea) {
+  						const max = textarea.maxLength;
+ 						 const atual = textarea.value.length;
+ 						document.getElementById("contador").innerText = atual + " / " + max;
+						}
+				</script>
+                
 
                 <hr>
                 <h3>Produtos</h3>
@@ -402,5 +419,6 @@
         document.getElementById('dataColeta').setAttribute('min', hoje);
         document.getElementById('dataEntregaPrevista').setAttribute('min', hoje);
     </script>
+    
 </body>
 </html>
