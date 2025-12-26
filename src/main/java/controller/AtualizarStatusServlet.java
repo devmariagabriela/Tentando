@@ -26,7 +26,7 @@ public class AtualizarStatusServlet extends HttpServlet {
     private ProdutoBO produtoBO = new ProdutoBO(); // NOVO
     
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
         request.setCharacterEncoding("UTF-8");
@@ -54,7 +54,6 @@ public class AtualizarStatusServlet extends HttpServlet {
                 	
                     entrega.setDataEntregaRealizada(null);
                     
-                    // --- NOVO: Reposição de Estoque ---
                     // Apenas repõe se o status anterior não era CANCELADA (para evitar dupla reposição)
                     if (!"CANCELADA".equals(statusAnterior)) { // Usa o statusAnterior
                         List<ItemEntrega> itens = itemEntregaDAO.listarPorEntrega(entregaId);
@@ -64,7 +63,6 @@ public class AtualizarStatusServlet extends HttpServlet {
                         }
                         System.out.println("Estoque reposto para a entrega cancelada ID: " + entregaId);
                     }
-                    // --- FIM NOVO ---
                 }
                 
                 // E é ai que entra a atualização:

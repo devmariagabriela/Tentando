@@ -72,11 +72,7 @@ public class NovaEntregaServlet extends HttpServlet {
         boolean entregaSalva = false;
         
         try {
-            // Cada entrega tem que ter um codigo, e esse codigo é unico, esse comando faz isso:
         	
-            // O código de rastreio deve ser gerado pelo banco de dados (função gerar_codigo_rastreio)
-            // String codigo = "ENT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-            // O código de rastreio será gerado automaticamente pelo banco de dados.
             
             
             // Função auxiliar para parsear Integer com segurança
@@ -112,7 +108,6 @@ public class NovaEntregaServlet extends HttpServlet {
             // Preciso criar objeto Entrega, pra isso eu uso o set:
             
             Entrega entrega = new Entrega();
-            // entrega.setCodigo(codigo); // Removido, pois o código é gerado no banco de dados
             entrega.setRemetenteId(remetenteId);
             entrega.setDestinatarioId(destinatarioId);
             entrega.setEnderecoOrigemId(enderecoOrigemId);
@@ -150,7 +145,6 @@ public class NovaEntregaServlet extends HttpServlet {
                         throw new IllegalArgumentException("Produto com ID " + produtoId + " não encontrado.");
                     }
                     
-                    // --- NOVO: Verificação de Estoque ---
                     if (produto.getQuantidadeEstoque() < quantidade) {
                         // Se o estoque for insuficiente, lança exceção e a transação deve ser revertida (se estiver usando transação)
                         // Como não estamos em um BO com controle de transação explícito, o erro será capturado e a entrega será revertida manualmente
@@ -158,7 +152,6 @@ public class NovaEntregaServlet extends HttpServlet {
                                                            ". Estoque atual: " + produto.getQuantidadeEstoque() + 
                                                            ", Quantidade solicitada: " + quantidade);
                     }
-                    // --- FIM NOVO ---
                     
                     //  É ai que eu crio o item da entrega
                     
@@ -169,9 +162,7 @@ public class NovaEntregaServlet extends HttpServlet {
                     
                     itemEntregaDAO.salvar(item);
                     
-                    // --- NOVO: Decremento de Estoque ---
                     produtoBO.atualizarEstoque(produtoId, -quantidade);
-                    // --- FIM NOVO ---
                     
                     System.out.println("Item " + (i+1) + " salvo com sucesso!");
                 }
@@ -189,15 +180,15 @@ public class NovaEntregaServlet extends HttpServlet {
             System.err.println("Erro de validação/estoque: " + e.getMessage()); // ALTERADO
             e.printStackTrace();
             
-            // Se a entrega foi salva, mas deu erro no item (ex: estoque), precisamos deletar a entrega // NOVO
-            if (entregaSalva && entregaId != null) { // NOVO
-                try { // NOVO
-                    entregaDAO.deletar(entregaId); // NOVO
-                    System.out.println("Entrega ID " + entregaId + " deletada devido a erro no item/estoque."); // NOVO
+            // Se a entrega foi salva, mas deu erro no item (ex: estoque), precisamos deletar a entrega 
+            if (entregaSalva && entregaId != null) { 
+                try { 
+                    entregaDAO.deletar(entregaId); 
+                    System.out.println("Entrega ID " + entregaId + " deletada devido a erro no item/estoque."); 
                 } catch (SQLException deleteEx) { // NOVO
-                    System.err.println("ERRO CRÍTICO: Falha ao deletar entrega ID " + entregaId + " após erro de item/estoque: " + deleteEx.getMessage()); // NOVO
-                } // NOVO
-            } // NOVO
+                    System.err.println("ERRO CRÍTICO: Falha ao deletar entrega ID " + entregaId + " após erro de item/estoque: " + deleteEx.getMessage()); 
+                } 
+            } 
             
             request.setAttribute("erro", e.getMessage());
             

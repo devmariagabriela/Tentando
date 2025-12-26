@@ -9,12 +9,12 @@ public class Produto {
     private String descricao;
     private Double pesoKg;
     private Double volumeM3;
-    private String unidadeVolume; // NOVO CAMPO
+    private String unidadeVolume; 
     private Double valorUnitario;
     private Integer quantidadeEstoque;
     private LocalDateTime createdAt;
     
-    // CONSTRUTORES
+    // CONS
     
     public Produto() {
     }
@@ -25,12 +25,12 @@ public class Produto {
         this.descricao = descricao;
         this.pesoKg = pesoKg;
         this.volumeM3 = volumeM3;
-        this.unidadeVolume = unidadeVolume; // NOVO
+        this.unidadeVolume = unidadeVolume; 
         this.valorUnitario = valorUnitario;
         this.quantidadeEstoque = quantidadeEstoque;
     }
     
-    // GETTERS E SETTERS
+    // GS
     
     public Integer getId() {
         return id;
@@ -105,11 +105,8 @@ public class Produto {
         this.createdAt = createdAt;
     }
     
-    /**
-     * Converte o volume para metros cúbicos (m³) independente da unidade cadastrada.
-     * Útil para cálculos de frete e logística.
-     * @return Volume em metros cúbicos
-     */
+    
+     
     public Double getVolumeEmMetrosCubicos() {
         if (volumeM3 == null || unidadeVolume == null) {
             return volumeM3;
@@ -128,10 +125,7 @@ public class Produto {
         }
     }
     
-    /**
-     * Retorna o volume formatado com sua unidade.
-     * @return String formatada (ex: "500 cm³", "2.5 L")
-     */
+   
     public String getVolumeFormatado() {
         if (volumeM3 == null || unidadeVolume == null) {
             return "-";

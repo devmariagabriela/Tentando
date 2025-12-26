@@ -8,7 +8,6 @@ import java.util.List;
 
 public class Entrega {
     
-    // private static List itens = null; // Vestígio, removido
 	private Integer id;
     private String codigo;
     private Integer remetenteId;

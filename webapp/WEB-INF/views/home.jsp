@@ -8,7 +8,6 @@
     <title>Tartaruga Cometa - Sistema de Entregas</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <style>
-        /* Estilização Adicionada */
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #34495e;

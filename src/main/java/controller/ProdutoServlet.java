@@ -130,9 +130,9 @@ public class ProdutoServlet extends HttpServlet {
                 produto.setDescricao(descricao);
                 produto.setPesoKg(pesoKg);
                 produto.setVolumeM3(volumeM3);
-                produto.setUnidadeVolume(unidadeVolume); // NOVO
+                produto.setUnidadeVolume(unidadeVolume); 
                 produto.setValorUnitario(valorUnitario);
-                produto.setQuantidadeEstoque(0); // Estoque inicial zero
+                produto.setQuantidadeEstoque(0); // Estoque inicial começa no zerooooo
                 
                 produtoDAO.salvar(produto);
                 System.out.println("Produto salvo com sucesso: " + nome);

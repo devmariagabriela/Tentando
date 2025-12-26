@@ -129,7 +129,7 @@ public class ProdutoDAO {
         produto.setPesoKg(rs.getDouble("peso_kg"));
         produto.setVolumeM3(rs.getDouble("volume_m3"));
         
-        // NOVO: Ler unidade de volume
+        
         try {
             String unidadeVolume = rs.getString("unidade_volume");
             produto.setUnidadeVolume(unidadeVolume != null ? unidadeVolume : "m3");
@@ -160,12 +160,9 @@ public class ProdutoDAO {
         return produto;
     }
 
-    /**
-     * Atualiza a quantidade em estoque de um produto.
-     * @param produtoId ID do produto.
-     * @param quantidade Variação do estoque (positivo para adicionar, negativo para remover).
-     * @throws SQLException
-     */
+    	//A VIDA GANHA SENTIDO QUANDO VC PERCEBE QUE TA DANDO CERTO KKKKKK \UvU/ -- Maria Gabi
+    
+   
     public void atualizarEstoque(Integer produtoId, Integer quantidade) throws SQLException {
         String sql = "UPDATE produto SET quantidade_estoque = quantidade_estoque + ? WHERE id = ?";
         

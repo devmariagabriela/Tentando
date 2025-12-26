@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes - Tartaruga Cometa</title>
     <style>
-        /* Estilização Adicionada */
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #34495e;

@@ -9,7 +9,6 @@ public class ItemEntrega {
     private Integer entregaId;
     private Integer produtoId;
     private Integer quantidade;
-    // private Double valorTotal; // Vestígio, será calculado
     private LocalDateTime createdAt;
     
     // OBJETOS
@@ -25,7 +24,6 @@ public class ItemEntrega {
         this.entregaId = entregaId;
         this.produtoId = produtoId;
         this.quantidade = quantidade;
-        // this.valorTotal = valorTotal; // Vestígio, removido do construtor
     }
     
     // GS
@@ -71,8 +69,6 @@ public class ItemEntrega {
     }
 
     public void setValorTotal(Double valorTotal) {
-        // Este campo é calculado, o setter não deve ser usado.
-        // Mantenho para compatibilidade com o vestígio, mas não faz nada.
     }
     
     public LocalDateTime getCreatedAt() {
@@ -102,5 +98,4 @@ public class ItemEntrega {
                 '}';
     }
 
-    // Método listarPorEntrega removido daqui, pois pertence ao DAO
 }
