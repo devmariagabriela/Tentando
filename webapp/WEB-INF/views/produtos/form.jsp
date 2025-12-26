@@ -259,11 +259,8 @@
                     	    if (valor.length > 12) {
                     	        valor = valor.slice(0, 12);
                           }
-                    	    valor = (Number(valor) / 100).toFixed(2);
-                    	    campo.value = valor
-                            .replace(".", ",")                // decimal
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, "."); // milhar
-                      }       
+                    	  
+                      }      
                       </script>
 
 
@@ -280,19 +277,11 @@
                         }
                     }       
                     </script>
-                    <script>
-                    function formatarNumero(campo) {
-                        let valor = campo.value.replace(/\D/g, "");
-                        valor = (Number(valor) / 1000).toFixed(3);
-                        campo.value = valor
-                        .replace(".", ",")              // decimal
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, "."); // milhar
-                    }
-                    </script>
+                   
 
 
                     <div class="form-group">
-                        <label for="unidadeVolume">Unidade de Volume *</label>
+                        <label for="unidadeVolume">Unidade de Medida *</label>
                         <select id="unidadeVolume" name="unidadeVolume" required>
                             <option value="cm3" ${produto.unidadeVolume == 'cm3' ? 'selected' : ''}>cm³ (centímetros cúbicos)</option>
                             <option value="ml" ${produto.unidadeVolume == 'ml' ? 'selected' : ''}>mL (mililitros)</option>
@@ -313,10 +302,7 @@
                     if (valor.length > 12) {
                         valor = valor.slice(0, 12);
                     }
-                    valor = (Number(valor) / 100).toFixed(2);
-                    campo.value = valor
-                    .replace(".", ",")                // decimal
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, "."); // milhar
+                  
                 }
                 </script>
 
