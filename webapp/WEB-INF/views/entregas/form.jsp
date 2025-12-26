@@ -302,7 +302,26 @@
                     </div>
                     <div class="form-group">
                         <label for="valorFrete">Valor do Frete (R$) *</label>
-                        <input type="number" id="valorFrete" name="valorFrete" step="0.01" min="0" required>
+                        <input
+ 							 type="number"
+  							 id="valorFrete"
+ 							 name="valorFrete"
+  							 step="0.01"
+ 							 min="0"
+  							oninput="limitar(this)"
+							required
+							>
+
+						<script>
+						function limitar(input) {
+  						const maxLength = 9; // total de caracteres
+  						if (input.value.length > maxLength) {
+ 						   input.value = input.value.slice(0, maxLength);
+ 						 }
+					}
+						</script>
+
+                        
                     </div>
                 </div>
 
