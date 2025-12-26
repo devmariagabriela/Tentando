@@ -80,15 +80,15 @@
                 </c:if>
 
                 <div class="form-group">
-                    <label for="nome">Nome Completo / Razão Social * </label>
-                    <input type="text" id="nome" name="nome" value="${cliente.nome}" required maxlength="50" oninput="apenasLetras(this)">
+                    <label for="nome">Nome Completo / Razao Social * </label>
+                    <input type="text" id="nome" name="nome" value="${cliente.nome}" required maxlength="50" oninput="letrasNumeros(this)">
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="tipoDocumento">Tipo de Pessoa *</label>
                         <select id="tipoDocumento" name="tipoDocumento" required onchange="limparDocumento()">
-                            <option value="CPF" <c:if test="${cliente.tipoDocumento == 'F' || cliente.tipoDocumento == 'CPF'}">selected</c:if>>Pessoa Física (CPF)</option>
+                            <option value="CPF" <c:if test="${cliente.tipoDocumento == 'F' || cliente.tipoDocumento == 'CPF'}">selected</c:if>>Pessoa Fisica (CPF)</option>
                             <option value="CNPJ" <c:if test="${cliente.tipoDocumento == 'J' || cliente.tipoDocumento == 'CNPJ'}">selected</c:if>>Pessoa Jurídica (CNPJ)</option>
                         </select>
                     </div>
@@ -116,7 +116,7 @@
                         <input type="text" id="logradouro" name="logradouro" value="${cliente.endereco.logradouro}" required maxlength="50" oninput="letrasNumeros(this)">
                     </div>
                     <div class="form-group" style="flex: 1;">
-                        <label for="numero">Número * </label>
+                        <label for="numero">Numero * </label>
                         <input type="text" id="numero" name="numero" value="${cliente.endereco.numero}" required maxlength="6" oninput="letrasNumeros(this)">
                     </div>
                 </div>
