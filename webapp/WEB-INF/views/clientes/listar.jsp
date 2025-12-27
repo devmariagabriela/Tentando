@@ -198,6 +198,17 @@
             <li><a href="${pageContext.request.contextPath}/entregas/listar">Entregas</a></li>
         </ul>
     </nav>
+<c:if test="${param.erro == 'tem_entregas'}">
+    <div style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+        <strong>Atenção!</strong> Não é possível excluir este cliente pois ele possui <strong>${param.total}</strong> entrega(s) vinculada(s) ao nome dele.
+    </div>
+</c:if>
+
+<c:if test="${param.removido == 'true'}">
+    <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+        Cliente removido com sucesso!
+    </div>
+</c:if>
 
     <div class="container">
         <div class="card">

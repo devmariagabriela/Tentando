@@ -76,6 +76,26 @@ public class EntregaDAO {
         return null;
     }
     
+ // No arquivo dao/EntregaDAO.java
+
+    public int contarEntregasPorCliente(Integer clienteId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM entrega WHERE remetente_id = ? OR destinatario_id = ?";
+        
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, clienteId);
+            stmt.setInt(2, clienteId);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        }
+        return 0;
+    }
+
   
     public Entrega buscarPorId(Integer id) throws SQLException {
         String sql = "SELECT * FROM entrega WHERE id = ?";
