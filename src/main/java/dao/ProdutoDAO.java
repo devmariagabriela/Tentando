@@ -17,7 +17,7 @@ public class ProdutoDAO {
     
     public Integer salvar(Produto produto) throws SQLException {
         String sql = "INSERT INTO produto (nome, descricao, peso_kg, volume_m3, unidade_volume, valor_unitario, quantidade_estoque) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?)"; // ALTERADO - adicionado unidade_volume
+                     "VALUES (?, ?, ?, ?, ?, ?, ?)"; 
         
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -119,11 +119,9 @@ public class ProdutoDAO {
         produto.setId(rs.getInt("id"));
         produto.setNome(rs.getString("nome"));
         
-        // Tenta ler a descrição, mas ignora se a coluna não existir
         try {
             produto.setDescricao(rs.getString("descricao"));
         } catch (SQLException e) {
-            // Ignora o erro se a coluna 'descricao' não existir
         }
         
         produto.setPesoKg(rs.getDouble("peso_kg"));
@@ -134,27 +132,22 @@ public class ProdutoDAO {
             String unidadeVolume = rs.getString("unidade_volume");
             produto.setUnidadeVolume(unidadeVolume != null ? unidadeVolume : "m3");
         } catch (SQLException e) {
-            // Se a coluna não existir, usa m3 como padrão
             produto.setUnidadeVolume("m3");
         }
         
         produto.setValorUnitario(rs.getDouble("valor_unitario"));
         
-        // Adicionando o campo de estoque
         try {
             produto.setQuantidadeEstoque(rs.getInt("quantidade_estoque"));
         } catch (SQLException e) {
-            // Ignora o erro se a coluna 'quantidade_estoque' não existir
         }
         
-        // Tenta ler a data de criação, mas ignora se a coluna não existir
         try {
             Timestamp createdAt = rs.getTimestamp("data_criacao");
             if (createdAt != null) {
                 produto.setCreatedAt(createdAt.toLocalDateTime());
             }
         } catch (SQLException e) {
-            // Ignora o erro se a coluna 'data_criacao' não existir
         }
         
         return produto;

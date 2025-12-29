@@ -95,7 +95,7 @@ public class ProdutoServlet extends HttpServlet {
             
             // Validar unidade de volume
             if (unidadeVolume == null || unidadeVolume.trim().isEmpty()) {
-                unidadeVolume = "m3"; // Padrão
+                unidadeVolume = "m3"; 
             }
             
             // Lógica para salvar ou atualizar o produto

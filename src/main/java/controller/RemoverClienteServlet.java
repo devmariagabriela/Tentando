@@ -31,7 +31,6 @@ public class RemoverClienteServlet extends HttpServlet {
         try {
             Integer id = Integer.parseInt(idParam);
             
-            // NOVO: Verifica se o cliente tem entregas vinculadas
             int totalEntregas = entregaDAO.contarEntregasPorCliente(id);
             
             if (totalEntregas > 0) {

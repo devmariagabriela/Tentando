@@ -41,7 +41,6 @@ public class NovaEntregaServlet extends HttpServlet {
             throws ServletException, IOException {
         
         try {
-            // Esse comando aqui ele vai carregar a  listas para os selects do meu formulário:
         	
             List<Cliente> clientes = clienteDAO.listarTodos();
             List<Produto> produtos = produtoDAO.listarTodos();
@@ -49,7 +48,6 @@ public class NovaEntregaServlet extends HttpServlet {
             request.setAttribute("clientes", clientes);
             request.setAttribute("produtos", produtos);
             
-            // Ja esse, ele é o que encaminha para o meu formulario, no caso, o que envia:
             
             request.getRequestDispatcher("/WEB-INF/views/entregas/form.jsp")
                    .forward(request, response);
@@ -75,13 +73,11 @@ public class NovaEntregaServlet extends HttpServlet {
         	
             
             
-            // Função auxiliar para parsear Integer com segurança
             Integer remetenteId = parseInteger(request.getParameter("remetenteId"), "Remetente");
             Integer destinatarioId = parseInteger(request.getParameter("destinatarioId"), "Destinatário");
             Integer enderecoOrigemId = parseInteger(request.getParameter("enderecoOrigemId"), "Endereço de Origem");
             Integer enderecoDestinoId = parseInteger(request.getParameter("enderecoDestinoId"), "Endereço de Destino");
             
-            // Validação de Data
             String dataColetaStr = request.getParameter("dataColeta");
             LocalDate dataColeta = null;
             if (dataColetaStr != null && !dataColetaStr.isEmpty()) {
@@ -98,14 +94,12 @@ public class NovaEntregaServlet extends HttpServlet {
                 throw new IllegalArgumentException("Data de Entrega Prevista é obrigatória.");
             }
             
-            // Validação de Double
             
             Double valorFrete = parseDouble(request.getParameter("valorFrete"), "Valor do Frete");
             
             String observacoes = request.getParameter("observacoes");
             
             
-            // Preciso criar objeto Entrega, pra isso eu uso o set:
             
             Entrega entrega = new Entrega();
             entrega.setRemetenteId(remetenteId);
@@ -118,14 +112,12 @@ public class NovaEntregaServlet extends HttpServlet {
             entrega.setObservacoes(observacoes);
             entrega.setStatus("PENDENTE");
             
-            // Aqui eu salvo a minha entrega:
             
             System.out.println("Salvando entrega no banco de dados...");
             entregaId = entregaDAO.salvar(entrega);
             entregaSalva = true;
             System.out.println("Entrega salva com sucesso! ID: " + entregaId);
             
-            //Esse comando ele vai capturar os itens da entrega (no caso os meus produtos)
             
             String[] produtoIds = request.getParameterValues("produtoId");
             String[] quantidades = request.getParameterValues("quantidade");
@@ -134,11 +126,9 @@ public class NovaEntregaServlet extends HttpServlet {
                 System.out.println("Salvando " + produtoIds.length + " itens da entrega...");
                 for (int i = 0; i < produtoIds.length; i++) {
                     
-                    // Tratamento de parâmetros para itens
                     Integer produtoId = parseInteger(produtoIds[i], "Produto ID");
                     Integer quantidade = parseInteger(quantidades[i], "Quantidade");
                     
-                    // Pra que tenha o valor total eu tenho que ter os produtos, esse comando ele busca o produto
                     
                     Produto produto = produtoDAO.buscarPorId(produtoId);
                     if (produto == null) {
@@ -146,14 +136,11 @@ public class NovaEntregaServlet extends HttpServlet {
                     }
                     
                     if (produto.getQuantidadeEstoque() < quantidade) {
-                        // Se o estoque for insuficiente, lança exceção e a transação deve ser revertida (se estiver usando transação)
-                        // Como não estamos em um BO com controle de transação explícito, o erro será capturado e a entrega será revertida manualmente
                         throw new IllegalArgumentException("Estoque insuficiente para o produto: " + produto.getNome() + 
                                                            ". Estoque atual: " + produto.getQuantidadeEstoque() + 
                                                            ", Quantidade solicitada: " + quantidade);
                     }
                     
-                    //  É ai que eu crio o item da entrega
                     
                     ItemEntrega item = new ItemEntrega();
                     item.setEntregaId(entregaId);
@@ -168,31 +155,27 @@ public class NovaEntregaServlet extends HttpServlet {
                 }
             }
             
-            // Coloquei esse aqui pra confirmar o cadastro, se ele for bem sucedido
             
             System.out.println("Cadastro completo! Redirecionando para lista...");
             response.sendRedirect(request.getContextPath() + "/entregas/listar?sucesso=true");
             
         } catch (IllegalArgumentException | DateTimeParseException e) {
         	
-            // Captura erro de validação, de formato de data e de estoque insuficiente // ALTERADO
         	
-            System.err.println("Erro de validação/estoque: " + e.getMessage()); // ALTERADO
+            System.err.println("Erro de validação/estoque: " + e.getMessage()); 
             e.printStackTrace();
             
-            // Se a entrega foi salva, mas deu erro no item (ex: estoque), precisamos deletar a entrega 
             if (entregaSalva && entregaId != null) { 
                 try { 
                     entregaDAO.deletar(entregaId); 
                     System.out.println("Entrega ID " + entregaId + " deletada devido a erro no item/estoque."); 
-                } catch (SQLException deleteEx) { // NOVO
+                } catch (SQLException deleteEx) { 
                     System.err.println("ERRO CRÍTICO: Falha ao deletar entrega ID " + entregaId + " após erro de item/estoque: " + deleteEx.getMessage()); 
                 } 
             } 
             
             request.setAttribute("erro", e.getMessage());
             
-            // Carrega listas novamente para o formulário
             
             try {
                 request.setAttribute("clientes", clienteDAO.listarTodos());
@@ -208,7 +191,6 @@ public class NovaEntregaServlet extends HttpServlet {
                    
         } catch (SQLException e) {
         	
-            // Erro de banco de dados
         	
             System.err.println("Erro SQL: " + e.getMessage());
             e.printStackTrace();

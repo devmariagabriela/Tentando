@@ -262,6 +262,18 @@
                     	  
                       }      
                       </script>
+                      <script>
+function formatarPeso(campo) {
+    let valor = campo.value.replace(/\D/g, ""); // só números
+
+    if (valor.length > 12) {
+        valor = valor.slice(0, 12);
+    }
+
+    campo.value = valor;
+}
+</script>
+                      
 
 
                     <div class="form-group">
@@ -278,6 +290,17 @@
                     }       
                     </script>
                    
+<script>
+function formatarNumero(campo) {
+    let valor = campo.value.replace(/\D/g, ""); // só números
+
+    if (valor.length > 12) {
+        valor = valor.slice(0, 12);
+    }
+
+    campo.value = valor;
+}
+</script>
 
 
                     <div class="form-group">
@@ -305,6 +328,17 @@
                   
                 }
                 </script>
+				<script>
+						function formatarValor(campo) {
+  						  let valor = campo.value.replace(/\D/g, ""); // só números
+
+    						if (valor.length > 12) {
+   						     valor = valor.slice(0, 12);
+  				  }
+
+    						campo.value = valor;
+				}
+				</script>
 
 
                 <hr>

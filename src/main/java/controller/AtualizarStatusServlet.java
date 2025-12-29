@@ -35,41 +35,34 @@ public class AtualizarStatusServlet extends HttpServlet {
             Integer entregaId = Integer.parseInt(request.getParameter("entregaId"));
             String novoStatus = request.getParameter("status");
             
-            // Pra que a algo seja atualizado eu tenho que buscar, aquii ele vai buscar a entrega: 
             
             Entrega entrega = entregaDAO.buscarPorId(entregaId);
             
             if (entrega != null) {
                 
-                String statusAnterior = entrega.getStatus(); // Guarda o status anterior
+                String statusAnterior = entrega.getStatus(); 
                 entrega.setStatus(novoStatus);
                 
-                // Se o status for REALIZADA, define a data de entrega realizada
                 
                 if ("REALIZADA".equals(novoStatus)) {
                     entrega.setDataEntregaRealizada(LocalDate.now());
                 } else if ("CANCELADA".equals(novoStatus)) {
                 	
-                    // Ao cancelar, remove a data de entrega realizada (se tiver)
                 	
                     entrega.setDataEntregaRealizada(null);
                     
-                    // Apenas repõe se o status anterior não era CANCELADA (para evitar dupla reposição)
                     if (!"CANCELADA".equals(statusAnterior)) { // Usa o statusAnterior
                         List<ItemEntrega> itens = itemEntregaDAO.listarPorEntrega(entregaId);
                         for (ItemEntrega item : itens) {
-                            // Repõe a quantidade no estoque (quantidade positiva)
                             produtoBO.atualizarEstoque(item.getProdutoId(), item.getQuantidade());
                         }
                         System.out.println("Estoque reposto para a entrega cancelada ID: " + entregaId);
                     }
                 }
                 
-                // E é ai que entra a atualização:
                 
                 entregaDAO.atualizar(entrega);
                 
-                // Depois da atualização ele vai redirecionar de volta para a listagem, com os novos dados que foram alterados:
                 
                 response.sendRedirect(request.getContextPath() + "/entregas/listar?atualizado=true");
             } else {

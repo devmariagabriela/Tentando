@@ -28,7 +28,8 @@ public class Cliente {
         this.email = email;
     }
     
-    // Getters e Setters
+    // GS
+    
     public Integer getId() {
         return id;
     }
