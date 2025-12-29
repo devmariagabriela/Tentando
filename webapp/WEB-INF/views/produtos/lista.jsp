@@ -10,8 +10,8 @@
     <style>
         /* Estilização Adicionada */
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
+            --primary-color: #090979;
+            --secondary-color: #090979;
             --accent-color: #27ae60;
             --warning-color: #f39c12;
             --info-color: #3498db;
@@ -207,8 +207,8 @@
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2>Produtos Cadastrados</h2>
                 <div style="display: flex; gap: 10px;">
-                    <a href="${pageContext.request.contextPath}/produtos?acao=novo" class="btn btn-success">➕ CADASTRAR</a>
-                    <a href="${pageContext.request.contextPath}/produtos/estoque" class="btn btn-warning">📦 GERENCIAR ESTOQUE</a>
+                    <a href="${pageContext.request.contextPath}/produtos?acao=novo" class="btn btn-success"> CADASTRAR</a>
+                    <a href="${pageContext.request.contextPath}/produtos/estoque" class="btn btn-warning"> GERENCIAR ESTOQUE</a>
                 </div>
             </div>
 

@@ -10,8 +10,8 @@
     <style>
         /* Estilização Adicionada */
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
+            --primary-color: #090979;
+            --secondary-color: #090979;
             --accent-color: #27ae60;
             --warning-color: #f39c12;
             --info-color: #3498db;

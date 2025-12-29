@@ -8,8 +8,8 @@
     <title>Clientes - Tartaruga Cometa</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
+            --primary-color: #090979;
+            --secondary-color: #090979;
             --accent-color: #27ae60;
             --warning-color: #f39c12;
             --info-color: #3498db;
@@ -214,7 +214,7 @@
         <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2>Clientes Cadastrados</h2>
-                <a href="${pageContext.request.contextPath}/clientes?acao=novo" class="btn btn-success">➕ CADASTRAR</a>
+                <a href="${pageContext.request.contextPath}/clientes?acao=novo" class="btn btn-success"> CADASTRAR</a>
             </div>
 
             <!-- Barra de Pesquisa -->

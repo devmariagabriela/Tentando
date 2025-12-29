@@ -9,8 +9,8 @@
     <title>Listar Entregas - Tartaruga Cometa</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
+            --primary-color: #090979;
+            --secondary-color: #090979;
             --accent-color: #27ae60;
             --warning-color: #f39c12;
             --info-color: #3498db;
@@ -235,7 +235,7 @@
         <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2>Entregas Cadastradas</h2>
-                <a href="${pageContext.request.contextPath}/entregas/nova" class="btn btn-new">➕ NOVA ENTREGA</a>
+                <a href="${pageContext.request.contextPath}/entregas/nova" class="btn btn-new">NOVA ENTREGA</a>
             </div>
 
             <div class="controls-row">

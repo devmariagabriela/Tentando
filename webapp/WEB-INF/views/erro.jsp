@@ -8,8 +8,8 @@
     <title>Erro - Tartaruga Cometa</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
+            --primary-color: #090979;
+            --secondary-color: #090979;
             --danger-color: #e74c3c;
             --info-color: #3498db;
             --light-bg: #f4f7f6;

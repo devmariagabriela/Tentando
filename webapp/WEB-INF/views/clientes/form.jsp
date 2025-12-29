@@ -7,8 +7,8 @@
     <title><c:choose><c:when test="${not empty cliente}">Editar Cliente</c:when><c:otherwise>Cadastrar Cliente</c:otherwise></c:choose> - Tartaruga Cometa</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
+            --primary-color: #090979;
+            --secondary-color: #090979;
             --accent-color: #27ae60;
             --light-bg: #f4f7f6;
             --white: #ffffff;
@@ -109,7 +109,7 @@
                     </div>
                 </div>
 
-                <h3>Endereço</h3>
+                <h3>Endereco</h3>
                 <div class="form-row">
                     <div class="form-group" style="flex: 2;">
                         <label for="logradouro">Logradouro * </label>
